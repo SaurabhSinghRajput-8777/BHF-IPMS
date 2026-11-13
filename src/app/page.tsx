@@ -27,15 +27,15 @@ export default function HomePage() {
       <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" />
 
       {/* ── Navbar (floats over video) ─────────────────────────────────── */}
-      <header className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 sm:px-10 h-16 sm:h-[72px]">
-        {/* Logo + wordmark */}
-        <Link href="/" className="flex items-center space-x-2.5 group">
+      <header className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 sm:px-10 h-28 sm:h-36">
+        {/* Logo */}
+        <Link href="/" className="flex items-center group">
           <Image
             src="/logo.png"
             alt="IPMS Logo"
-            width={120}
-            height={120}
-            className="h-[72px] w-[72px] sm:h-[90px] sm:w-[90px] object-contain rounded-2xl"
+            width={180}
+            height={180}
+            className="h-[140px] w-[140px] sm:h-[180px] sm:w-[180px] object-contain"
             priority
           />
         </Link>
@@ -44,7 +44,7 @@ export default function HomePage() {
         <div className="flex items-center">
           <Link
             href="/login"
-            className="bg-[#b7410e] hover:bg-[#9e370c] active:bg-[#85300a] text-white text-[13.5px] font-semibold px-5 py-2.5 rounded-full transition-all duration-200 shadow-lg shadow-orange-950/40"
+            className="bg-white/15 hover:bg-white/25 active:bg-white/30 border border-white/30 backdrop-blur-md text-white text-[13.5px] font-semibold px-5 py-2.5 rounded-full transition-all duration-200"
           >
             CIE Team Login
           </Link>
@@ -54,7 +54,7 @@ export default function HomePage() {
       {/* ── Main Content (centered in viewport) ───────────────────────── */}
       <main className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6">
         {/* Eyebrow label */}
-        <p className="text-[11px] sm:text-xs font-semibold tracking-widest text-[#e8724a] uppercase mb-5 sm:mb-6">
+        <p className="text-[11px] sm:text-xs font-semibold tracking-widest text-white/50 uppercase mb-5 sm:mb-6">
           Centre for Innovation &amp; Entrepreneurship · Bennett University
         </p>
 
