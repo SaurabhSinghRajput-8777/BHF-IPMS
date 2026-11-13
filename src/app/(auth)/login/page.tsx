@@ -128,7 +128,7 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="pt-6">
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
               <div className="p-4 bg-red-950/40 border border-red-500/30 rounded-2xl text-sm text-red-300 flex items-start gap-3">
                 <AlertCircle className="h-5 w-5 shrink-0 mt-0.5 text-red-400" />
@@ -171,21 +171,23 @@ export default function LoginPage() {
               />
             </div>
 
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-white text-slate-950 hover:bg-white/90 active:bg-white/80 font-semibold tracking-[0.05em] h-12 text-base rounded-xl shadow-lg shadow-black/50 mt-3 font-[family-name:var(--font-aldrich)] cursor-pointer"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Verifying Credentials...
-                </>
-              ) : (
-                <>
-                  <Lock className="mr-2 h-5 w-5" /> Sign In
-                </>
-              )}
-            </Button>
+            <div className="pt-1">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-white text-slate-950 hover:bg-white/90 active:bg-white/80 font-semibold tracking-[0.05em] h-12 text-base rounded-xl shadow-lg shadow-black/50 font-[family-name:var(--font-aldrich)] cursor-pointer"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Verifying Credentials...
+                  </>
+                ) : (
+                  <>
+                    <Lock className="mr-2 h-5 w-5" /> Sign In
+                  </>
+                )}
+              </Button>
+            </div>
           </form>
         </CardContent>
         <CardFooter className="flex flex-col space-y-3.5 border-t border-white/10 pt-5 text-sm text-white/50 text-center">
