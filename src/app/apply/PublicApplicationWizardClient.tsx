@@ -865,22 +865,39 @@ export function PublicApplicationWizardClient() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4 text-center text-sm font-[family-name:var(--font-aldrich)]">
-                <div className="p-4 bg-white/[0.03] rounded-2xl border border-white/10">
-                  <span className="text-white/40 block mb-1">Total Questions</span>
-                  <span className="text-xl sm:text-2xl font-bold text-white">{questions.length}</span>
-                </div>
-                <div className="p-4 bg-white/[0.03] rounded-2xl border border-white/10">
-                  <span className="text-white/40 block mb-1">Answered</span>
-                  <span className="text-xl sm:text-2xl font-bold text-white">{Object.keys(responses).length}</span>
-                </div>
-                <div className="p-4 bg-white/[0.03] rounded-2xl border border-white/10">
-                  <span className="text-white/40 block mb-1">Unanswered</span>
-                  <span className="text-xl sm:text-2xl font-bold text-amber-400">
-                    {Math.max(0, questions.length - Object.keys(responses).length)}
-                  </span>
-                </div>
-              </div>
+              {(() => {
+                const nonApplicableCategoryIds = new Set(
+                  Object.entries(applicability)
+                    .filter(([, a]) => a.applicable === false)
+                    .map(([catId]) => catId)
+                );
+                const applicableQuestions = questions.filter(
+                  (q) => !q.categoryId || !nonApplicableCategoryIds.has(q.categoryId)
+                );
+                const answeredApplicable = applicableQuestions.filter(
+                  (q) => responses[q.id]?.response
+                ).length;
+                const unansweredApplicable = Math.max(0, applicableQuestions.length - answeredApplicable);
+
+                return (
+                  <div className="grid grid-cols-3 gap-4 text-center text-sm font-[family-name:var(--font-aldrich)]">
+                    <div className="p-4 bg-white/[0.03] rounded-2xl border border-white/10">
+                      <span className="text-white/40 block mb-1">Applicable Questions</span>
+                      <span className="text-xl sm:text-2xl font-bold text-white">{applicableQuestions.length}</span>
+                    </div>
+                    <div className="p-4 bg-white/[0.03] rounded-2xl border border-white/10">
+                      <span className="text-white/40 block mb-1">Answered</span>
+                      <span className="text-xl sm:text-2xl font-bold text-white">{answeredApplicable}</span>
+                    </div>
+                    <div className="p-4 bg-white/[0.03] rounded-2xl border border-white/10">
+                      <span className="text-white/40 block mb-1">Unanswered</span>
+                      <span className={`text-xl sm:text-2xl font-bold ${unansweredApplicable > 0 ? "text-amber-400" : "text-emerald-400"}`}>
+                        {unansweredApplicable}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })()}
             </CardContent>
           </Card>
         )}

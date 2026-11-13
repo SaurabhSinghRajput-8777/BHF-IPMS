@@ -88,8 +88,22 @@ export async function POST(request: Request) {
       );
     }
 
-    // 2. Validate all required questions are answered
-    const requiredQuestions = activeQuestionnaire.questions.filter((q) => q.isRequired);
+    // 2. Validate all required questions are answered for applicable categories
+    const nonApplicableCategoryIds = new Set(
+      (applicability || [])
+        .filter((a) => a.applicable === false)
+        .map((a) => a.categoryId)
+    );
+
+    const requiredQuestions = activeQuestionnaire.questions.filter((q) => {
+      if (!q.isRequired) return false;
+      // Exclude required questions belonging to categories marked as non-applicable
+      if (q.categoryId && nonApplicableCategoryIds.has(q.categoryId)) {
+        return false;
+      }
+      return true;
+    });
+
     const answeredMap = new Map(responses.map((r) => [r.questionId, r.response]));
     const missing = requiredQuestions.filter((q) => !answeredMap.has(q.id));
 
