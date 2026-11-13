@@ -126,15 +126,6 @@ export function CieDashboardClient() {
                 Directory
               </Button>
             </Link>
-            <Link href="/cie/reviews">
-              <Button
-                size="sm"
-                variant="outline"
-                className="h-10 border-white/20 text-white hover:bg-white/10 rounded-xl text-xs font-[family-name:var(--font-aldrich)] cursor-pointer"
-              >
-                Schedules
-              </Button>
-            </Link>
             <Link href="/cie/reviewer/queue">
               <Button
                 size="sm"
@@ -212,7 +203,7 @@ export function CieDashboardClient() {
         </div>
 
         {/* Charts & Distributions */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* IP Maturity Tier Distribution */}
           <Card className="border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7">
             <CardHeader className="p-0 pb-5 border-b border-white/10">
@@ -277,33 +268,6 @@ export function CieDashboardClient() {
                   </span>
                 </div>
               ))}
-            </CardContent>
-          </Card>
-
-          {/* 12-Month Trends */}
-          <Card className="border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7">
-            <CardHeader className="p-0 pb-5 border-b border-white/10">
-              <CardTitle className="text-lg font-semibold text-white tracking-wide font-[family-name:var(--font-aldrich)]">
-                Annual Activity Cadence
-              </CardTitle>
-              <CardDescription className="text-xs sm:text-sm text-white/50 mt-1">
-                Monthly submissions vs institutional approvals
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-0 pt-6">
-              <div className="space-y-3 max-h-72 overflow-y-auto pr-1 text-xs font-[family-name:var(--font-aldrich)]">
-                {trends.slice(-6).map((t) => (
-                  <div key={t.month} className="flex items-center justify-between p-3.5 rounded-2xl bg-white/[0.03] border border-white/10">
-                    <span className="text-white/80 font-medium text-sm flex items-center">
-                      <Calendar className="h-3.5 w-3.5 mr-2 text-white/40" /> {t.month}
-                    </span>
-                    <div className="flex items-center space-x-3 text-xs">
-                      <span className="text-white/60">Submissions: <b className="text-white">{t.submissions}</b></span>
-                      <span className="text-emerald-400">Approvals: <b className="text-emerald-300">{t.approvals}</b></span>
-                    </div>
-                  </div>
-                ))}
-              </div>
             </CardContent>
           </Card>
         </div>
