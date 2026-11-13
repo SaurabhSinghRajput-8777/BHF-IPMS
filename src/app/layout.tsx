@@ -53,11 +53,8 @@ export default function RootLayout({
       lang="en"
       className={`${ibmPlexSans.variable} ${geistMono.variable} ${brunoAceSC.variable} ${aldrich.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-slate-800 selection:text-white">
-        <div className="flex-1 flex flex-col w-full">
-          {children}
-        </div>
-        <SiteFooter />
+      <body className="min-h-full flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-slate-800 selection:text-white overflow-x-hidden">
+        {children}
       </body>
     </html>
   );

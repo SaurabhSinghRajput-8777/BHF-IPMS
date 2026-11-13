@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { SiteFooter } from "@/components/SiteFooter";
 
 interface UserSession {
   id: string;
@@ -40,14 +41,14 @@ export function HomePageClient() {
       : "/cie/dashboard";
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-slate-900 flex flex-col justify-between">
+    <div className="relative h-screen w-full overflow-hidden bg-slate-900 flex flex-col justify-between">
       {/* ── Background Video ───────────────────────────────────────────── */}
       <video
         autoPlay
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
         poster="https://images.unsplash.com/photo-1466611653911-95081537e5b7?q=80&w=2070&auto=format&fit=crop"
       >
         <source
@@ -166,6 +167,9 @@ export function HomePageClient() {
           </p>
         </div>
       </div>
+
+      {/* Floating Transparent Footer on Landing */}
+      <SiteFooter />
     </div>
   );
 }

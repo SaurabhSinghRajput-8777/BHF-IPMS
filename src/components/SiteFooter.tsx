@@ -8,13 +8,13 @@ export function SiteFooter() {
 
   return (
     <footer
-      className={`relative z-20 w-full px-6 sm:px-10 py-5 transition-colors ${
+      className={`relative z-20 w-full px-6 sm:px-10 py-5 transition-colors overflow-hidden ${
         isHomePage
-          ? "fixed bottom-0 left-0 right-0 border-t-0 bg-transparent"
+          ? "border-t-0 bg-transparent text-white/50"
           : "border-t border-white/10 bg-slate-900/60 backdrop-blur-xl mt-auto"
       }`}
     >
-      <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50 font-[family-name:var(--font-aldrich)]">
+      <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-[family-name:var(--font-aldrich)]">
         <div>
           <span>
             © 2026 Bennett University Hatchery · Centre for Innovation &amp; Entrepreneurship
