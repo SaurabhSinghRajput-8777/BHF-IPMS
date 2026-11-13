@@ -279,10 +279,15 @@ export class ReportService {
         currentY += 18;
 
         // Main Score Badge Card
-        doc.rect(margin, currentY, contentWidth, 75).fillAndStroke("#F0F9FF", "#BAE6FD");
+        const scoreCardHeight = 82;
+        doc.rect(margin, currentY, contentWidth, scoreCardHeight).fillAndStroke("#F0F9FF", "#BAE6FD");
 
-        doc.fillColor("#0369A1").fontSize(9).font("Helvetica-Bold").text("OVERALL IP READINESS SCORE", margin + 18, currentY + 14);
-        doc.fillColor("#0284C7").fontSize(28).font("Helvetica-Bold").text(`${overallScore.toFixed(1)}%`, margin + 18, currentY + 28);
+        // Left Score Column (Width ~ 160)
+        doc.fillColor("#0369A1").fontSize(8).font("Helvetica-Bold").text("OVERALL IP READINESS SCORE", margin + 18, currentY + 16, { width: 140 });
+        doc.fillColor("#0284C7").fontSize(32).font("Helvetica-Bold").text(`${overallScore.toFixed(1)}%`, margin + 18, currentY + 32, { width: 140 });
+
+        // Divider between score and classification description
+        doc.moveTo(margin + 170, currentY + 14).lineTo(margin + 170, currentY + scoreCardHeight - 14).strokeColor("#BAE6FD").stroke();
 
         const scoreTierDesc =
           overallScore >= 80 ? "STRONG IP READINESS (TIER 5)" :
@@ -290,15 +295,18 @@ export class ReportService {
           overallScore >= 40 ? "INTERMEDIATE IP READINESS (TIER 3)" :
           overallScore >= 20 ? "DEVELOPING IP READINESS (TIER 2)" : "INITIAL IP READINESS (TIER 1)";
 
-        doc.fillColor("#0F172A").fontSize(12).font("Helvetica-Bold").text(scoreTierDesc, margin + 140, currentY + 20);
-        doc.fillColor("#475569").fontSize(9).font("Helvetica").text(
-          `Classification tier evaluates comprehensive statutory protection across applicable patents, trademarks, copyrights, and general IP strategy policies.`,
-          margin + 140,
+        const rightColX = margin + 185;
+        const rightColWidth = contentWidth - 195;
+
+        doc.fillColor("#0F172A").fontSize(11.5).font("Helvetica-Bold").text(scoreTierDesc, rightColX, currentY + 18, { width: rightColWidth });
+        doc.fillColor("#475569").fontSize(8.5).font("Helvetica").text(
+          `Classification tier evaluates comprehensive statutory protection across applicable patents, trademarks, copyrights, and foundational general IP governance policies.`,
+          rightColX,
           currentY + 38,
-          { width: contentWidth - 155 }
+          { width: rightColWidth, lineGap: 2 }
         );
 
-        currentY += 90;
+        currentY += scoreCardHeight + 16;
 
         // Section 3: Category Breakdown
         doc.fillColor("#0F172A").fontSize(12).font("Helvetica-Bold").text("3. CATEGORY PERFORMANCE BREAKDOWN", margin, currentY);
@@ -325,11 +333,20 @@ export class ReportService {
           const cat = categoriesList[i];
           const appRecord = data.applicability.find((a) => a.category?.code === cat.code);
           const isApplicable = appRecord
-            ? (appRecord.reviewerApplicable !== null ? appRecord.reviewerApplicable : appRecord.startupApplicable)
+            ? (appRecord.reviewerApplicable !== null && appRecord.reviewerApplicable !== undefined
+                ? appRecord.reviewerApplicable
+                : appRecord.startupApplicable)
             : true; // Default General IP is always applicable
 
-          const scoreRecord = data.scores.find((s) => s.category?.code === cat.code);
-          const catScoreVal = scoreRecord ? Number(scoreRecord.score) : 0;
+          let catScoreVal: number;
+          if (cat.code === "GENERAL_IP") {
+            // General IP questions have no categoryId; score is stored in overall or general
+            const genScoreRecord = data.scores.find((s) => s.categoryId === null);
+            catScoreVal = genScoreRecord ? Number(genScoreRecord.score) : 0;
+          } else {
+            const scoreRecord = data.scores.find((s) => s.category?.code === cat.code);
+            catScoreVal = scoreRecord ? Number(scoreRecord.score) : 0;
+          }
 
           const rowBg = i % 2 === 0 ? "#F8FAFC" : "#FFFFFF";
           doc.rect(margin, currentY, contentWidth, 24).fillAndStroke(rowBg, "#E2E8F0");
