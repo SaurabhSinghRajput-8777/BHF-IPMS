@@ -294,6 +294,44 @@ async function main() {
     },
   });
 
+  const manishPasswordHash = await argon2.hash("manish@bhf2026", {
+    type: argon2.argon2id,
+    memoryCost: 65536,
+    timeCost: 3,
+    parallelism: 1,
+  });
+
+  await prisma.user.upsert({
+    where: { email: "manish.mathur@bennett.edu.in" },
+    update: { passwordHash: manishPasswordHash, role: UserRole.CIE_ADMIN, name: "Manish Mathur", isActive: true },
+    create: {
+      name: "Manish Mathur",
+      email: "manish.mathur@bennett.edu.in",
+      passwordHash: manishPasswordHash,
+      role: UserRole.CIE_ADMIN,
+      isActive: true,
+    },
+  });
+
+  const shubhamPasswordHash = await argon2.hash("shubham@bhf2026", {
+    type: argon2.argon2id,
+    memoryCost: 65536,
+    timeCost: 3,
+    parallelism: 1,
+  });
+
+  await prisma.user.upsert({
+    where: { email: "shubham.awasthi@bennett.edu.in" },
+    update: { passwordHash: shubhamPasswordHash, role: UserRole.CIE_ADMIN, name: "Shubham Awasthi", isActive: true },
+    create: {
+      name: "Shubham Awasthi",
+      email: "shubham.awasthi@bennett.edu.in",
+      passwordHash: shubhamPasswordHash,
+      role: UserRole.CIE_ADMIN,
+      isActive: true,
+    },
+  });
+
   // B. Reviewer
   await prisma.user.upsert({
     where: { email: "reviewer@bennett.edu.in" },
