@@ -118,14 +118,9 @@ export default function LoginPage() {
 
         <Card className="w-full border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7 gap-6">
         <CardHeader className="p-0 space-y-1.5 pb-5 border-b border-white/10">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-lg font-semibold text-white tracking-wide font-[family-name:var(--font-aldrich)]">
-              Secure Terminal
-            </CardTitle>
-            <Badge variant="outline" className="border-white/20 bg-white/10 text-white/90 text-[11px] px-2.5 py-0.5 rounded-full font-[family-name:var(--font-aldrich)] tracking-wider">
-              RBAC PROTECTED
-            </Badge>
-          </div>
+          <CardTitle className="text-lg font-semibold text-white tracking-wide font-[family-name:var(--font-aldrich)]">
+            Secure Terminal
+          </CardTitle>
           <CardDescription className="text-white/60 text-sm">
             Authenticate using your authorized institutional credentials.
           </CardDescription>
