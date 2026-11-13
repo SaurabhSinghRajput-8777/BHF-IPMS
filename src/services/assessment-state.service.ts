@@ -18,5 +18,19 @@ export class AssessmentStateMachine {
     const validNextStates = this.transitions[fromStatus] || [];
     return validNextStates.includes(toStatus);
   }
+
+  /**
+   * Validates a state transition and throws an Error if invalid.
+   */
+  static validateTransition(fromStatus: AssessmentStatus, toStatus: AssessmentStatus): void {
+    // Reviewers can directly act from SUBMITTED or RESUBMITTED to APPROVED / CHANGES_REQUESTED / REJECTED
+    const isDirectReviewerAction =
+      (fromStatus === "SUBMITTED" || fromStatus === "RESUBMITTED") &&
+      (toStatus === "APPROVED" || toStatus === "CHANGES_REQUESTED" || toStatus === "REJECTED");
+
+    if (!this.canTransition(fromStatus, toStatus) && !isDirectReviewerAction) {
+      throw new Error(`Invalid transition from state '${fromStatus}' to '${toStatus}'.`);
+    }
+  }
 }
 

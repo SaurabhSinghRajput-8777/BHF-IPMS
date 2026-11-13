@@ -251,3 +251,4 @@ export function StartupDossierClient({ startupId }: { startupId: string }) {
     </div>
   );
 }
+
