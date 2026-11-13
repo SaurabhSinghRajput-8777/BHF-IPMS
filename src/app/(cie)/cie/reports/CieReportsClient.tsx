@@ -4,6 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { UserProfileMenu } from "@/components/UserProfileMenu";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -178,6 +179,7 @@ export function CieReportsClient() {
                 Review Queue <ChevronRight className="ml-1 h-3.5 w-3.5" />
               </Button>
             </Link>
+            <UserProfileMenu />
           </div>
         </div>
       </header>

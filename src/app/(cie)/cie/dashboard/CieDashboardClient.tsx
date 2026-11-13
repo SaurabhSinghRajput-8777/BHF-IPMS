@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { UserProfileMenu } from "@/components/UserProfileMenu";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, Loader2, ArrowLeft, Building2, CheckCircle2, TrendingUp, Clock, Calendar, ChevronRight } from "lucide-react";
 import { ApiResponse } from "@/types";
@@ -134,6 +135,7 @@ export function CieDashboardClient() {
                 Review Queue <ChevronRight className="ml-1 h-3.5 w-3.5" />
               </Button>
             </Link>
+            <UserProfileMenu />
           </div>
         </div>
       </header>

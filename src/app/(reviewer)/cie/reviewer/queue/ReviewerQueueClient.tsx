@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { UserProfileMenu } from "@/components/UserProfileMenu";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -105,6 +106,7 @@ export function ReviewerQueueClient() {
                 Analytics Dashboard <ChevronRight className="ml-1 h-3.5 w-3.5" />
               </Button>
             </Link>
+            <UserProfileMenu />
           </div>
         </div>
       </header>

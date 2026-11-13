@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { HomeNavbarAuthAction } from "@/components/HomeNavbarAuthAction";
 
 export default function HomePage() {
   return (
@@ -42,12 +43,7 @@ export default function HomePage() {
 
         {/* Actions */}
         <div className="flex items-center">
-          <Link
-            href="/login"
-            className="bg-white/15 hover:bg-white/25 active:bg-white/30 border border-white/30 backdrop-blur-md text-white text-[13.5px] font-semibold px-5 py-2.5 rounded-full transition-all duration-200 tracking-[0.05em] font-[family-name:var(--font-aldrich)]"
-          >
-            CIE Team Login
-          </Link>
+          <HomeNavbarAuthAction />
         </div>
       </header>
 
