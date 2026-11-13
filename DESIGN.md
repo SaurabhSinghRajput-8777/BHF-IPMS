@@ -159,3 +159,4 @@ The color architecture relies on a dark cosmos baseline overlaid with monochroma
 - Do not wrap the landing hero inside padded or bounded cards; the landing background must remain edge-to-edge full screen.
 - Do not apply drop-shadow outlines or glow effects to display headlines; let the font and contrast gradient do the work.
 - Do not use generic system sans-serif fonts for buttons or numeric metrics.
+

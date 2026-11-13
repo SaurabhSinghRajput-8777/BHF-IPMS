@@ -210,8 +210,8 @@ export function PublicApplicationWizardClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-900" />
+      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+        <Loader2 className="h-8 w-8 animate-spin text-white" />
       </div>
     );
   }
@@ -219,58 +219,58 @@ export function PublicApplicationWizardClient() {
   // Success view
   if (successData) {
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center p-4">
-        <Card className="max-w-xl w-full border-slate-200 shadow-md bg-white">
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center items-center p-4">
+        <Card className="max-w-xl w-full border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/60 rounded-2xl">
           <CardHeader className="text-center pb-4">
-            <div className="h-14 w-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3 text-emerald-600">
+            <div className="h-14 w-14 bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto mb-3 text-emerald-400">
               <CheckCircle2 className="h-8 w-8" />
             </div>
-            <CardTitle className="text-2xl font-bold text-slate-900">Application Submitted!</CardTitle>
-            <CardDescription className="text-sm text-slate-600">
+            <CardTitle className="text-2xl font-normal text-white font-[family-name:var(--font-bruno)]">Application Submitted!</CardTitle>
+            <CardDescription className="text-sm text-white/60">
               Your startup details and IP readiness evaluation have been successfully registered with Bennett Hatchery.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 pt-2">
-            <div className="p-4 bg-slate-50 rounded-lg border border-slate-200 space-y-2 text-sm">
+            <div className="p-4 bg-white/[0.04] rounded-xl border border-white/10 space-y-2 text-sm font-[family-name:var(--font-aldrich)]">
               <div className="flex justify-between">
-                <span className="text-slate-500">Official Startup Code:</span>
-                <span className="font-mono font-bold text-blue-900">{successData.startupCode}</span>
+                <span className="text-white/50">Official Startup Code:</span>
+                <span className="font-mono font-bold text-white tracking-widest">{successData.startupCode}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Startup Name:</span>
-                <span className="font-semibold text-slate-800">{successData.startupName}</span>
+                <span className="text-white/50">Startup Name:</span>
+                <span className="font-semibold text-white">{successData.startupName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Founder:</span>
-                <span className="text-slate-800">{successData.founderName}</span>
+                <span className="text-white/50">Founder:</span>
+                <span className="text-white/90">{successData.founderName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Evaluation Version:</span>
-                <Badge variant="outline">Version {successData.version}</Badge>
+                <span className="text-white/50">Evaluation Version:</span>
+                <Badge variant="outline" className="border-white/20 bg-white/10 text-white">Version {successData.version}</Badge>
               </div>
-              <div className="flex justify-between items-center pt-2 border-t border-slate-200">
-                <span className="text-slate-500">Provisional IP Score:</span>
+              <div className="flex justify-between items-center pt-2 border-t border-white/10">
+                <span className="text-white/50">Provisional IP Score:</span>
                 <div className="text-right">
-                  <span className="text-base font-bold text-blue-900">{successData.overallScore.toFixed(1)}%</span>
-                  <Badge className="ml-2 text-xs bg-emerald-100 text-emerald-800">
+                  <span className="text-base font-bold text-white">{successData.overallScore.toFixed(1)}%</span>
+                  <Badge className="ml-2 text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                     {successData.classification}
                   </Badge>
                 </div>
               </div>
             </div>
 
-            <div className="p-4 bg-blue-50 border border-blue-100 rounded-lg text-xs text-blue-950 space-y-1">
-              <p className="font-semibold flex items-center">
-                <FileCheck2 className="h-4 w-4 mr-1.5" /> What happens next?
+            <div className="p-4 bg-white/[0.03] border border-white/10 rounded-xl text-xs text-white/80 space-y-1">
+              <p className="font-semibold text-white flex items-center font-[family-name:var(--font-aldrich)]">
+                <FileCheck2 className="h-4 w-4 mr-1.5 text-white/70" /> What happens next?
               </p>
-              <p className="text-slate-600">
-                A CIE Intellectual Property Reviewer will evaluate your submission, verify category applicability, and schedule your institutional review. Keep your startup code <b>{successData.startupCode}</b> for future correspondence.
+              <p className="text-white/60">
+                A CIE Intellectual Property Reviewer will evaluate your submission, verify category applicability, and schedule your institutional review. Keep your startup code <b className="text-white">{successData.startupCode}</b> for future correspondence.
               </p>
             </div>
 
             <div className="pt-2 flex justify-center">
               <Link href="/">
-                <Button variant="outline" className="text-sm">
+                <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-xl font-[family-name:var(--font-aldrich)]">
                   Return to Home
                 </Button>
               </Link>
@@ -305,24 +305,24 @@ export function PublicApplicationWizardClient() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-slate-800 selection:text-white">
       {/* Top Bar */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
+      <header className="bg-slate-900/60 backdrop-blur-xl border-b border-white/10 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <Link href="/" className="text-slate-500 hover:text-slate-800">
+            <Link href="/" className="text-white/60 hover:text-white transition-colors">
               <ArrowLeft className="h-5 w-5" />
             </Link>
-            <div className="h-9 w-9 rounded-lg bg-blue-900 text-white flex items-center justify-center font-bold text-base shadow-sm">
+            <div className="h-9 w-9 rounded-lg bg-white/10 border border-white/20 text-white flex items-center justify-center font-bold text-sm shadow-sm font-[family-name:var(--font-aldrich)]">
               BH
             </div>
             <div>
-              <h1 className="font-bold text-slate-900 text-base">Startup IP Assessment &amp; Onboarding</h1>
-              <p className="text-xs text-slate-500">Bennett Hatchery • Direct Application Portal</p>
+              <h1 className="font-semibold text-white text-base tracking-wide font-[family-name:var(--font-aldrich)]">Startup IP Assessment &amp; Onboarding</h1>
+              <p className="text-xs text-white/50">Bennett Hatchery • Direct Application Portal</p>
             </div>
           </div>
           <Link href="/login">
-            <Button size="sm" variant="ghost" className="text-xs text-slate-600">
+            <Button size="sm" variant="ghost" className="text-xs text-white/70 hover:text-white hover:bg-white/10 font-[family-name:var(--font-aldrich)]">
               CIE Staff Sign In
             </Button>
           </Link>
@@ -330,8 +330,8 @@ export function PublicApplicationWizardClient() {
       </header>
 
       {/* Stepper Navigation */}
-      <div className="bg-white border-b border-slate-100 py-3">
-        <div className="max-w-5xl mx-auto px-4 flex items-center space-x-2 overflow-x-auto text-xs">
+      <div className="bg-slate-900/40 backdrop-blur-md border-b border-white/10 py-3">
+        <div className="max-w-5xl mx-auto px-4 flex items-center space-x-2 overflow-x-auto text-xs font-[family-name:var(--font-aldrich)]">
           {steps.map((st, idx) => (
             <button
               key={idx}
@@ -342,10 +342,10 @@ export function PublicApplicationWizardClient() {
               }}
               className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-full transition-all shrink-0 ${
                 currentStep === idx
-                  ? "bg-blue-900 text-white font-semibold"
+                  ? "bg-white text-slate-950 font-semibold shadow-md shadow-white/10"
                   : idx < currentStep
-                  ? "text-blue-900 hover:bg-blue-50 font-medium"
-                  : "text-slate-400 hover:text-slate-600"
+                  ? "text-white/90 hover:bg-white/10 font-medium"
+                  : "text-white/40 hover:text-white/70"
               }`}
             >
               <span className="h-4 w-4 rounded-full border border-current flex items-center justify-center text-[10px]">
@@ -368,13 +368,13 @@ export function PublicApplicationWizardClient() {
 
         {/* STEP 0: STARTUP DETAILS */}
         {currentStep === 0 && (
-          <Card className="border-slate-200 bg-white">
+          <Card className="border-white/15 bg-white/[0.04] backdrop-blur-xl shadow-xl shadow-black/40 rounded-2xl">
             <CardHeader>
               <div className="flex items-center space-x-2">
-                <Building2 className="h-5 w-5 text-blue-900" />
-                <CardTitle className="text-lg font-bold text-slate-900">Startup Venture Information</CardTitle>
+                <Building2 className="h-5 w-5 text-white/80" />
+                <CardTitle className="text-lg font-semibold text-white tracking-wide font-[family-name:var(--font-aldrich)]">Startup Venture Information</CardTitle>
               </div>
-              <CardDescription className="text-xs text-slate-500">
+              <CardDescription className="text-xs text-white/60">
                 Please enter your corporate registration and founder details. No prior account or login is required.
               </CardDescription>
             </CardHeader>
@@ -538,19 +538,19 @@ export function PublicApplicationWizardClient() {
 
         {/* QUESTION STEPS (General IP or specific Categories) */}
         {currentStep > 0 && currentStep < steps.length - 1 && (
-          <Card className="border-slate-200 bg-white">
+          <Card className="border-white/15 bg-white/[0.04] backdrop-blur-xl shadow-xl shadow-black/40 rounded-2xl">
             <CardHeader>
-              <CardTitle className="text-lg font-bold text-slate-900">{currentStepObj.title}</CardTitle>
-              <CardDescription className="text-xs text-slate-500">
+              <CardTitle className="text-lg font-semibold text-white tracking-wide font-[family-name:var(--font-aldrich)]">{currentStepObj.title}</CardTitle>
+              <CardDescription className="text-xs text-white/60">
                 Answer each question accurately. You can mark Not Applicable if outside your business model.
               </CardDescription>
 
               {/* Category Applicability Toggle */}
               {currentStepObj.categoryId && (
-                <div className="mt-3 p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
+                <div className="mt-3 p-3 bg-white/[0.04] border border-white/10 rounded-xl flex items-center justify-between">
                   <div>
-                    <span className="text-xs font-semibold text-slate-800 block">Category Applicability</span>
-                    <span className="text-[11px] text-slate-500">
+                    <span className="text-xs font-semibold text-white block font-[family-name:var(--font-aldrich)]">Category Applicability</span>
+                    <span className="text-[11px] text-white/50">
                       Does your startup produce or utilize {currentStepObj.title}?
                     </span>
                   </div>
@@ -560,8 +560,8 @@ export function PublicApplicationWizardClient() {
                       variant={applicability[currentStepObj.categoryId]?.applicable !== false ? "default" : "outline"}
                       className={
                         applicability[currentStepObj.categoryId]?.applicable !== false
-                          ? "bg-blue-900 text-white h-7 text-xs"
-                          : "h-7 text-xs"
+                          ? "bg-white text-slate-950 font-semibold h-7 text-xs rounded-lg"
+                          : "border-white/20 text-white/70 hover:text-white h-7 text-xs rounded-lg"
                       }
                       onClick={() => handleApplicabilityToggle(currentStepObj.categoryId as string, true)}
                     >
@@ -572,8 +572,8 @@ export function PublicApplicationWizardClient() {
                       variant={applicability[currentStepObj.categoryId]?.applicable === false ? "default" : "outline"}
                       className={
                         applicability[currentStepObj.categoryId]?.applicable === false
-                          ? "bg-slate-700 text-white h-7 text-xs"
-                          : "h-7 text-xs"
+                          ? "bg-white/20 text-white h-7 text-xs rounded-lg"
+                          : "border-white/20 text-white/70 hover:text-white h-7 text-xs rounded-lg"
                       }
                       onClick={() => handleApplicabilityToggle(currentStepObj.categoryId as string, false)}
                     >
@@ -648,16 +648,16 @@ export function PublicApplicationWizardClient() {
 
         {/* REVIEW & SUBMIT STEP */}
         {currentStep === steps.length - 1 && (
-          <Card className="border-slate-200 bg-white">
+          <Card className="border-white/15 bg-white/[0.04] backdrop-blur-xl shadow-xl shadow-black/40 rounded-2xl">
             <CardHeader>
-              <CardTitle className="text-lg font-bold text-slate-900">Review &amp; Final Submission</CardTitle>
-              <CardDescription className="text-xs text-slate-500">
+              <CardTitle className="text-lg font-semibold text-white tracking-wide font-[family-name:var(--font-aldrich)]">Review &amp; Final Submission</CardTitle>
+              <CardDescription className="text-xs text-white/60">
                 Please verify your startup information and questionnaire completion before final submission.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="p-4 bg-slate-50 rounded-lg border border-slate-200 space-y-2 text-xs">
-                <span className="font-bold text-slate-900 text-sm block">Venture Details Summary</span>
+              <div className="p-4 bg-white/[0.04] rounded-xl border border-white/10 space-y-2 text-xs">
+                <span className="font-semibold text-white text-sm block font-[family-name:var(--font-aldrich)]">Venture Details Summary</span>
                 <div className="grid grid-cols-2 gap-2 text-slate-700">
                   <div><b>Startup:</b> {startupForm.name}</div>
                   <div><b>Founder:</b> {startupForm.founderName}</div>
@@ -668,28 +668,28 @@ export function PublicApplicationWizardClient() {
                 </div>
               </div>
 
-              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-start space-x-3 text-xs text-blue-900">
-                <CheckCircle2 className="h-5 w-5 shrink-0 mt-0.5" />
+              <div className="p-4 bg-white/[0.04] border border-white/10 rounded-xl flex items-start space-x-3 text-xs text-white/80">
+                <CheckCircle2 className="h-5 w-5 shrink-0 mt-0.5 text-emerald-400" />
                 <div>
-                  <p className="font-semibold">Institutional Review Notification</p>
-                  <p className="mt-0.5">
+                  <p className="font-semibold text-white">Institutional Review Notification</p>
+                  <p className="mt-0.5 text-white/60">
                     Upon clicking submit, a unique startup tracking code will be generated for you. Your IP maturity score will be preliminarily computed and queued for CIE Reviewer sign-off.
                   </p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-3 text-center text-xs">
-                <div className="p-3 bg-slate-50 rounded border border-slate-100">
-                  <span className="text-slate-400 block">Total Questions</span>
-                  <span className="text-base font-bold text-slate-900">{questions.length}</span>
+              <div className="grid grid-cols-3 gap-3 text-center text-xs font-[family-name:var(--font-aldrich)]">
+                <div className="p-3 bg-white/[0.03] rounded-xl border border-white/10">
+                  <span className="text-white/40 block">Total Questions</span>
+                  <span className="text-base font-bold text-white">{questions.length}</span>
                 </div>
-                <div className="p-3 bg-slate-50 rounded border border-slate-100">
-                  <span className="text-slate-400 block">Answered</span>
-                  <span className="text-base font-bold text-blue-900">{Object.keys(responses).length}</span>
+                <div className="p-3 bg-white/[0.03] rounded-xl border border-white/10">
+                  <span className="text-white/40 block">Answered</span>
+                  <span className="text-base font-bold text-white">{Object.keys(responses).length}</span>
                 </div>
-                <div className="p-3 bg-slate-50 rounded border border-slate-100">
-                  <span className="text-slate-400 block">Unanswered</span>
-                  <span className="text-base font-bold text-amber-600">
+                <div className="p-3 bg-white/[0.03] rounded-xl border border-white/10">
+                  <span className="text-white/40 block">Unanswered</span>
+                  <span className="text-base font-bold text-amber-400">
                     {Math.max(0, questions.length - Object.keys(responses).length)}
                   </span>
                 </div>
@@ -705,6 +705,7 @@ export function PublicApplicationWizardClient() {
             variant="outline"
             disabled={currentStep === 0}
             onClick={handlePrevious}
+            className="border-white/20 text-white/80 hover:text-white hover:bg-white/10 rounded-xl font-[family-name:var(--font-aldrich)]"
           >
             <ChevronLeft className="h-4 w-4 mr-1" /> Previous
           </Button>
@@ -712,7 +713,7 @@ export function PublicApplicationWizardClient() {
           {currentStep < steps.length - 1 ? (
             <Button
               type="button"
-              className="bg-blue-900 hover:bg-blue-800 text-white"
+              className="bg-white text-slate-950 hover:bg-white/90 font-semibold px-6 rounded-xl font-[family-name:var(--font-aldrich)] tracking-[0.05em]"
               onClick={handleNext}
             >
               Next Step <ChevronRight className="h-4 w-4 ml-1" />
@@ -720,7 +721,7 @@ export function PublicApplicationWizardClient() {
           ) : (
             <Button
               type="button"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6"
+              className="bg-white text-slate-950 hover:bg-white/90 font-semibold px-6 rounded-xl font-[family-name:var(--font-aldrich)] tracking-[0.05em] shadow-lg shadow-white/10"
               disabled={submitting}
               onClick={handleSubmit}
             >

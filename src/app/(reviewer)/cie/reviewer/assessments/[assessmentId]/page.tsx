@@ -10,3 +10,4 @@ export default async function ReviewWorkspacePage({
   const { assessmentId } = await params;
   return <AssessmentReviewWorkspaceClient assessmentId={assessmentId} />;
 }
+

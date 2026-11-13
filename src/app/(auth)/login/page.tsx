@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -57,42 +58,55 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-slate-50 p-4 sm:p-6">
-      <div className="mb-6 text-center">
-        <div className="h-12 w-12 rounded-xl bg-blue-900 text-white flex items-center justify-center font-bold text-2xl mx-auto mb-3 shadow-md">
-          BH
-        </div>
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-          Bennett Hatchery IPMS
-        </h1>
-        <p className="text-xs text-slate-500 font-medium mt-1">
-          Centre for Innovation & Entrepreneurship • Bennett University
+    <div className="relative min-h-screen flex flex-col justify-center items-center bg-slate-950 p-4 sm:p-6 overflow-hidden">
+      {/* Background radial atmosphere */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black pointer-events-none" />
+      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-sky-950/20 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="relative z-10 mb-6 text-center">
+        <Link href="/" className="inline-block group mb-3">
+          <Image
+            src="/logo.png"
+            alt="IPMS Logo"
+            width={120}
+            height={120}
+            className="h-16 w-16 sm:h-20 sm:w-20 object-contain mx-auto transition-transform group-hover:scale-105"
+            priority
+          />
+        </Link>
+        <p className="text-[11px] font-semibold tracking-[0.25em] text-white/50 uppercase font-[family-name:var(--font-aldrich)]">
+          Centre for Innovation &amp; Entrepreneurship
         </p>
+        <h1 className="text-2xl sm:text-3xl font-normal text-white tracking-tight mt-1 font-[family-name:var(--font-bruno)]">
+          Institutional Sign In
+        </h1>
       </div>
 
-      <Card className="max-w-md w-full border-slate-200 shadow-md bg-white">
-        <CardHeader className="space-y-1">
+      <Card className="relative z-10 max-w-md w-full border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-2xl">
+        <CardHeader className="space-y-1.5 pb-4">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-xl font-bold text-slate-900">Institutional Sign In</CardTitle>
-            <Badge variant="outline" className="border-blue-200 bg-blue-50 text-blue-900 text-xs">
-              Secure RBAC
+            <CardTitle className="text-base font-semibold text-white tracking-wide font-[family-name:var(--font-aldrich)]">
+              Secure Terminal
+            </CardTitle>
+            <Badge variant="outline" className="border-white/20 bg-white/10 text-white/90 text-[11px] font-[family-name:var(--font-aldrich)]">
+              RBAC PROTECTED
             </Badge>
           </div>
-          <CardDescription className="text-slate-500 text-xs">
-            Enter your authorized institutional email and password to access your role workspace.
+          <CardDescription className="text-white/60 text-xs">
+            Authenticate using your authorized institutional credentials.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700 flex items-start gap-2">
-                <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+              <div className="p-3 bg-red-950/40 border border-red-500/30 rounded-xl text-xs text-red-300 flex items-start gap-2">
+                <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-red-400" />
                 <span>{error}</span>
               </div>
             )}
 
             <div className="space-y-1.5">
-              <Label htmlFor="email">Official Email Address</Label>
+              <Label htmlFor="email" className="text-xs text-white/80 font-medium">Official Email Address</Label>
               <Input
                 id="email"
                 type="email"
@@ -100,14 +114,14 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="founder@startup.com or admin@bennett.edu.in"
                 required
-                className="border-slate-200"
+                className="bg-white/[0.06] border-white/15 text-white placeholder:text-white/30 focus-visible:ring-white/30 focus-visible:border-white/40 h-10 rounded-xl"
                 disabled={loading}
               />
             </div>
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
-                <span className="text-xs text-slate-400">Argon2id Encrypted</span>
+                <Label htmlFor="password" className="text-xs text-white/80 font-medium">Password</Label>
+                <span className="text-[11px] text-white/40 font-[family-name:var(--font-aldrich)]">Argon2id Encrypted</span>
               </div>
               <Input
                 id="password"
@@ -116,14 +130,14 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
                 required
-                className="border-slate-200"
+                className="bg-white/[0.06] border-white/15 text-white placeholder:text-white/30 focus-visible:ring-white/30 focus-visible:border-white/40 h-10 rounded-xl"
                 disabled={loading}
               />
             </div>
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-900 hover:bg-blue-800 text-white shadow-sm mt-2"
+              className="w-full bg-white text-slate-950 hover:bg-white/90 active:bg-white/80 font-semibold tracking-[0.05em] h-10 rounded-xl shadow-lg shadow-black/50 mt-2 font-[family-name:var(--font-aldrich)]"
             >
               {loading ? (
                 <>
@@ -137,11 +151,11 @@ export default function LoginPage() {
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="flex flex-col space-y-3 border-t border-slate-100 pt-4 text-xs text-slate-500 text-center">
-          <p>
-            No public self-registration. New accounts are provisioned exclusively by Bennett Hatchery administration.
+        <CardFooter className="flex flex-col space-y-3 border-t border-white/10 pt-4 text-xs text-white/50 text-center">
+          <p className="text-[11px] leading-relaxed">
+            No public self-registration. Credentials are provisioned exclusively by Bennett Hatchery administration.
           </p>
-          <Link href="/" className="inline-flex items-center text-blue-900 hover:underline">
+          <Link href="/" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
             <ArrowLeft className="mr-1 h-3.5 w-3.5" /> Return to Homepage
           </Link>
         </CardFooter>

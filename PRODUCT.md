@@ -69,3 +69,4 @@ Unlike generic venture management or CRM systems, Bennett Hatchery IPMS is an in
 
 - WCAG 2.1 AA contrast compliance across navy/slate text and status badges.
 - Full keyboard navigation across the multi-step questionnaire and review tables.
+
