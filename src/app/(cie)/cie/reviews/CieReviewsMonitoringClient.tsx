@@ -140,11 +140,19 @@ export function CieReviewsMonitoringClient() {
             </div>
           </div>
           <div className="flex items-center space-x-3">
-            <Link href="/cie/dashboard">
+            <Link href="/cie/reports">
               <Button
                 size="sm"
                 variant="outline"
-                className="border-white/20 text-white hover:bg-white/10 rounded-xl text-xs font-[family-name:var(--font-aldrich)] cursor-pointer"
+                className="h-10 px-4 border-white/20 text-white hover:bg-white/10 rounded-xl text-xs font-[family-name:var(--font-aldrich)] cursor-pointer"
+              >
+                Export Reports
+              </Button>
+            </Link>
+            <Link href="/cie/dashboard">
+              <Button
+                size="sm"
+                className="h-10 px-4 bg-white text-slate-950 hover:bg-white/90 text-xs font-semibold rounded-xl font-[family-name:var(--font-aldrich)] tracking-[0.05em] cursor-pointer shadow-md shadow-white/10"
               >
                 Analytics Dashboard
               </Button>
