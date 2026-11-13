@@ -10,3 +10,4 @@ export default function StartupLayout({ children }: { children: React.ReactNode 
     </div>
   );
 }
+
