@@ -17,7 +17,7 @@ export function SiteFooter() {
       <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-[family-name:var(--font-aldrich)]">
         <div>
           <span>
-            © 2026 Bennett University Hatchery · Centre for Innovation &amp; Entrepreneurship
+            © 2026 Bennett Hatchery Foundation
           </span>
         </div>
 
