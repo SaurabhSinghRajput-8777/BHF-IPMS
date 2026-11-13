@@ -312,32 +312,33 @@ export function PublicApplicationWizardClient() {
 
       {/* Top Bar */}
       <header className="relative z-20 bg-slate-900/60 backdrop-blur-xl border-b border-white/10 sticky top-0">
-        <div className="max-w-5xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center space-x-3.5">
-            <Link href="/" className="text-white/60 hover:text-white transition-colors p-1.5 hover:bg-white/10 rounded-lg">
+        <div className="w-full px-6 sm:px-10 h-20 flex items-center justify-between">
+          <div className="flex items-center space-x-5">
+            <Link
+              href="/"
+              className="text-white/70 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-xl border border-white/10 flex items-center justify-center shrink-0"
+              aria-label="Back to home"
+            >
               <ArrowLeft className="h-5 w-5" />
             </Link>
-            <div className="h-10 w-10 rounded-xl bg-white/10 border border-white/20 text-white flex items-center justify-center font-bold text-sm shadow-sm font-[family-name:var(--font-aldrich)]">
-              BH
-            </div>
-            <div>
-              <h1 className="font-semibold text-white text-base tracking-wide font-[family-name:var(--font-aldrich)]">
-                Startup IP Assessment &amp; Onboarding
-              </h1>
-              <p className="text-xs text-white/50">Bennett Hatchery • Direct Application Portal</p>
+            <div className="flex items-center space-x-3.5">
+              <div className="h-10 w-10 rounded-xl bg-white/10 border border-white/20 text-white flex items-center justify-center font-bold text-sm shadow-sm font-[family-name:var(--font-aldrich)] shrink-0">
+                BH
+              </div>
+              <div>
+                <h1 className="font-semibold text-white text-lg sm:text-xl tracking-wide font-[family-name:var(--font-aldrich)]">
+                  Startup IP Assessment
+                </h1>
+                <p className="text-xs sm:text-sm text-white/50">Bennett Hatchery • Direct Application Portal</p>
+              </div>
             </div>
           </div>
-          <Link href="/login">
-            <Button size="sm" variant="ghost" className="text-xs text-white/70 hover:text-white hover:bg-white/10 rounded-xl font-[family-name:var(--font-aldrich)] px-4 py-2">
-              CIE Staff Sign In
-            </Button>
-          </Link>
         </div>
       </header>
 
       {/* Stepper Navigation */}
       <div className="relative z-10 bg-slate-900/40 backdrop-blur-md border-b border-white/10 py-4">
-        <div className="max-w-5xl mx-auto px-6 flex items-center space-x-3 overflow-x-auto text-xs font-[family-name:var(--font-aldrich)]">
+        <div className="max-w-5xl mx-auto px-6 flex items-center space-x-3 overflow-x-auto text-sm font-[family-name:var(--font-aldrich)]">
           {steps.map((st, idx) => (
             <button
               key={idx}
@@ -346,7 +347,7 @@ export function PublicApplicationWizardClient() {
                 if (currentStep === 0 && !validateStartupDetails() && idx > 0) return;
                 setCurrentStep(idx);
               }}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-all shrink-0 ${
+              className={`flex items-center space-x-2.5 px-4 py-2 rounded-full transition-all shrink-0 ${
                 currentStep === idx
                   ? "bg-white text-slate-950 font-semibold shadow-lg shadow-white/10"
                   : idx < currentStep
@@ -354,7 +355,7 @@ export function PublicApplicationWizardClient() {
                   : "text-white/40 hover:text-white/70"
               }`}
             >
-              <span className="h-5 w-5 rounded-full border border-current flex items-center justify-center text-[10px] font-mono">
+              <span className="h-5 w-5 rounded-full border border-current flex items-center justify-center text-xs font-mono">
                 {idx + 1}
               </span>
               <span>{st.title}</span>
@@ -393,7 +394,7 @@ export function PublicApplicationWizardClient() {
             <CardContent className="space-y-6 pt-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-xs font-semibold text-white/80 font-[family-name:var(--font-aldrich)]">
+                  <Label htmlFor="name" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
                     Startup Name *
                   </Label>
                   <Input
@@ -401,12 +402,12 @@ export function PublicApplicationWizardClient() {
                     placeholder="e.g. NovaTrace AI Solutions"
                     value={startupForm.name}
                     onChange={(e) => setStartupForm((f) => ({ ...f, name: e.target.value }))}
-                    className="h-11 text-sm bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-3.5 focus-visible:ring-white/30 focus-visible:border-white/40"
+                    className="h-12 text-base bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="founderName" className="text-xs font-semibold text-white/80 font-[family-name:var(--font-aldrich)]">
+                  <Label htmlFor="founderName" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
                     Primary Founder Name *
                   </Label>
                   <Input
@@ -414,12 +415,12 @@ export function PublicApplicationWizardClient() {
                     placeholder="Full legal name"
                     value={startupForm.founderName}
                     onChange={(e) => setStartupForm((f) => ({ ...f, founderName: e.target.value }))}
-                    className="h-11 text-sm bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-3.5 focus-visible:ring-white/30 focus-visible:border-white/40"
+                    className="h-12 text-base bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-xs font-semibold text-white/80 font-[family-name:var(--font-aldrich)]">
+                  <Label htmlFor="email" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
                     Founder / Contact Email *
                   </Label>
                   <Input
@@ -428,12 +429,12 @@ export function PublicApplicationWizardClient() {
                     placeholder="founder@yourstartup.com"
                     value={startupForm.email}
                     onChange={(e) => setStartupForm((f) => ({ ...f, email: e.target.value }))}
-                    className="h-11 text-sm bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-3.5 focus-visible:ring-white/30 focus-visible:border-white/40"
+                    className="h-12 text-base bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="contactNumber" className="text-xs font-semibold text-white/80 font-[family-name:var(--font-aldrich)]">
+                  <Label htmlFor="contactNumber" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
                     Contact Phone Number *
                   </Label>
                   <Input
@@ -441,12 +442,12 @@ export function PublicApplicationWizardClient() {
                     placeholder="+91 98765 43210"
                     value={startupForm.contactNumber}
                     onChange={(e) => setStartupForm((f) => ({ ...f, contactNumber: e.target.value }))}
-                    className="h-11 text-sm bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-3.5 focus-visible:ring-white/30 focus-visible:border-white/40"
+                    className="h-12 text-base bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="website" className="text-xs font-semibold text-white/80 font-[family-name:var(--font-aldrich)]">
+                  <Label htmlFor="website" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
                     Website URL (Optional)
                   </Label>
                   <Input
@@ -454,22 +455,22 @@ export function PublicApplicationWizardClient() {
                     placeholder="https://yourstartup.com"
                     value={startupForm.website}
                     onChange={(e) => setStartupForm((f) => ({ ...f, website: e.target.value }))}
-                    className="h-11 text-sm bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-3.5 focus-visible:ring-white/30 focus-visible:border-white/40"
+                    className="h-12 text-base bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="industry" className="text-xs font-semibold text-white/80 font-[family-name:var(--font-aldrich)]">
+                  <Label htmlFor="industry" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
                     Industry / Sector *
                   </Label>
                   <Select
                     value={startupForm.industry}
                     onValueChange={(val) => setStartupForm((f) => ({ ...f, industry: val ?? "" }))}
                   >
-                    <SelectTrigger id="industry" className="h-11 text-sm w-full bg-white/[0.05] border-white/15 text-white rounded-xl px-3.5 focus-visible:ring-white/30 focus-visible:border-white/40">
+                    <SelectTrigger id="industry" className="h-12 text-base w-full bg-white/[0.05] border-white/15 text-white rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40">
                       <SelectValue placeholder="Select industry" />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-900 border-white/20 text-white">
+                    <SelectContent>
                       <SelectItem value="Artificial Intelligence / SaaS">Artificial Intelligence / SaaS</SelectItem>
                       <SelectItem value="Healthcare & BioTech">Healthcare & BioTech</SelectItem>
                       <SelectItem value="FinTech & InsurTech">FinTech & InsurTech</SelectItem>
@@ -482,17 +483,17 @@ export function PublicApplicationWizardClient() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="startupStage" className="text-xs font-semibold text-white/80 font-[family-name:var(--font-aldrich)]">
+                  <Label htmlFor="startupStage" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
                     Incubation Stage *
                   </Label>
                   <Select
                     value={startupForm.startupStage}
                     onValueChange={(val) => setStartupForm((f) => ({ ...f, startupStage: val ?? "" }))}
                   >
-                    <SelectTrigger id="startupStage" className="h-11 text-sm w-full bg-white/[0.05] border-white/15 text-white rounded-xl px-3.5 focus-visible:ring-white/30 focus-visible:border-white/40">
+                    <SelectTrigger id="startupStage" className="h-12 text-base w-full bg-white/[0.05] border-white/15 text-white rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40">
                       <SelectValue placeholder="Select stage" />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-900 border-white/20 text-white">
+                    <SelectContent>
                       <SelectItem value="Idea Stage">Idea Stage</SelectItem>
                       <SelectItem value="Prototype Stage">Prototype Stage</SelectItem>
                       <SelectItem value="MVP Stage">MVP Stage</SelectItem>
@@ -504,7 +505,7 @@ export function PublicApplicationWizardClient() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="registrationNumber" className="text-xs font-semibold text-white/80 font-[family-name:var(--font-aldrich)]">
+                  <Label htmlFor="registrationNumber" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
                     CIN / Registration (Optional)
                   </Label>
                   <Input
@@ -512,13 +513,13 @@ export function PublicApplicationWizardClient() {
                     placeholder="e.g. U72900UP2024PTC199876"
                     value={startupForm.registrationNumber}
                     onChange={(e) => setStartupForm((f) => ({ ...f, registrationNumber: e.target.value }))}
-                    className="h-11 text-sm bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-3.5 focus-visible:ring-white/30 focus-visible:border-white/40"
+                    className="h-12 text-base bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40"
                   />
                 </div>
               </div>
 
               <div className="space-y-2 pt-2">
-                <Label htmlFor="description" className="text-xs font-semibold text-white/80 font-[family-name:var(--font-aldrich)]">
+                <Label htmlFor="description" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
                   Executive Summary *
                 </Label>
                 <Textarea
@@ -526,13 +527,13 @@ export function PublicApplicationWizardClient() {
                   placeholder="Summarize your product, target market, and value proposition..."
                   value={startupForm.description}
                   onChange={(e) => setStartupForm((f) => ({ ...f, description: e.target.value }))}
-                  className="min-h-24 text-sm bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl p-3.5 focus-visible:ring-white/30 focus-visible:border-white/40"
+                  className="min-h-28 text-base bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl p-4 focus-visible:ring-white/30 focus-visible:border-white/40"
                   rows={3}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="productDescription" className="text-xs font-semibold text-white/80 font-[family-name:var(--font-aldrich)]">
+                <Label htmlFor="productDescription" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
                   Proprietary Technology &amp; Innovation *
                 </Label>
                 <Textarea
@@ -540,7 +541,7 @@ export function PublicApplicationWizardClient() {
                   placeholder="Describe your proprietary technology, algorithms, novel designs, or secret know-how..."
                   value={startupForm.productDescription}
                   onChange={(e) => setStartupForm((f) => ({ ...f, productDescription: e.target.value }))}
-                  className="min-h-24 text-sm bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl p-3.5 focus-visible:ring-white/30 focus-visible:border-white/40"
+                  className="min-h-28 text-base bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl p-4 focus-visible:ring-white/30 focus-visible:border-white/40"
                   rows={3}
                 />
               </div>
