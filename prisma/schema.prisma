@@ -1,0 +1,345 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserRole {
+  STARTUP
+  CIE_ADMIN
+  REVIEWER
+}
+
+enum AssessmentStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  CHANGES_REQUESTED
+  RESUBMITTED
+  APPROVED
+  REJECTED
+}
+
+enum ResponseValue {
+  YES
+  NO
+  APPLIED
+  NOT_APPLICABLE
+  NOT_SURE
+}
+
+enum QuestionType {
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+  TEXT
+  NUMBER
+  DATE
+  BOOLEAN
+}
+
+enum ReviewDecision {
+  APPROVED
+  CHANGES_REQUESTED
+  REJECTED
+}
+
+enum ReviewStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+enum ReportType {
+  STARTUP_REPORT
+  CIE_ANALYTICS_REPORT
+}
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  name         String
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  role         UserRole
+  isActive     Boolean  @default(true) @map("is_active")
+
+  startupMembership StartupMember?
+  sessions          Session[]
+  reviews           ReviewRecord[]
+  schedules         ReviewSchedule[]
+  reports           ReportRecord[]
+  auditLogs         AuditLog[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid @map("user_id")
+  tokenHash String   @unique @map("token_hash")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+model Startup {
+  id                 String    @id @default(uuid()) @db.Uuid
+  startupCode        String    @unique @map("startup_code")
+  name               String
+  founderName        String    @map("founder_name")
+  email              String
+  contactNumber      String    @map("contact_number")
+  website            String?
+  industry           String
+  startupStage       String    @map("startup_stage")
+  incorporationDate  DateTime? @db.Date @map("incorporation_date")
+  registrationNumber String?   @map("registration_number")
+  description        String
+  productDescription String    @map("product_description")
+
+  members     StartupMember[]
+  assessments IpAssessment[]
+  schedules   ReviewSchedule[]
+  reports     ReportRecord[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([name])
+  @@index([industry])
+  @@map("startups")
+}
+
+model StartupMember {
+  id         String   @id @default(uuid()) @db.Uuid
+  startupId  String   @db.Uuid @map("startup_id")
+  userId     String   @unique @db.Uuid @map("user_id")
+  memberRole String   @map("member_role")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([startupId, userId])
+  @@map("startup_members")
+}
+
+model IpCategory {
+  id          String   @id @default(uuid()) @db.Uuid
+  code        String   @unique
+  name        String
+  description String?
+  isActive    Boolean  @default(true) @map("is_active")
+
+  questions     IpQuestion[]
+  scores        IpScore[]
+  applicability AssessmentApplicability[]
+
+  @@map("ip_categories")
+}
+
+model IpQuestionnaire {
+  id          String    @id @default(uuid()) @db.Uuid
+  version     Int       @unique
+  title       String
+  description String?
+  isActive    Boolean   @default(false) @map("is_active")
+  publishedAt DateTime? @map("published_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  questions   IpQuestion[]
+  assessments IpAssessment[]
+
+  @@map("ip_questionnaires")
+}
+
+model IpQuestion {
+  id                String       @id @default(uuid()) @db.Uuid
+  questionnaireId   String       @db.Uuid @map("questionnaire_id")
+  categoryId        String?      @db.Uuid @map("category_id")
+  questionText      String       @map("question_text")
+  description       String?
+  questionType      QuestionType @map("question_type")
+  isRequired        Boolean      @default(true) @map("is_required")
+  displayOrder      Int          @map("display_order")
+  scoringConfig     Json?        @map("scoring_config")
+  conditionalConfig Json?        @map("conditional_config")
+  isActive          Boolean      @default(true) @map("is_active")
+
+  questionnaire IpQuestionnaire @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  category      IpCategory?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  responses     IpResponse[]
+
+  @@index([questionnaireId, displayOrder])
+  @@index([categoryId])
+  @@map("ip_questions")
+}
+
+model IpAssessment {
+  id              String           @id @default(uuid()) @db.Uuid
+  startupId       String           @db.Uuid @map("startup_id")
+  questionnaireId String           @db.Uuid @map("questionnaire_id")
+  version         Int
+  status          AssessmentStatus @default(DRAFT)
+  submittedAt     DateTime?        @map("submitted_at")
+  approvedAt      DateTime?        @map("approved_at")
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+
+  startup       Startup                   @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  questionnaire IpQuestionnaire           @relation(fields: [questionnaireId], references: [id])
+  responses     IpResponse[]
+  scores        IpScore[]
+  reviews       ReviewRecord[]
+  applicability AssessmentApplicability[]
+  schedules     ReviewSchedule[]
+  reports       ReportRecord[]
+
+  @@unique([startupId, version])
+  @@index([startupId, status])
+  @@index([submittedAt])
+  @@map("ip_assessments")
+}
+
+model IpResponse {
+  id            String        @id @default(uuid()) @db.Uuid
+  assessmentId  String        @db.Uuid @map("assessment_id")
+  questionId    String        @db.Uuid @map("question_id")
+  response      ResponseValue
+  textValue     String?       @map("text_value")
+  justification String?
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  assessment IpAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  question   IpQuestion   @relation(fields: [questionId], references: [id])
+
+  @@unique([assessmentId, questionId])
+  @@index([assessmentId])
+  @@map("ip_responses")
+}
+
+model AssessmentApplicability {
+  id                 String    @id @default(uuid()) @db.Uuid
+  assessmentId       String    @db.Uuid @map("assessment_id")
+  categoryId         String    @db.Uuid @map("category_id")
+  startupApplicable  Boolean   @map("startup_applicable")
+  startupRemarks     String?   @map("startup_remarks")
+  reviewerApplicable Boolean?  @map("reviewer_applicable")
+  reviewerRemarks    String?   @map("reviewer_remarks")
+  verifiedBy         String?   @db.Uuid @map("verified_by")
+  verifiedAt         DateTime? @map("verified_at")
+
+  assessment IpAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  category   IpCategory   @relation(fields: [categoryId], references: [id])
+
+  @@unique([assessmentId, categoryId])
+  @@map("assessment_applicability")
+}
+
+model IpScore {
+  id                  String   @id @default(uuid()) @db.Uuid
+  assessmentId        String   @db.Uuid @map("assessment_id")
+  categoryId          String?  @db.Uuid @map("category_id")
+  score               Decimal  @db.Decimal(5, 2)
+  applicableQuestions Int      @map("applicable_questions")
+  scoredQuestions     Int      @map("scored_questions")
+  isOverridden        Boolean  @default(false) @map("is_overridden")
+  overrideReason      String?  @map("override_reason")
+  calculatedAt        DateTime @default(now()) @map("calculated_at")
+
+  assessment IpAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  category   IpCategory?  @relation(fields: [categoryId], references: [id])
+
+  @@index([assessmentId])
+  @@map("ip_scores")
+}
+
+model ReviewRecord {
+  id               String            @id @default(uuid()) @db.Uuid
+  assessmentId     String            @db.Uuid @map("assessment_id")
+  reviewerId       String            @db.Uuid @map("reviewer_id")
+  decision         ReviewDecision
+  generalRemarks   String?           @map("general_remarks")
+  trademarkRemarks String?           @map("trademark_remarks")
+  patentRemarks    String?           @map("patent_remarks")
+  copyrightRemarks String?           @map("copyright_remarks")
+  recommendations  String?
+  previousStatus   AssessmentStatus? @map("previous_status")
+  newStatus        AssessmentStatus  @map("new_status")
+  reviewedAt       DateTime          @default(now()) @map("reviewed_at")
+
+  assessment IpAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  reviewer   User         @relation(fields: [reviewerId], references: [id])
+
+  @@index([assessmentId])
+  @@index([reviewerId])
+  @@map("review_records")
+}
+
+model ReviewSchedule {
+  id            String       @id @default(uuid()) @db.Uuid
+  startupId     String       @db.Uuid @map("startup_id")
+  assessmentId  String       @db.Uuid @map("assessment_id")
+  reviewerId    String       @db.Uuid @map("reviewer_id")
+  scheduledDate DateTime     @db.Date @map("scheduled_date")
+  status        ReviewStatus @default(SCHEDULED)
+  completedAt   DateTime?    @map("completed_at")
+  createdAt     DateTime     @default(now()) @map("created_at")
+
+  startup    Startup      @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  assessment IpAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  reviewer   User         @relation(fields: [reviewerId], references: [id])
+
+  @@index([startupId, scheduledDate])
+  @@index([reviewerId, status])
+  @@map("review_schedules")
+}
+
+model ReportRecord {
+  id           String     @id @default(uuid()) @db.Uuid
+  reportCode   String     @unique @map("report_code")
+  reportType   ReportType @map("report_type")
+  startupId    String?    @db.Uuid @map("startup_id")
+  assessmentId String?    @db.Uuid @map("assessment_id")
+  generatedBy  String     @db.Uuid @map("generated_by")
+  generatedAt  DateTime   @default(now()) @map("generated_at")
+  filters      Json?
+
+  startup    Startup?      @relation(fields: [startupId], references: [id], onDelete: SetNull)
+  assessment IpAssessment? @relation(fields: [assessmentId], references: [id], onDelete: SetNull)
+  user       User          @relation(fields: [generatedBy], references: [id])
+
+  @@index([generatedAt])
+  @@map("report_records")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String?  @db.Uuid @map("user_id")
+  action     String
+  entityType String   @map("entity_type")
+  entityId   String?  @db.Uuid @map("entity_id")
+  oldValues  Json?    @map("old_values")
+  newValues  Json?    @map("new_values")
+  ipAddress  String?  @map("ip_address")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([entityType, entityId])
+  @@map("audit_logs")
+}
+
