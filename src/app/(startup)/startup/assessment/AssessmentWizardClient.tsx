@@ -334,7 +334,7 @@ export function AssessmentWizardClient() {
                       {q.isRequired && <Badge variant="secondary" className="text-[10px]">Required</Badge>}
                     </div>
 
-                    <div className="flex flex-wrap gap-2 pt-1">
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1">
                       {[
                         { label: "Yes", val: ResponseValue.YES, color: "hover:border-emerald-500" },
                         { label: "Applied", val: ResponseValue.APPLIED, color: "hover:border-blue-500" },
@@ -346,7 +346,7 @@ export function AssessmentWizardClient() {
                           key={opt.val}
                           type="button"
                           onClick={() => handleResponseChange(q.id, opt.val)}
-                          className={`px-3 py-1.5 rounded text-xs font-medium border transition-all ${
+                          className={`w-full py-2 px-2.5 rounded text-xs font-medium border transition-all text-center flex items-center justify-center cursor-pointer ${
                             currentResp === opt.val
                               ? "bg-blue-900 text-white border-blue-900 shadow-sm"
                               : "bg-white text-slate-700 border-slate-200 " + opt.color

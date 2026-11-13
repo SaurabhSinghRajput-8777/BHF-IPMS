@@ -792,7 +792,7 @@ export function PublicApplicationWizardClient() {
                           </p>
                         )}
 
-                        <div className="flex flex-wrap gap-2.5 pt-2">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5 pt-2">
                           {[
                             { label: "Yes", val: ResponseValue.YES },
                             { label: "Applied", val: ResponseValue.APPLIED },
@@ -803,9 +803,9 @@ export function PublicApplicationWizardClient() {
                               key={opt.val}
                               type="button"
                               onClick={() => handleResponseChange(q.id, opt.val)}
-                              className={`px-4 py-2 rounded-xl text-xs font-semibold tracking-wider transition-all cursor-pointer font-[family-name:var(--font-aldrich)] ${
+                              className={`w-full py-2.5 px-3 rounded-xl text-xs sm:text-xs font-semibold tracking-wider transition-all cursor-pointer font-[family-name:var(--font-aldrich)] text-center flex items-center justify-center ${
                                 currentResp === opt.val
-                                  ? "bg-white text-slate-950 shadow-md shadow-white/10"
+                                  ? "bg-white text-slate-950 shadow-md shadow-white/10 ring-2 ring-white"
                                   : "bg-white/[0.06] text-white/70 border border-white/10 hover:border-white/30 hover:text-white"
                               }`}
                             >
@@ -880,18 +880,18 @@ export function PublicApplicationWizardClient() {
                 const unansweredApplicable = Math.max(0, applicableQuestions.length - answeredApplicable);
 
                 return (
-                  <div className="grid grid-cols-3 gap-4 text-center text-sm font-[family-name:var(--font-aldrich)]">
-                    <div className="p-4 bg-white/[0.03] rounded-2xl border border-white/10">
-                      <span className="text-white/40 block mb-1">Applicable Questions</span>
-                      <span className="text-xl sm:text-2xl font-bold text-white">{applicableQuestions.length}</span>
+                  <div className="grid grid-cols-1 xs:grid-cols-3 gap-2.5 sm:gap-4 text-center font-[family-name:var(--font-aldrich)]">
+                    <div className="p-3 sm:p-4 bg-white/[0.03] rounded-2xl border border-white/10 flex flex-col justify-between">
+                      <span className="text-white/40 text-[11px] sm:text-xs block mb-1">Applicable</span>
+                      <span className="text-lg sm:text-2xl font-bold text-white">{applicableQuestions.length}</span>
                     </div>
-                    <div className="p-4 bg-white/[0.03] rounded-2xl border border-white/10">
-                      <span className="text-white/40 block mb-1">Answered</span>
-                      <span className="text-xl sm:text-2xl font-bold text-white">{answeredApplicable}</span>
+                    <div className="p-3 sm:p-4 bg-white/[0.03] rounded-2xl border border-white/10 flex flex-col justify-between">
+                      <span className="text-white/40 text-[11px] sm:text-xs block mb-1">Answered</span>
+                      <span className="text-lg sm:text-2xl font-bold text-white">{answeredApplicable}</span>
                     </div>
-                    <div className="p-4 bg-white/[0.03] rounded-2xl border border-white/10">
-                      <span className="text-white/40 block mb-1">Unanswered</span>
-                      <span className={`text-xl sm:text-2xl font-bold ${unansweredApplicable > 0 ? "text-amber-400" : "text-emerald-400"}`}>
+                    <div className="p-3 sm:p-4 bg-white/[0.03] rounded-2xl border border-white/10 flex flex-col justify-between">
+                      <span className="text-white/40 text-[11px] sm:text-xs block mb-1">Unanswered</span>
+                      <span className={`text-lg sm:text-2xl font-bold ${unansweredApplicable > 0 ? "text-amber-400" : "text-emerald-400"}`}>
                         {unansweredApplicable}
                       </span>
                     </div>
@@ -903,13 +903,13 @@ export function PublicApplicationWizardClient() {
         )}
 
         {/* Wizard Controls */}
-        <div className="flex items-center justify-between pt-6 border-t border-white/10">
+        <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-0 pt-6 border-t border-white/10">
           <Button
             type="button"
             variant="outline"
             disabled={currentStep === 0}
             onClick={handlePrevious}
-            className="border-white/20 text-white/80 hover:text-white hover:bg-white/10 h-11 px-5 rounded-xl font-[family-name:var(--font-aldrich)]"
+            className="w-full sm:w-auto border-white/20 text-white/80 hover:text-white hover:bg-white/10 h-11 px-5 rounded-xl font-[family-name:var(--font-aldrich)] cursor-pointer"
           >
             <ChevronLeft className="h-4 w-4 mr-1.5" /> Previous
           </Button>
@@ -917,7 +917,7 @@ export function PublicApplicationWizardClient() {
           {currentStep < steps.length - 1 ? (
             <Button
               type="button"
-              className="bg-white text-slate-950 hover:bg-white/90 font-semibold h-11 px-7 rounded-xl font-[family-name:var(--font-aldrich)] tracking-[0.05em] shadow-lg shadow-white/10"
+              className="w-full sm:w-auto bg-white text-slate-950 hover:bg-white/90 font-semibold h-11 px-7 rounded-xl font-[family-name:var(--font-aldrich)] tracking-[0.05em] shadow-lg shadow-white/10 cursor-pointer"
               onClick={handleNext}
             >
               Next Step <ChevronRight className="h-4 w-4 ml-1.5" />
@@ -925,7 +925,7 @@ export function PublicApplicationWizardClient() {
           ) : (
             <Button
               type="button"
-              className="bg-white text-slate-950 hover:bg-white/90 font-semibold h-11 px-8 rounded-xl font-[family-name:var(--font-aldrich)] tracking-[0.05em] shadow-lg shadow-white/10"
+              className="w-full sm:w-auto bg-white text-slate-950 hover:bg-white/90 font-semibold h-11 px-6 sm:px-8 rounded-xl font-[family-name:var(--font-aldrich)] tracking-[0.03em] sm:tracking-[0.05em] shadow-lg shadow-white/10 text-xs sm:text-sm cursor-pointer"
               disabled={submitting}
               onClick={handleSubmit}
             >
