@@ -50,7 +50,7 @@ export default function HomePage() {
           </Link>
           <Link
             href="/apply"
-            className="bg-[#10b981] hover:bg-[#059669] active:bg-[#047857] text-white text-[13.5px] font-semibold px-5 py-2.5 rounded-full transition-all duration-200 shadow-lg shadow-emerald-900/40"
+            className="bg-[#b7410e] hover:bg-[#9e370c] active:bg-[#85300a] text-white text-[13.5px] font-semibold px-5 py-2.5 rounded-full transition-all duration-200 shadow-lg shadow-orange-950/40"
           >
             Get in touch
           </Link>
@@ -60,7 +60,7 @@ export default function HomePage() {
       {/* ── Main Content (centered in viewport) ───────────────────────── */}
       <main className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6">
         {/* Eyebrow label */}
-        <p className="text-[11px] sm:text-xs font-semibold tracking-widest text-emerald-400 uppercase mb-5 sm:mb-6">
+        <p className="text-[11px] sm:text-xs font-semibold tracking-widest text-[#e8724a] uppercase mb-5 sm:mb-6">
           Centre for Innovation &amp; Entrepreneurship · Bennett University
         </p>
 
@@ -81,7 +81,7 @@ export default function HomePage() {
         <div className="mt-8 sm:mt-10">
           <Link
             href="/apply"
-            className="group inline-flex items-center space-x-2 bg-[#10b981] hover:bg-[#059669] active:bg-[#047857] text-white text-sm sm:text-base font-semibold px-8 sm:px-10 py-3.5 sm:py-4 rounded-full shadow-xl shadow-emerald-950/50 transition-all duration-200"
+            className="group inline-flex items-center space-x-2 bg-[#b7410e] hover:bg-[#9e370c] active:bg-[#85300a] text-white text-sm sm:text-base font-semibold px-8 sm:px-10 py-3.5 sm:py-4 rounded-full shadow-xl shadow-orange-950/50 transition-all duration-200"
           >
             <span>Start Startup IP Assessment</span>
             <ArrowUpRight className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
