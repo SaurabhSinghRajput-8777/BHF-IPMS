@@ -113,8 +113,8 @@ export default function LoginPage() {
         </p>
       </div>
 
-      <Card className="relative z-10 max-w-md w-full border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-2 sm:p-3">
-        <CardHeader className="space-y-2 pb-5 border-b border-white/10">
+      <Card className="relative z-10 max-w-md w-full border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7 gap-6">
+        <CardHeader className="p-0 space-y-1.5 pb-5 border-b border-white/10">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg font-semibold text-white tracking-wide font-[family-name:var(--font-aldrich)]">
               Secure Terminal
@@ -127,8 +127,8 @@ export default function LoginPage() {
             Authenticate using your authorized institutional credentials.
           </CardDescription>
         </CardHeader>
-        <CardContent className="pt-6">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <CardContent className="p-0">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
               <div className="p-4 bg-red-950/40 border border-red-500/30 rounded-2xl text-sm text-red-300 flex items-start gap-3">
                 <AlertCircle className="h-5 w-5 shrink-0 mt-0.5 text-red-400" />
@@ -171,26 +171,24 @@ export default function LoginPage() {
               />
             </div>
 
-            <div className="pt-1">
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-white text-slate-950 hover:bg-white/90 active:bg-white/80 font-semibold tracking-[0.05em] h-12 text-base rounded-xl shadow-lg shadow-black/50 font-[family-name:var(--font-aldrich)] cursor-pointer"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Verifying Credentials...
-                  </>
-                ) : (
-                  <>
-                    <Lock className="mr-2 h-5 w-5" /> Sign In
-                  </>
-                )}
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-white text-slate-950 hover:bg-white/90 active:bg-white/80 font-semibold tracking-[0.05em] h-12 text-base rounded-xl shadow-lg shadow-black/50 font-[family-name:var(--font-aldrich)] cursor-pointer"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Verifying Credentials...
+                </>
+              ) : (
+                <>
+                  <Lock className="mr-2 h-5 w-5" /> Sign In
+                </>
+              )}
+            </Button>
           </form>
         </CardContent>
-        <CardFooter className="flex flex-col space-y-3.5 border-t border-white/10 pt-5 text-sm text-white/50 text-center">
+        <CardFooter className="p-0 border-t border-white/10 pt-5 text-sm text-white/50 text-center flex flex-col justify-center">
           <p className="text-xs leading-relaxed text-white/45">
             No public self-registration. Credentials are provisioned exclusively by Bennett Hatchery administration.
           </p>
