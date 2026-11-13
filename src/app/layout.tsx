@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, Geist_Mono, Bruno_Ace_SC, Aldrich } from "next/font/google";
+import { SiteFooter } from "@/components/SiteFooter";
 import "./globals.css";
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -53,7 +54,10 @@ export default function RootLayout({
       className={`${ibmPlexSans.variable} ${geistMono.variable} ${brunoAceSC.variable} ${aldrich.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-slate-800 selection:text-white">
-        {children}
+        <div className="flex-1 flex flex-col w-full">
+          {children}
+        </div>
+        <SiteFooter />
       </body>
     </html>
   );
