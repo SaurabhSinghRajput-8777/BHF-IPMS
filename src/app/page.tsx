@@ -69,13 +69,13 @@ export default function HomePage() {
         <div className="mt-8 sm:mt-10">
           <Link
             href="/apply"
-            className="group inline-flex items-center rounded-xl bg-white/10 border border-white/20 backdrop-blur-xl shadow-xl shadow-indigo-950/30 transition-all duration-300 hover:bg-white/15 hover:border-white/30"
+            className="group inline-flex items-center p-1.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-xl shadow-xl shadow-indigo-950/30 transition-all duration-300 hover:bg-white/15 hover:border-white/30"
           >
-            <span className="text-base sm:text-lg font-semibold text-white pl-6 sm:pl-7 pr-4 sm:pr-5 py-2.5 sm:py-3 font-[family-name:var(--font-aldrich)]">
+            <span className="text-base sm:text-lg font-semibold text-white px-6 sm:px-8 py-2.5 sm:py-3 font-[family-name:var(--font-aldrich)]">
               Start Startup IP Assessment
             </span>
-            <span className="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 mr-1.5 rounded-lg bg-white/15 backdrop-blur-sm transition-colors group-hover:bg-white/25">
-              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 text-white group-hover:translate-x-0.5 transition-transform" />
+            <span className="self-stretch flex items-center justify-center px-4 sm:px-5 rounded-xl bg-white/15 backdrop-blur-sm transition-colors group-hover:bg-white/25">
+              <ArrowRight className="h-5 w-5 text-white group-hover:translate-x-0.5 transition-transform" />
             </span>
           </Link>
         </div>
