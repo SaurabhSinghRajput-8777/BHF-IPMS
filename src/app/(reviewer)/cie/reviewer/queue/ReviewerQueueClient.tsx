@@ -87,6 +87,15 @@ export function ReviewerQueueClient() {
             </div>
           </div>
           <div className="flex items-center space-x-3">
+            <Link href="/cie/reports">
+              <Button
+                size="sm"
+                variant="outline"
+                className="border-white/20 text-white hover:bg-white/10 rounded-xl text-xs font-[family-name:var(--font-aldrich)] cursor-pointer"
+              >
+                Export Reports
+              </Button>
+            </Link>
             <Link href="/cie/dashboard">
               <Button
                 size="sm"

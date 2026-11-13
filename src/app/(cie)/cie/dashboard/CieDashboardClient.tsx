@@ -108,15 +108,15 @@ export function CieDashboardClient() {
             </div>
           </div>
           <div className="flex items-center space-x-3">
-            <a href="/api/v1/cie/reports/analytics?format=xlsx" download>
+            <Link href="/cie/reports">
               <Button
                 size="sm"
                 variant="outline"
                 className="h-10 border-white/20 text-white hover:bg-white/10 rounded-xl text-xs font-[family-name:var(--font-aldrich)] cursor-pointer"
               >
-                <Download className="h-3.5 w-3.5 mr-1.5" /> Export Excel
+                <Download className="h-3.5 w-3.5 mr-1.5 text-sky-400" /> Export Reports
               </Button>
-            </a>
+            </Link>
             <Link href="/cie/startups">
               <Button
                 size="sm"
