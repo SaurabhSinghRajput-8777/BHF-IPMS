@@ -79,8 +79,8 @@ export default function LoginPage() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900/50 via-slate-950/80 to-black pointer-events-none" />
       <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-sky-950/30 blur-[130px] rounded-full pointer-events-none" />
 
-      {/* Top Left Navigation Back to Portal */}
-      <div className="absolute top-6 left-6 sm:top-8 sm:left-10 z-20">
+      {/* Top Header Bar */}
+      <div className="absolute top-0 left-0 right-0 px-6 sm:px-10 h-24 sm:h-28 flex items-center justify-between z-20">
         <Link
           href="/"
           className="text-white/70 hover:text-white transition-colors p-2.5 hover:bg-white/10 rounded-xl border border-white/10 flex items-center gap-2 text-sm font-[family-name:var(--font-aldrich)] cursor-pointer backdrop-blur-md bg-white/[0.03]"
@@ -89,31 +89,34 @@ export default function LoginPage() {
           <ArrowLeft className="h-4 w-4" />
           <span className="hidden sm:inline">Back to Portal</span>
         </Link>
-      </div>
 
-      <div className="relative z-10 mb-8 text-center max-w-md">
-        <Link href="/" className="inline-block group mb-3">
+        {/* Logo in top right corner */}
+        <Link href="/" className="inline-block group">
           <Image
             src="/logo.png"
             alt="IPMS Logo"
-            width={140}
-            height={140}
-            className="h-20 w-20 sm:h-24 sm:w-24 object-contain mx-auto transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_10px_20px_rgba(0,0,0,0.6)]"
+            width={160}
+            height={160}
+            className="h-14 w-14 sm:h-20 sm:w-20 object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
             priority
           />
         </Link>
-        <p className="text-xs sm:text-sm font-semibold tracking-[0.25em] text-white/60 uppercase font-[family-name:var(--font-aldrich)]">
-          Bennett Hatchery · CIE
-        </p>
-        <h1 className="text-2xl sm:text-3xl font-normal text-white tracking-wide mt-2 font-[family-name:var(--font-bruno)]">
-          Institutional Sign In
-        </h1>
-        <p className="text-sm text-white/50 mt-1">
-          Authorized portal for CIE reviewers, mentors &amp; administrators
-        </p>
       </div>
 
-      <Card className="relative z-10 max-w-md w-full border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7 gap-6">
+      <div className="relative z-10 w-full max-w-md flex flex-col items-center -mt-8 sm:-mt-12">
+        <div className="mb-6 text-center max-w-md">
+          <p className="text-xs sm:text-sm font-semibold tracking-[0.25em] text-white/60 uppercase font-[family-name:var(--font-aldrich)]">
+            Bennett Hatchery · CIE
+          </p>
+          <h1 className="text-2xl sm:text-3xl font-normal text-white tracking-wide mt-2 font-[family-name:var(--font-bruno)]">
+            Institutional Sign In
+          </h1>
+          <p className="text-sm text-white/50 mt-1">
+            Authorized portal for CIE reviewers, mentors &amp; administrators
+          </p>
+        </div>
+
+        <Card className="w-full border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7 gap-6">
         <CardHeader className="p-0 space-y-1.5 pb-5 border-b border-white/10">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg font-semibold text-white tracking-wide font-[family-name:var(--font-aldrich)]">
@@ -194,6 +197,7 @@ export default function LoginPage() {
           </p>
         </div>
       </Card>
+      </div>
     </div>
   );
 }
