@@ -40,7 +40,7 @@ export function HomePageClient() {
       : "/cie/dashboard";
 
   return (
-    <div className="relative min-h-[calc(100vh-73px)] w-full overflow-hidden bg-slate-900 flex flex-col justify-between">
+    <div className="relative h-screen w-screen overflow-hidden bg-slate-900 flex flex-col justify-between">
       {/* ── Background Video ───────────────────────────────────────────── */}
       <video
         autoPlay
