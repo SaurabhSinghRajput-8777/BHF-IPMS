@@ -188,11 +188,11 @@ export default function LoginPage() {
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="p-0 border-t border-white/10 pt-5 text-sm text-white/50 text-center flex flex-col justify-center">
-          <p className="text-xs leading-relaxed text-white/45">
+        <div className="border-t border-white/10 pt-5 text-center">
+          <p className="text-xs leading-relaxed text-white/50">
             No public self-registration. Credentials are provisioned exclusively by Bennett Hatchery administration.
           </p>
-        </CardFooter>
+        </div>
       </Card>
     </div>
   );
