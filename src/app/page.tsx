@@ -102,7 +102,7 @@ export default function HomePage() {
         </div>
         <div className="text-right">
           <div className="text-3xl sm:text-[36px] font-normal text-white tracking-tight leading-none">
-            3 CIE
+            3
           </div>
           <p className="text-[11px] text-white/50 mt-1.5 leading-snug">
             Expert reviewers
