@@ -58,55 +58,88 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-center items-center bg-slate-950 p-4 sm:p-6 overflow-hidden">
-      {/* Background radial atmosphere */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black pointer-events-none" />
-      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-sky-950/20 blur-[120px] rounded-full pointer-events-none" />
+    <div className="relative min-h-screen flex flex-col justify-center items-center bg-slate-950 p-4 sm:p-8 overflow-hidden selection:bg-slate-800 selection:text-white">
+      {/* Background Video / Atmosphere */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-40"
+        poster="https://images.unsplash.com/photo-1466611653911-95081537e5b7?q=80&w=2070&auto=format&fit=crop"
+      >
+        <source
+          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260613_180732_a54afbf6-b30d-470e-861f-669871f09f67.mp4"
+          type="video/mp4"
+        />
+      </video>
 
-      <div className="relative z-10 mb-6 text-center">
+      {/* Deep gradient overlays */}
+      <div className="absolute inset-0 bg-slate-950/85 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900/50 via-slate-950/80 to-black pointer-events-none" />
+      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-sky-950/30 blur-[130px] rounded-full pointer-events-none" />
+
+      {/* Top Left Navigation Back to Portal */}
+      <div className="absolute top-6 left-6 sm:top-8 sm:left-10 z-20">
+        <Link
+          href="/"
+          className="text-white/70 hover:text-white transition-colors p-2.5 hover:bg-white/10 rounded-xl border border-white/10 flex items-center gap-2 text-sm font-[family-name:var(--font-aldrich)] cursor-pointer backdrop-blur-md bg-white/[0.03]"
+          aria-label="Back to home"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span className="hidden sm:inline">Back to Portal</span>
+        </Link>
+      </div>
+
+      <div className="relative z-10 mb-8 text-center max-w-md">
         <Link href="/" className="inline-block group mb-3">
           <Image
             src="/logo.png"
             alt="IPMS Logo"
-            width={120}
-            height={120}
-            className="h-16 w-16 sm:h-20 sm:w-20 object-contain mx-auto transition-transform group-hover:scale-105"
+            width={140}
+            height={140}
+            className="h-20 w-20 sm:h-24 sm:w-24 object-contain mx-auto transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_10px_20px_rgba(0,0,0,0.6)]"
             priority
           />
         </Link>
-        <p className="text-[11px] font-semibold tracking-[0.25em] text-white/50 uppercase font-[family-name:var(--font-aldrich)]">
-          Centre for Innovation &amp; Entrepreneurship
+        <p className="text-xs sm:text-sm font-semibold tracking-[0.25em] text-white/60 uppercase font-[family-name:var(--font-aldrich)]">
+          Bennett Hatchery · CIE
         </p>
-        <h1 className="text-2xl sm:text-3xl font-normal text-white tracking-tight mt-1 font-[family-name:var(--font-bruno)]">
+        <h1 className="text-2xl sm:text-3xl font-normal text-white tracking-wide mt-2 font-[family-name:var(--font-bruno)]">
           Institutional Sign In
         </h1>
+        <p className="text-sm text-white/50 mt-1">
+          Authorized portal for CIE reviewers, mentors &amp; administrators
+        </p>
       </div>
 
-      <Card className="relative z-10 max-w-md w-full border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-2xl">
-        <CardHeader className="space-y-1.5 pb-4">
+      <Card className="relative z-10 max-w-md w-full border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-2 sm:p-3">
+        <CardHeader className="space-y-2 pb-5 border-b border-white/10">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-base font-semibold text-white tracking-wide font-[family-name:var(--font-aldrich)]">
+            <CardTitle className="text-lg font-semibold text-white tracking-wide font-[family-name:var(--font-aldrich)]">
               Secure Terminal
             </CardTitle>
-            <Badge variant="outline" className="border-white/20 bg-white/10 text-white/90 text-[11px] font-[family-name:var(--font-aldrich)]">
+            <Badge variant="outline" className="border-white/20 bg-white/10 text-white/90 text-[11px] px-2.5 py-0.5 rounded-full font-[family-name:var(--font-aldrich)] tracking-wider">
               RBAC PROTECTED
             </Badge>
           </div>
-          <CardDescription className="text-white/60 text-xs">
+          <CardDescription className="text-white/60 text-sm">
             Authenticate using your authorized institutional credentials.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <CardContent className="pt-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
-              <div className="p-3 bg-red-950/40 border border-red-500/30 rounded-xl text-xs text-red-300 flex items-start gap-2">
-                <AlertCircle className="h-4 w-4 shrink-0 mt-0.5 text-red-400" />
+              <div className="p-4 bg-red-950/40 border border-red-500/30 rounded-2xl text-sm text-red-300 flex items-start gap-3">
+                <AlertCircle className="h-5 w-5 shrink-0 mt-0.5 text-red-400" />
                 <span>{error}</span>
               </div>
             )}
 
-            <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-xs text-white/80 font-medium">Official Email Address</Label>
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
+                Official Email Address
+              </Label>
               <Input
                 id="email"
                 type="email"
@@ -114,14 +147,17 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="founder@startup.com or admin@bennett.edu.in"
                 required
-                className="bg-white/[0.06] border-white/15 text-white placeholder:text-white/30 focus-visible:ring-white/30 focus-visible:border-white/40 h-10 rounded-xl"
+                className="bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 focus-visible:ring-white/30 focus-visible:border-white/40 h-12 text-base rounded-xl px-4"
                 disabled={loading}
               />
             </div>
-            <div className="space-y-1.5">
+
+            <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-xs text-white/80 font-medium">Password</Label>
-                <span className="text-[11px] text-white/40 font-[family-name:var(--font-aldrich)]">Argon2id Encrypted</span>
+                <Label htmlFor="password" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
+                  Password
+                </Label>
+                <span className="text-xs text-white/40 font-[family-name:var(--font-aldrich)]">Argon2id Encrypted</span>
               </div>
               <Input
                 id="password"
@@ -130,34 +166,32 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
                 required
-                className="bg-white/[0.06] border-white/15 text-white placeholder:text-white/30 focus-visible:ring-white/30 focus-visible:border-white/40 h-10 rounded-xl"
+                className="bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 focus-visible:ring-white/30 focus-visible:border-white/40 h-12 text-base rounded-xl px-4"
                 disabled={loading}
               />
             </div>
+
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-white text-slate-950 hover:bg-white/90 active:bg-white/80 font-semibold tracking-[0.05em] h-10 rounded-xl shadow-lg shadow-black/50 mt-2 font-[family-name:var(--font-aldrich)]"
+              className="w-full bg-white text-slate-950 hover:bg-white/90 active:bg-white/80 font-semibold tracking-[0.05em] h-12 text-base rounded-xl shadow-lg shadow-black/50 mt-3 font-[family-name:var(--font-aldrich)] cursor-pointer"
             >
               {loading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Verifying Credentials...
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Verifying Credentials...
                 </>
               ) : (
                 <>
-                  <Lock className="mr-2 h-4 w-4" /> Sign In
+                  <Lock className="mr-2 h-5 w-5" /> Sign In
                 </>
               )}
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="flex flex-col space-y-3 border-t border-white/10 pt-4 text-xs text-white/50 text-center">
-          <p className="text-[11px] leading-relaxed">
+        <CardFooter className="flex flex-col space-y-3.5 border-t border-white/10 pt-5 text-sm text-white/50 text-center">
+          <p className="text-xs leading-relaxed text-white/45">
             No public self-registration. Credentials are provisioned exclusively by Bennett Hatchery administration.
           </p>
-          <Link href="/" className="inline-flex items-center text-white/80 hover:text-white transition-colors">
-            <ArrowLeft className="mr-1 h-3.5 w-3.5" /> Return to Homepage
-          </Link>
         </CardFooter>
       </Card>
     </div>
