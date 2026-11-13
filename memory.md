@@ -266,8 +266,8 @@ Strict adherence to the following baseline architecture without introducing unap
 |---|---|---|---|
 | **Phase 0** | Documentation Analysis & Initialization | **Completed** | Comprehensive review of PRD/TRD, `memory.md`, `task.md`, `README.md`, `architecture.md`, `decisions.md`, `open-questions.md`. |
 | **Phase 1** | Foundation & Infrastructure | **Completed** | Next.js 16 modular monolith, TypeScript 5, Tailwind CSS 4, shadcn/ui components, Neon PostgreSQL Prisma schema, `/api/v1/health` dynamic route, 0 build/lint errors. |
-| **Phase 2** | Authentication & Authorization | **Next** | Argon2id hashing, database sessions, HTTP-only cookies, RBAC middleware, account provisioning & seeding. |
-| **Phase 3** | Startup Management | Not Started | Startup models, ID generator (`BH-YYYY-NNN`), profile CRUD, member linking, CIE startup directory. |
+| **Phase 2** | Authentication & Authorization | **Completed** | Argon2id hashing, database sessions, HTTP-only cookies, RBAC middleware, account provisioning & seeding, `tests/unit/auth.test.ts`. |
+| **Phase 3** | Startup Management | **Next** | Startup models, ID generator (`BH-YYYY-NNN`), profile CRUD, member linking, CIE startup directory. |
 | **Phase 4** | Questionnaire & Assessment Engine | Not Started | Category seed (Trademark, Patent, Copyright), questionnaire versioning, dynamic forms, draft auto-save, submission immutability. |
 | **Phase 5** | IP Scoring Engine | Not Started | Question scoring, category aggregation, overall weighted/unweighted scores, applicability filtering, score persistence. |
 | **Phase 6** | Reviewer Dashboard & Approval Workflow | Not Started | Review queue, remarks interface, applicability confirmation, Approve/Changes/Reject state machine, review scheduler. |

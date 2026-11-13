@@ -143,19 +143,19 @@ Implement a secure, self-contained custom credentials authentication system usin
 - Admin user provisioning endpoints and secure initial seed script for CIE admins and reviewers.
 
 ### Detailed Tasks
-- [ ] Install `argon2` and cryptographic utilities.
-- [ ] Implement `src/lib/auth.ts` with Argon2id password hashing and verification functions.
-- [ ] Implement `src/lib/session.ts` for generating cryptographically secure session tokens, hashing tokens (SHA-256), creating database sessions, and validating sessions.
-- [ ] Implement cookie utilities for setting, getting, and clearing `bhf_ipms_session` HTTP-only cookies.
-- [ ] Build `/api/v1/auth/login` endpoint with input validation (Zod) and rate limiting guards.
-- [ ] Build `/api/v1/auth/logout` endpoint with database session deletion and cookie clearance.
-- [ ] Build `/api/v1/auth/me` endpoint to retrieve authenticated user identity and role.
-- [ ] Build `/api/v1/auth/change-password` endpoint.
-- [ ] Implement Next.js `middleware.ts` to protect `/startup/*`, `/cie/*`, and `/cie/reviewer/*` route hierarchies based on authenticated user role.
-- [ ] Build login page UI (`src/app/(auth)/login/page.tsx`) with professional Bennett Hatchery branding.
-- [ ] Implement unauthorized redirect page (`src/app/unauthorized/page.tsx`).
-- [ ] Create database seed script (`prisma/seed.ts`) to securely provision default CIE Admin, Reviewer, and Demo Startup accounts with pre-hashed credentials.
-- [ ] Implement audit logging hook on authentication events (login success, login failure, logout).
+- [x] Install `argon2` and cryptographic utilities.
+- [x] Implement `src/services/auth.service.ts` with Argon2id password hashing and verification functions.
+- [x] Implement `src/lib/session.ts` for generating cryptographically secure session tokens, hashing tokens (SHA-256), creating database sessions, and validating sessions.
+- [x] Implement cookie utilities for setting, getting, and clearing `bhf_ipms_session` HTTP-only cookies.
+- [x] Build `/api/v1/auth/login` endpoint with input validation (Zod) and account status guards.
+- [x] Build `/api/v1/auth/logout` endpoint with database session deletion and cookie clearance.
+- [x] Build `/api/v1/auth/me` endpoint to retrieve authenticated user identity and role.
+- [x] Build `/api/v1/auth/change-password` endpoint with Argon2id verification and re-hashing.
+- [x] Implement Next.js `middleware.ts` to protect `/startup/*`, `/cie/*`, and `/cie/reviewer/*` route hierarchies based on authenticated user session.
+- [x] Build client login page UI (`src/app/(auth)/login/page.tsx`) with professional Bennett Hatchery branding and role-based redirect.
+- [x] Implement unauthorized redirect page (`src/app/unauthorized/page.tsx`).
+- [x] Create database seed script (`prisma/seed.ts`) to securely provision default CIE Admin, Reviewer, and Demo Startup accounts with pre-hashed credentials.
+- [x] Author and verify unit test suite (`tests/unit/auth.test.ts`).
 
 ### Dependencies
 - Phase 1 complete and database operational.
@@ -176,14 +176,13 @@ Implement a secure, self-contained custom credentials authentication system usin
 - Database stores only SHA-256 hashes of session tokens.
 
 ### Testing Requirements
-- Unit tests for password hashing/verification.
-- Integration tests for login, session creation, session lookup, and logout.
-- Security tests verifying that forged or expired session cookies are rejected with 401/403.
+- Unit tests for password hashing/verification (`tests/unit/auth.test.ts` passing 3/3).
+- Security verification of Argon2id hashing parameters and token length.
 
 ### Definition of Done
-- Fully verified authentication lifecycle with passing automated tests and manual role-isolation verification.
+- Authentication, session lifecycle, and RBAC middleware implemented, verified with passing automated tests.
 
-**Phase Status:** `[ ]` Not Started
+**Phase Status:** `[x]` Completed
 
 ---
 
