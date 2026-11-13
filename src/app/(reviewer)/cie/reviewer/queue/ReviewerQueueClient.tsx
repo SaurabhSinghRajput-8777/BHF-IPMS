@@ -62,48 +62,48 @@ export function ReviewerQueueClient() {
 
       {/* Top Header */}
       <header className="relative z-20 bg-slate-900/60 backdrop-blur-xl border-b border-white/10 sticky top-0 w-full">
-        <div className="w-full px-6 sm:px-10 h-20 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+        <div className="w-full px-4 sm:px-10 min-h-16 sm:h-20 py-3 sm:py-0 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center space-x-3 sm:space-x-4">
             <Link
               href="/cie/dashboard"
-              className="text-white/70 hover:text-white transition-colors p-2.5 hover:bg-white/10 rounded-xl border border-white/10 flex items-center justify-center cursor-pointer"
+              className="text-white/70 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-xl border border-white/10 flex items-center justify-center cursor-pointer shrink-0"
               aria-label="Back to dashboard"
             >
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
-            <Link href="/" className="flex items-center">
+            <Link href="/" className="flex items-center shrink-0">
               <Image
                 src="/logo.png"
                 alt="IPMS Logo"
                 width={40}
                 height={40}
-                className="h-10 w-10 object-contain drop-shadow"
+                className="h-8 w-8 sm:h-10 sm:w-10 object-contain drop-shadow"
               />
             </Link>
             <div>
-              <h1 className="font-semibold text-white text-lg tracking-wide font-[family-name:var(--font-aldrich)]">
+              <h1 className="font-semibold text-white text-sm sm:text-lg tracking-wide font-[family-name:var(--font-aldrich)]">
                 CIE Reviewer Workspace
               </h1>
-              <p className="text-xs text-white/50">Bennett University Intellectual Property Office</p>
+              <p className="text-[10px] sm:text-xs text-white/50">Bennett University Intellectual Property Office</p>
             </div>
           </div>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center flex-wrap gap-2 sm:space-x-3">
             <Link href="/cie/reports">
               <Button
                 size="sm"
                 variant="outline"
-                className="h-10 px-4 border-white/20 text-white hover:bg-white/10 rounded-xl text-xs font-[family-name:var(--font-aldrich)] cursor-pointer"
+                className="h-9 sm:h-10 px-3 sm:px-4 border-white/20 text-white hover:bg-white/10 rounded-xl text-xs font-[family-name:var(--font-aldrich)] cursor-pointer"
               >
-                <Download className="h-3.5 w-3.5 mr-1.5 text-sky-400" />
-                Export Reports
+                <Download className="h-3.5 w-3.5 mr-1 sm:mr-1.5 text-sky-400" />
+                <span className="hidden xs:inline">Export</span> Reports
               </Button>
             </Link>
             <Link href="/cie/dashboard">
               <Button
                 size="sm"
-                className="h-10 px-4 bg-white text-slate-950 hover:bg-white/90 text-xs font-semibold rounded-xl font-[family-name:var(--font-aldrich)] tracking-[0.05em] cursor-pointer shadow-md shadow-white/10"
+                className="h-9 sm:h-10 px-3 sm:px-4 bg-white text-slate-950 hover:bg-white/90 text-xs font-semibold rounded-xl font-[family-name:var(--font-aldrich)] tracking-[0.05em] cursor-pointer shadow-md shadow-white/10"
               >
-                Analytics Dashboard <ChevronRight className="ml-1 h-3.5 w-3.5" />
+                <span className="hidden xs:inline">Analytics</span> Dashboard <ChevronRight className="ml-1 h-3.5 w-3.5" />
               </Button>
             </Link>
             <UserProfileMenu />

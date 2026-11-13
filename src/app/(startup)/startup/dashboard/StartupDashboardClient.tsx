@@ -117,35 +117,35 @@ export function StartupDashboardClient() {
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-slate-800 selection:text-white">
       {/* Top Bar */}
       <header className="bg-slate-900/60 backdrop-blur-xl border-b border-white/10 sticky top-0 z-20 w-full">
-        <div className="w-full px-6 sm:px-10 h-16 sm:h-20 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Link href="/" className="text-white/60 hover:text-white transition-colors">
-              <ArrowLeft className="h-5 w-5" />
+        <div className="w-full px-4 sm:px-10 min-h-16 sm:h-20 py-3 sm:py-0 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center space-x-2.5 sm:space-x-3">
+            <Link href="/" className="text-white/60 hover:text-white transition-colors p-1.5 sm:p-2 rounded-xl hover:bg-white/10 border border-white/10 shrink-0">
+              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
             </Link>
-            <Link href="/" className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2 shrink-0">
               <Image
                 src="/logo.png"
                 alt="IPMS"
                 width={36}
                 height={36}
-                className="h-8 w-8 object-contain"
+                className="h-7 w-7 sm:h-8 sm:w-8 object-contain"
               />
             </Link>
             <div>
-              <h1 className="font-semibold text-white text-base tracking-wide font-[family-name:var(--font-aldrich)]">
+              <h1 className="font-semibold text-white text-sm sm:text-base tracking-wide font-[family-name:var(--font-aldrich)] truncate max-w-[150px] sm:max-w-none">
                 {data.startup.name}
               </h1>
-              <p className="text-xs text-white/50">Founder Portal • <span className="font-mono text-white/70">{data.startup.startupCode}</span></p>
+              <p className="text-[10px] sm:text-xs text-white/50">Founder Portal • <span className="font-mono text-white/70">{data.startup.startupCode}</span></p>
             </div>
           </div>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center flex-wrap gap-2 sm:space-x-3">
             <Link href="/startup/assessment">
-              <Button size="sm" className="bg-white text-slate-950 hover:bg-white/90 font-semibold rounded-xl font-[family-name:var(--font-aldrich)] tracking-[0.05em]">
-                {latestAssessment?.status === "DRAFT" ? "Continue Assessment" : "New Assessment"}
+              <Button size="sm" className="h-9 sm:h-10 bg-white text-slate-950 hover:bg-white/90 text-xs font-semibold rounded-xl font-[family-name:var(--font-aldrich)] tracking-[0.05em]">
+                {latestAssessment?.status === "DRAFT" ? "Continue" : "New"} Assessment
               </Button>
             </Link>
             <Link href="/startup/profile">
-              <Button size="sm" variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-xl font-[family-name:var(--font-aldrich)]">
+              <Button size="sm" variant="outline" className="h-9 sm:h-10 border-white/20 text-white hover:bg-white/10 rounded-xl text-xs font-[family-name:var(--font-aldrich)]">
                 Profile
               </Button>
             </Link>
