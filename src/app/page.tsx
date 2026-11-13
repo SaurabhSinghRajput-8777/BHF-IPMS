@@ -59,7 +59,7 @@ export default function HomePage() {
         </p>
 
         {/* Headline */}
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-normal tracking-tight text-white leading-[1.12] max-w-4xl font-[family-name:var(--font-bruno)]">
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-normal tracking-tight text-white leading-[1.12] font-[family-name:var(--font-bruno)]">
           Intellectual Property
           <br />
           <span className="font-light text-white/80">Management System</span>
