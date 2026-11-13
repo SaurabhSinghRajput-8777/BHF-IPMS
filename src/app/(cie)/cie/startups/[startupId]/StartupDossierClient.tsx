@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ArrowLeft, Building2, User, Award, ExternalLink, Loader2 } from "lucide-react";
@@ -65,185 +66,192 @@ export function StartupDossierClient({ startupId }: { startupId: string }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-900" />
+      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+        <Loader2 className="h-8 w-8 animate-spin text-white" />
       </div>
     );
   }
 
   if (!dossier) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-4">
-        <p className="text-slate-600 mb-4">Startup dossier could not be located.</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 p-4">
+        <p className="text-white/60 mb-4 font-[family-name:var(--font-aldrich)]">Startup dossier could not be located.</p>
         <Link href="/cie/startups">
-          <Button variant="outline">Return to Directory</Button>
+          <Button variant="outline" className="border-white/20 text-white rounded-xl">Return to Directory</Button>
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="relative min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-slate-800 selection:text-white">
+      {/* Background ambient lighting */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black pointer-events-none" />
+      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[800px] h-[360px] bg-sky-950/20 blur-[130px] rounded-full pointer-events-none" />
+
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Link href="/cie/startups" className="text-slate-500 hover:text-slate-800">
+      <header className="relative z-20 bg-slate-900/60 backdrop-blur-xl border-b border-white/10 sticky top-0">
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 h-20 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <Link
+              href="/cie/startups"
+              className="text-white/70 hover:text-white transition-colors p-2.5 hover:bg-white/10 rounded-xl border border-white/10 flex items-center justify-center cursor-pointer"
+            >
               <ArrowLeft className="h-5 w-5" />
             </Link>
-            <div className="h-9 w-9 rounded-lg bg-blue-900 text-white flex items-center justify-center font-bold text-base shadow-sm">
-              BH
-            </div>
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/logo.png"
+                alt="IPMS Logo"
+                width={40}
+                height={40}
+                className="h-10 w-10 object-contain drop-shadow"
+              />
+            </Link>
             <div>
-              <h1 className="font-bold text-slate-900 text-base">{dossier.name}</h1>
-              <p className="text-xs text-slate-500">Official Startup Dossier</p>
+              <h1 className="font-semibold text-white text-base sm:text-lg tracking-wide font-[family-name:var(--font-aldrich)]">
+                {dossier.name}
+              </h1>
+              <p className="text-xs text-white/50">{dossier.startupCode} • Official Startup Dossier</p>
             </div>
           </div>
-          <Badge className="font-mono text-xs bg-blue-900 text-white">
-            {dossier.startupCode}
+          <Badge variant="outline" className="border-white/20 bg-white/10 text-white font-[family-name:var(--font-aldrich)] px-3 py-1">
+            {dossier.startupStage}
           </Badge>
         </div>
       </header>
 
-      {/* Main Dossier Content */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
-        {/* Profile Card */}
+      {/* Main Content */}
+      <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto p-6 sm:p-10 space-y-6">
+        {/* Startup Overview Profile */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card className="md:col-span-2 border-slate-200 shadow-sm bg-white">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg font-bold text-slate-900">Venture Profile</CardTitle>
-                <Building2 className="h-5 w-5 text-slate-400" />
-              </div>
-              <CardDescription className="text-xs text-slate-500">
-                General incubation master record and official corporate contact info.
-              </CardDescription>
+          <Card className="md:col-span-2 border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7">
+            <CardHeader className="p-0 pb-4 border-b border-white/10">
+              <CardTitle className="text-lg font-semibold text-white font-[family-name:var(--font-aldrich)] flex items-center">
+                <Building2 className="h-4 w-4 mr-2 text-white/70" /> Venture Overview
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 text-sm">
+            <CardContent className="p-0 pt-5 space-y-4 text-sm">
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <span className="text-xs text-slate-400 block">Founder</span>
-                  <span className="font-medium text-slate-900">{dossier.founderName}</span>
+                <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
+                  <span className="text-white/40 block text-xs font-[family-name:var(--font-aldrich)] mb-1">Founder / CEO</span>
+                  <span className="font-semibold text-white">{dossier.founderName}</span>
                 </div>
-                <div>
-                  <span className="text-xs text-slate-400 block">Email Address</span>
-                  <span className="font-medium text-slate-900">{dossier.email}</span>
+                <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
+                  <span className="text-white/40 block text-xs font-[family-name:var(--font-aldrich)] mb-1">Sector</span>
+                  <span className="font-semibold text-white">{dossier.industry}</span>
                 </div>
-                <div>
-                  <span className="text-xs text-slate-400 block">Contact Phone</span>
-                  <span className="font-medium text-slate-900">{dossier.contactNumber}</span>
+                <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
+                  <span className="text-white/40 block text-xs font-[family-name:var(--font-aldrich)] mb-1">Official Email</span>
+                  <span className="font-semibold text-white">{dossier.email}</span>
                 </div>
-                <div>
-                  <span className="text-xs text-slate-400 block">Website</span>
-                  {dossier.website ? (
-                    <a href={dossier.website} target="_blank" rel="noreferrer" className="text-blue-900 underline flex items-center gap-1">
-                      {dossier.website} <ExternalLink className="h-3 w-3" />
-                    </a>
-                  ) : (
-                    <span className="text-slate-400">N/A</span>
-                  )}
-                </div>
-                <div>
-                  <span className="text-xs text-slate-400 block">Sector</span>
-                  <span className="font-medium text-slate-900">{dossier.industry}</span>
-                </div>
-                <div>
-                  <span className="text-xs text-slate-400 block">Incubation Stage</span>
-                  <Badge variant="outline" className="text-xs bg-slate-50 mt-0.5">{dossier.startupStage}</Badge>
+                <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
+                  <span className="text-white/40 block text-xs font-[family-name:var(--font-aldrich)] mb-1">Contact Phone</span>
+                  <span className="font-semibold text-white">{dossier.contactNumber}</span>
                 </div>
               </div>
 
-              <div className="pt-2">
-                <span className="text-xs text-slate-400 block">Executive Summary</span>
-                <p className="text-slate-700 text-xs mt-1 leading-relaxed">{dossier.description}</p>
+              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                <span className="text-white/40 block text-xs font-[family-name:var(--font-aldrich)] mb-1">Executive Summary</span>
+                <p className="text-white/80 leading-relaxed">{dossier.description}</p>
               </div>
 
-              <div>
-                <span className="text-xs text-slate-400 block">Proprietary Technology &amp; Innovation</span>
-                <p className="text-slate-700 text-xs mt-1 leading-relaxed">{dossier.productDescription}</p>
+              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                <span className="text-white/40 block text-xs font-[family-name:var(--font-aldrich)] mb-1">Proprietary Technology &amp; Innovation</span>
+                <p className="text-white/80 leading-relaxed">{dossier.productDescription}</p>
               </div>
             </CardContent>
           </Card>
 
-          {/* Account & Members */}
-          <Card className="border-slate-200 shadow-sm bg-white">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg font-bold text-slate-900">Associated Users</CardTitle>
-                <User className="h-5 w-5 text-slate-400" />
-              </div>
-              <CardDescription className="text-xs text-slate-500">
-                Authorized platform accounts linked to this startup.
-              </CardDescription>
+          <Card className="border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7">
+            <CardHeader className="p-0 pb-4 border-b border-white/10">
+              <CardTitle className="text-lg font-semibold text-white font-[family-name:var(--font-aldrich)] flex items-center">
+                <User className="h-4 w-4 mr-2 text-white/70" /> Authorized Personnel
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3">
-              {dossier.members.map((m) => (
-                <div key={m.user.id} className="p-3 bg-slate-50 rounded-lg border border-slate-100 text-xs space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold text-slate-900">{m.user.name}</span>
-                    <Badge variant="outline" className="text-[10px] bg-white">{m.memberRole}</Badge>
+            <CardContent className="p-0 pt-5 space-y-3">
+              {dossier.members.length === 0 ? (
+                <p className="text-sm text-white/40">No linked user accounts.</p>
+              ) : (
+                dossier.members.map((m, idx) => (
+                  <div key={idx} className="p-3.5 bg-white/[0.02] border border-white/5 rounded-xl text-xs space-y-1">
+                    <span className="font-semibold text-white block text-sm">{m.user.name}</span>
+                    <span className="text-white/50">{m.user.email}</span>
+                    <span className="text-white/40 block font-[family-name:var(--font-aldrich)]">{m.memberRole}</span>
                   </div>
-                  <span className="text-slate-500 block">{m.user.email}</span>
-                </div>
-              ))}
+                ))
+              )}
             </CardContent>
           </Card>
         </div>
 
-        {/* Assessment History */}
-        <Card className="border-slate-200 shadow-sm bg-white">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="text-lg font-bold text-slate-900">Assessment Version History</CardTitle>
-                <CardDescription className="text-xs text-slate-500">
-                  Chronological record of submitted, under-review, and approved IP evaluations.
-                </CardDescription>
-              </div>
-              <Award className="h-5 w-5 text-slate-400" />
-            </div>
+        {/* Assessment Evaluation History */}
+        <Card className="border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7">
+          <CardHeader className="p-0 pb-4 border-b border-white/10 flex flex-row items-center justify-between">
+            <CardTitle className="text-lg font-semibold text-white font-[family-name:var(--font-aldrich)] flex items-center">
+              <Award className="h-4 w-4 mr-2 text-white/70" /> Assessment History
+            </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0 pt-5">
             {dossier.assessments.length === 0 ? (
-              <p className="text-center py-6 text-xs text-slate-400">No assessments submitted yet.</p>
+              <p className="text-sm text-white/40">No assessments completed.</p>
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-slate-100">
-                    <TableHead className="font-semibold text-slate-700">Version</TableHead>
-                    <TableHead className="font-semibold text-slate-700">Status</TableHead>
-                    <TableHead className="font-semibold text-slate-700">Submission Date</TableHead>
-                    <TableHead className="font-semibold text-slate-700">Approval Date</TableHead>
-                    <TableHead className="font-semibold text-slate-700">Overall Score</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {dossier.assessments.map((a) => {
-                    const overallScore = a.scores.find((s) => s.categoryId === null);
-                    return (
-                      <TableRow key={a.id} className="border-slate-100">
-                        <TableCell className="font-mono text-xs font-semibold text-blue-900">
-                          Version {a.version}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="text-xs">
-                            {a.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-xs text-slate-600">
-                          {a.submittedAt ? new Date(a.submittedAt).toLocaleDateString() : "Draft"}
-                        </TableCell>
-                        <TableCell className="text-xs text-slate-600">
-                          {a.approvedAt ? new Date(a.approvedAt).toLocaleDateString() : "—"}
-                        </TableCell>
-                        <TableCell className="font-semibold text-xs text-slate-900">
-                          {overallScore ? `${Number(overallScore.score).toFixed(1)}%` : "Pending"}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
+              <div className="overflow-x-auto rounded-2xl border border-white/10">
+                <Table>
+                  <TableHeader className="bg-white/[0.03]">
+                    <TableRow className="border-white/10 hover:bg-transparent">
+                      <TableHead className="font-semibold text-white/70 font-[family-name:var(--font-aldrich)] text-xs uppercase tracking-wider py-4">Version</TableHead>
+                      <TableHead className="font-semibold text-white/70 font-[family-name:var(--font-aldrich)] text-xs uppercase tracking-wider">Status</TableHead>
+                      <TableHead className="font-semibold text-white/70 font-[family-name:var(--font-aldrich)] text-xs uppercase tracking-wider">Submitted Date</TableHead>
+                      <TableHead className="font-semibold text-white/70 font-[family-name:var(--font-aldrich)] text-xs uppercase tracking-wider">Approved Date</TableHead>
+                      <TableHead className="font-semibold text-white/70 font-[family-name:var(--font-aldrich)] text-xs uppercase tracking-wider">Overall Score</TableHead>
+                      <TableHead className="text-right font-semibold text-white/70 font-[family-name:var(--font-aldrich)] text-xs uppercase tracking-wider pr-6">Action</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {dossier.assessments.map((a) => {
+                      const overallScoreObj = a.scores.find((s) => s.categoryId === null);
+                      const scoreVal = overallScoreObj ? Number(overallScoreObj.score) : null;
+
+                      return (
+                        <TableRow key={a.id} className="border-white/5 hover:bg-white/[0.03] transition-colors">
+                          <TableCell className="font-mono text-sm font-semibold text-white py-4">
+                            V{a.version}
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="border-white/20 bg-white/5 text-white/80 font-mono text-xs">
+                              {a.status}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-sm text-white/60">
+                            {a.submittedAt ? new Date(a.submittedAt).toLocaleDateString() : "—"}
+                          </TableCell>
+                          <TableCell className="text-sm text-white/60">
+                            {a.approvedAt ? new Date(a.approvedAt).toLocaleDateString() : "—"}
+                          </TableCell>
+                          <TableCell className="text-sm font-semibold font-[family-name:var(--font-aldrich)]">
+                            {scoreVal !== null ? (
+                              <span className="text-emerald-400 font-bold">{scoreVal.toFixed(1)}%</span>
+                            ) : (
+                              <span className="text-white/40">—</span>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-right pr-6">
+                            <Link href={`/cie/reviewer/assessments/${a.id}`}>
+                              <Button
+                                size="sm"
+                                className="bg-white text-slate-950 hover:bg-white/90 h-9 px-4 text-xs font-semibold rounded-xl font-[family-name:var(--font-aldrich)] cursor-pointer shadow-md"
+                              >
+                                Review Workspace <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                              </Button>
+                            </Link>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
             )}
           </CardContent>
         </Card>
@@ -251,4 +259,3 @@ export function StartupDossierClient({ startupId }: { startupId: string }) {
     </div>
   );
 }
-

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -48,117 +49,168 @@ export function CieReviewsMonitoringClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-900" />
+      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+        <Loader2 className="h-8 w-8 animate-spin text-white" />
       </div>
     );
   }
 
   const renderScheduleTable = (items: ReviewScheduleItem[], emptyMessage: string) => {
     if (!items || items.length === 0) {
-      return <div className="text-center py-6 text-slate-400 text-xs">{emptyMessage}</div>;
+      return <div className="text-center py-8 text-white/40 text-sm">{emptyMessage}</div>;
     }
 
     return (
-      <Table>
-        <TableHeader>
-          <TableRow className="border-slate-100">
-            <TableHead className="font-semibold text-slate-700">Startup</TableHead>
-            <TableHead className="font-semibold text-slate-700">Scheduled Date</TableHead>
-            <TableHead className="font-semibold text-slate-700">Assigned Reviewer</TableHead>
-            <TableHead className="font-semibold text-slate-700">Evaluation Version</TableHead>
-            <TableHead className="text-right font-semibold text-slate-700">Action</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {items.map((s) => (
-            <TableRow key={s.id} className="border-slate-100">
-              <TableCell className="font-medium text-slate-900">
-                <span className="font-mono text-xs text-blue-900 mr-2">{s.startup.startupCode}</span>
-                {s.startup.name}
-              </TableCell>
-              <TableCell className="text-xs text-slate-600">
-                {new Date(s.scheduledDate).toLocaleDateString()}
-              </TableCell>
-              <TableCell className="text-xs text-slate-600">{s.reviewer.name}</TableCell>
-              <TableCell className="text-xs">
-                <Badge variant="secondary">V{s.assessment.version}</Badge>
-              </TableCell>
-              <TableCell className="text-right">
-                <Link href={`/cie/startups/${s.startup.id}`}>
-                  <Button size="sm" variant="outline" className="h-7 text-xs">
-                    Dossier
-                  </Button>
-                </Link>
-              </TableCell>
+      <div className="overflow-x-auto rounded-2xl border border-white/10">
+        <Table>
+          <TableHeader className="bg-white/[0.03]">
+            <TableRow className="border-white/10 hover:bg-transparent">
+              <TableHead className="font-semibold text-white/70 font-[family-name:var(--font-aldrich)] text-xs uppercase tracking-wider py-4">Startup</TableHead>
+              <TableHead className="font-semibold text-white/70 font-[family-name:var(--font-aldrich)] text-xs uppercase tracking-wider">Scheduled Date</TableHead>
+              <TableHead className="font-semibold text-white/70 font-[family-name:var(--font-aldrich)] text-xs uppercase tracking-wider">Assigned Reviewer</TableHead>
+              <TableHead className="font-semibold text-white/70 font-[family-name:var(--font-aldrich)] text-xs uppercase tracking-wider">Evaluation Version</TableHead>
+              <TableHead className="text-right font-semibold text-white/70 font-[family-name:var(--font-aldrich)] text-xs uppercase tracking-wider pr-6">Action</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {items.map((s) => (
+              <TableRow key={s.id} className="border-white/5 hover:bg-white/[0.03] transition-colors">
+                <TableCell className="font-medium text-white py-4 text-sm">
+                  <span className="font-mono text-xs text-white/60 mr-2">{s.startup.startupCode}</span>
+                  {s.startup.name}
+                </TableCell>
+                <TableCell className="text-sm text-white/70">
+                  {new Date(s.scheduledDate).toLocaleDateString()}
+                </TableCell>
+                <TableCell className="text-sm text-white/70">{s.reviewer.name}</TableCell>
+                <TableCell className="text-xs">
+                  <Badge variant="outline" className="border-white/20 bg-white/5 text-white/80 font-mono">
+                    V{s.assessment.version}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-right pr-6">
+                  <Link href={`/cie/startups/${s.startup.id}`}>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-white/20 text-white hover:bg-white/10 rounded-xl text-xs font-[family-name:var(--font-aldrich)] cursor-pointer"
+                    >
+                      Dossier
+                    </Button>
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     );
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Link href="/cie/dashboard" className="text-slate-500 hover:text-slate-800">
+    <div className="relative min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-slate-800 selection:text-white">
+      {/* Background ambient lighting */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black pointer-events-none" />
+      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[800px] h-[360px] bg-sky-950/20 blur-[130px] rounded-full pointer-events-none" />
+
+      {/* Header */}
+      <header className="relative z-20 bg-slate-900/60 backdrop-blur-xl border-b border-white/10 sticky top-0">
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 h-20 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <Link
+              href="/cie/dashboard"
+              className="text-white/70 hover:text-white transition-colors p-2.5 hover:bg-white/10 rounded-xl border border-white/10 flex items-center justify-center cursor-pointer"
+            >
               <ArrowLeft className="h-5 w-5" />
             </Link>
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/logo.png"
+                alt="IPMS Logo"
+                width={40}
+                height={40}
+                className="h-10 w-10 object-contain drop-shadow"
+              />
+            </Link>
             <div>
-              <h1 className="font-bold text-slate-900 text-base">CIE Review Schedule Monitoring</h1>
-              <p className="text-xs text-slate-500">Upcoming Institutional IP Audits &amp; Annual Review Tracking</p>
+              <h1 className="font-semibold text-white text-base sm:text-lg tracking-wide font-[family-name:var(--font-aldrich)]">
+                Periodic Review Schedules
+              </h1>
+              <p className="text-xs text-white/50">CIE Institutional Audit &amp; Recertification Tracking</p>
             </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <Link href="/cie/dashboard">
+              <Button
+                size="sm"
+                variant="outline"
+                className="border-white/20 text-white hover:bg-white/10 rounded-xl text-xs font-[family-name:var(--font-aldrich)] cursor-pointer"
+              >
+                Analytics Dashboard
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
 
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
-        {/* Overdue Section */}
+      {/* Main Content */}
+      <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto p-6 sm:p-10 space-y-6">
+        {/* Overdue Alert Section */}
         {data && data.overdue.length > 0 && (
-          <Card className="border-rose-200 bg-white">
-            <CardHeader className="bg-rose-50/50 pb-3 border-b border-rose-100">
-              <div className="flex items-center space-x-2">
-                <AlertTriangle className="h-4 w-4 text-rose-600" />
-                <CardTitle className="text-sm font-bold text-rose-900">
-                  Overdue Annual Reviews ({data.overdue.length})
+          <Card className="border-rose-500/30 bg-rose-950/20 backdrop-blur-2xl shadow-2xl rounded-3xl p-6 sm:p-7">
+            <CardHeader className="p-0 pb-4 border-b border-rose-500/20">
+              <div className="flex items-center space-x-3">
+                <AlertTriangle className="h-5 w-5 text-rose-400" />
+                <CardTitle className="text-lg font-semibold text-rose-300 font-[family-name:var(--font-aldrich)]">
+                  Overdue IP Reviews ({data.overdue.length})
                 </CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="pt-4">
-              {renderScheduleTable(data.overdue, "No overdue reviews.")}
+            <CardContent className="p-0 pt-4">
+              {renderScheduleTable(data.overdue, "No overdue reviews")}
             </CardContent>
           </Card>
         )}
 
-        {/* Due in 7 Days */}
-        <Card className="border-amber-200 bg-white">
-          <CardHeader className="bg-amber-50/50 pb-3 border-b border-amber-100">
-            <div className="flex items-center space-x-2">
-              <Clock className="h-4 w-4 text-amber-600" />
-              <CardTitle className="text-sm font-bold text-amber-900">
-                Due Within 7 Days ({data?.due7Days.length || 0})
+        {/* Due within 7 Days */}
+        <Card className="border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7">
+          <CardHeader className="p-0 pb-4 border-b border-white/10">
+            <div className="flex items-center space-x-3">
+              <Clock className="h-5 w-5 text-amber-400" />
+              <CardTitle className="text-lg font-semibold text-white font-[family-name:var(--font-aldrich)]">
+                Due within 7 Days
               </CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="pt-4">
-            {renderScheduleTable(data?.due7Days || [], "No reviews due in the next 7 days.")}
+          <CardContent className="p-0 pt-4">
+            {data && renderScheduleTable(data.due7Days, "No reviews scheduled within the next 7 days.")}
           </CardContent>
         </Card>
 
-        {/* Due in 30 Days */}
-        <Card className="border-slate-200 bg-white">
-          <CardHeader className="pb-3 border-b border-slate-100">
-            <div className="flex items-center space-x-2">
-              <Calendar className="h-4 w-4 text-slate-600" />
-              <CardTitle className="text-sm font-bold text-slate-900">
-                Due Within 30 Days ({data?.due30Days.length || 0})
+        {/* Due within 30 Days */}
+        <Card className="border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7">
+          <CardHeader className="p-0 pb-4 border-b border-white/10">
+            <div className="flex items-center space-x-3">
+              <Calendar className="h-5 w-5 text-sky-400" />
+              <CardTitle className="text-lg font-semibold text-white font-[family-name:var(--font-aldrich)]">
+                Due within 30 Days
               </CardTitle>
             </div>
           </CardHeader>
-          <CardContent className="pt-4">
-            {renderScheduleTable(data?.due30Days || [], "No reviews due in the next 30 days.")}
+          <CardContent className="p-0 pt-4">
+            {data && renderScheduleTable(data.due30Days, "No reviews scheduled within the next 30 days.")}
+          </CardContent>
+        </Card>
+
+        {/* Later Upcoming */}
+        <Card className="border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7">
+          <CardHeader className="p-0 pb-4 border-b border-white/10">
+            <CardTitle className="text-lg font-semibold text-white font-[family-name:var(--font-aldrich)]">
+              All Upcoming Institutional Reviews
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0 pt-4">
+            {data && renderScheduleTable(data.upcoming, "No future reviews currently scheduled.")}
           </CardContent>
         </Card>
       </main>

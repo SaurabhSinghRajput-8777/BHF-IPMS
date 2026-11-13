@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -100,24 +101,27 @@ export function AssessmentReviewWorkspaceClient({ assessmentId }: { assessmentId
     loadData();
   }, [assessmentId]);
 
-  const handleApplicabilityChange = async (catId: string, applicable: boolean) => {
+  const handleApplicabilityChange = async (categoryId: string, applicable: boolean) => {
     setApplicabilityOverrides((prev) => ({
       ...prev,
-      [catId]: { ...prev[catId], applicable },
+      [categoryId]: {
+        applicable,
+        remarks: prev[categoryId]?.remarks || "",
+      },
     }));
 
     try {
       await fetch(`/api/v1/reviewer/assessments/${assessmentId}/applicability`, {
-        method: "POST",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          categoryId: catId,
+          categoryId,
           applicable,
-          remarks: applicabilityOverrides[catId]?.remarks,
+          remarks: applicabilityOverrides[categoryId]?.remarks,
         }),
       });
     } catch {
-      // silent
+      // silent fallback
     }
   };
 
@@ -129,9 +133,9 @@ export function AssessmentReviewWorkspaceClient({ assessmentId }: { assessmentId
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          generalRemarks,
+          generalRemarks: generalRemarks || "Assessment approved upon institutional review.",
           recommendations,
-          nextReviewMonths: Number(nextReviewMonths) || 12,
+          nextReviewMonths,
         }),
       });
       const json = await res.json();
@@ -148,8 +152,8 @@ export function AssessmentReviewWorkspaceClient({ assessmentId }: { assessmentId
   };
 
   const handleRequestChanges = async () => {
-    if (!generalRemarks || generalRemarks.length < 10) {
-      setActionError("Please provide specific revision remarks (at least 10 characters).");
+    if (!generalRemarks || generalRemarks.length < 5) {
+      setActionError("Please provide clear revision instructions in the General Review Remarks field.");
       return;
     }
     setActing(true);
@@ -201,18 +205,18 @@ export function AssessmentReviewWorkspaceClient({ assessmentId }: { assessmentId
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-900" />
+      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+        <Loader2 className="h-8 w-8 animate-spin text-white" />
       </div>
     );
   }
 
   if (!data) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 p-4">
-        <p className="text-slate-600 mb-4">Assessment record not found.</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950 p-4">
+        <p className="text-white/60 mb-4 font-[family-name:var(--font-aldrich)]">Assessment record not found.</p>
         <Link href="/cie/reviewer/queue">
-          <Button variant="outline">Return to Queue</Button>
+          <Button variant="outline" className="border-white/20 text-white rounded-xl">Return to Queue</Button>
         </Link>
       </div>
     );
@@ -222,90 +226,115 @@ export function AssessmentReviewWorkspaceClient({ assessmentId }: { assessmentId
   const overallScore = overallScoreObj ? Number(overallScoreObj.score) : null;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Link href="/cie/reviewer/queue" className="text-slate-500 hover:text-slate-800">
+    <div className="relative min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-slate-800 selection:text-white">
+      {/* Background ambient lighting */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black pointer-events-none" />
+      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[800px] h-[360px] bg-sky-950/20 blur-[130px] rounded-full pointer-events-none" />
+
+      {/* Top Header */}
+      <header className="relative z-20 bg-slate-900/60 backdrop-blur-xl border-b border-white/10 sticky top-0">
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 h-20 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <Link
+              href="/cie/reviewer/queue"
+              className="text-white/70 hover:text-white transition-colors p-2.5 hover:bg-white/10 rounded-xl border border-white/10 flex items-center justify-center cursor-pointer"
+            >
               <ArrowLeft className="h-5 w-5" />
             </Link>
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/logo.png"
+                alt="IPMS Logo"
+                width={40}
+                height={40}
+                className="h-10 w-10 object-contain drop-shadow"
+              />
+            </Link>
             <div>
-              <h1 className="font-bold text-slate-900 text-base">
+              <h1 className="font-semibold text-white text-base sm:text-lg tracking-wide font-[family-name:var(--font-aldrich)]">
                 Review Workspace: {data.startup.name} (V{data.version})
               </h1>
-              <p className="text-xs text-slate-500">{data.startup.startupCode} • Submitted {data.submittedAt ? new Date(data.submittedAt).toLocaleDateString() : ""}</p>
+              <p className="text-xs text-white/50">{data.startup.startupCode} • Submitted {data.submittedAt ? new Date(data.submittedAt).toLocaleDateString() : ""}</p>
             </div>
           </div>
-          <Badge className="font-mono text-xs bg-blue-900 text-white">
+          <Badge className="font-[family-name:var(--font-aldrich)] text-xs bg-white text-slate-950 px-3 py-1 font-semibold rounded-full shadow-md">
             {data.status}
           </Badge>
         </div>
       </header>
 
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+      <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto p-6 sm:p-10 space-y-6">
         {actionError && (
-          <div className="p-4 bg-rose-50 border border-rose-200 rounded-lg flex items-center space-x-3 text-rose-800 text-sm">
-            <AlertCircle className="h-5 w-5 shrink-0" />
+          <div className="p-4 bg-red-950/40 border border-red-500/30 rounded-2xl flex items-center space-x-3 text-red-300 text-sm">
+            <AlertCircle className="h-5 w-5 shrink-0 text-red-400" />
             <span>{actionError}</span>
           </div>
         )}
 
         {/* Startup Overview Card */}
-        <Card className="border-slate-200 bg-white">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base font-bold text-slate-900">Venture Background</CardTitle>
+        <Card className="border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7">
+          <CardHeader className="p-0 pb-4 border-b border-white/10">
+            <CardTitle className="text-lg font-semibold text-white tracking-wide font-[family-name:var(--font-aldrich)]">
+              Venture Background &amp; Telemetry
+            </CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
-            <div>
-              <span className="text-slate-400 block">Founder</span>
-              <span className="font-semibold text-slate-800">{data.startup.founderName}</span>
+          <CardContent className="p-0 pt-5 grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+            <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
+              <span className="text-white/40 block text-xs font-[family-name:var(--font-aldrich)] mb-1">Founder</span>
+              <span className="font-semibold text-white">{data.startup.founderName}</span>
             </div>
-            <div>
-              <span className="text-slate-400 block">Sector</span>
-              <span className="font-semibold text-slate-800">{data.startup.industry}</span>
+            <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
+              <span className="text-white/40 block text-xs font-[family-name:var(--font-aldrich)] mb-1">Sector</span>
+              <span className="font-semibold text-white">{data.startup.industry}</span>
             </div>
-            <div>
-              <span className="text-slate-400 block">Stage</span>
-              <span className="font-semibold text-slate-800">{data.startup.startupStage}</span>
+            <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
+              <span className="text-white/40 block text-xs font-[family-name:var(--font-aldrich)] mb-1">Incubation Stage</span>
+              <span className="font-semibold text-white">{data.startup.startupStage}</span>
             </div>
-            <div>
-              <span className="text-slate-400 block">Provisional Score</span>
-              <span className="font-semibold text-blue-900 text-sm">
+            <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5">
+              <span className="text-white/40 block text-xs font-[family-name:var(--font-aldrich)] mb-1">Provisional Score</span>
+              <span className="font-bold text-emerald-400 text-base font-[family-name:var(--font-aldrich)]">
                 {overallScore !== null ? `${overallScore.toFixed(1)}%` : "Not Scored"}
               </span>
             </div>
-            <div className="md:col-span-4 pt-2 border-t border-slate-100">
-              <span className="text-slate-400 block">Proprietary Technology</span>
-              <p className="text-slate-700 mt-1">{data.startup.productDescription}</p>
+            <div className="md:col-span-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 mt-1">
+              <span className="text-white/40 block text-xs font-[family-name:var(--font-aldrich)] mb-1">Proprietary Technology &amp; Innovation</span>
+              <p className="text-white/80 text-sm leading-relaxed">{data.startup.productDescription}</p>
             </div>
           </CardContent>
         </Card>
 
         {/* Applicability Verification */}
-        <Card className="border-slate-200 bg-white">
-          <CardHeader>
-            <CardTitle className="text-base font-bold text-slate-900">Category Applicability Verification</CardTitle>
-            <CardDescription className="text-xs text-slate-500">
+        <Card className="border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7">
+          <CardHeader className="p-0 pb-4 border-b border-white/10">
+            <CardTitle className="text-lg font-semibold text-white tracking-wide font-[family-name:var(--font-aldrich)]">
+              Category Applicability Verification
+            </CardTitle>
+            <CardDescription className="text-xs sm:text-sm text-white/50 mt-1">
               Reviewers have institutional authority to verify or override category applicability. Inapplicable categories are excluded from portfolio calculations.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="p-0 pt-5 space-y-3">
             {data.applicability.map((app) => {
               const currentOverride = applicabilityOverrides[app.categoryId]?.applicable ?? app.startupApplicable;
               return (
-                <div key={app.categoryId} className="p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
+                <div key={app.categoryId} className="p-4 bg-white/[0.03] border border-white/10 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
-                    <span className="text-xs font-bold text-slate-900 block">{app.category.name}</span>
-                    <span className="text-[11px] text-slate-500">
-                      Founder Declared: {app.startupApplicable ? "Applicable" : "Not Applicable"}
+                    <span className="text-sm font-semibold text-white block font-[family-name:var(--font-aldrich)]">{app.category.name}</span>
+                    <span className="text-xs text-white/50">
+                      Founder Declared: <b className="text-white/80">{app.startupApplicable ? "Applicable" : "Not Applicable"}</b>
                       {app.startupRemarks && ` (${app.startupRemarks})`}
                     </span>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2.5">
                     <Button
                       size="sm"
                       variant={currentOverride ? "default" : "outline"}
-                      className={currentOverride ? "bg-blue-900 text-white h-7 text-xs" : "h-7 text-xs"}
+                      className={
+                        currentOverride
+                          ? "bg-white text-slate-950 font-semibold h-9 px-4 text-xs rounded-xl font-[family-name:var(--font-aldrich)] cursor-pointer"
+                          : "border-white/20 text-white/70 hover:text-white h-9 px-4 text-xs rounded-xl font-[family-name:var(--font-aldrich)] cursor-pointer"
+                      }
                       onClick={() => handleApplicabilityChange(app.categoryId, true)}
                     >
                       Applicable
@@ -313,7 +342,11 @@ export function AssessmentReviewWorkspaceClient({ assessmentId }: { assessmentId
                     <Button
                       size="sm"
                       variant={!currentOverride ? "default" : "outline"}
-                      className={!currentOverride ? "bg-slate-700 text-white h-7 text-xs" : "h-7 text-xs"}
+                      className={
+                        !currentOverride
+                          ? "bg-white/20 text-white h-9 px-4 text-xs rounded-xl font-[family-name:var(--font-aldrich)] cursor-pointer"
+                          : "border-white/20 text-white/70 hover:text-white h-9 px-4 text-xs rounded-xl font-[family-name:var(--font-aldrich)] cursor-pointer"
+                      }
                       onClick={() => handleApplicabilityChange(app.categoryId, false)}
                     >
                       Excluded (N/A)
@@ -326,118 +359,130 @@ export function AssessmentReviewWorkspaceClient({ assessmentId }: { assessmentId
         </Card>
 
         {/* Responses Table */}
-        <Card className="border-slate-200 bg-white">
-          <CardHeader>
-            <CardTitle className="text-base font-bold text-slate-900">Founder Assessment Responses</CardTitle>
-            <CardDescription className="text-xs text-slate-500">
+        <Card className="border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7">
+          <CardHeader className="p-0 pb-4 border-b border-white/10">
+            <CardTitle className="text-lg font-semibold text-white tracking-wide font-[family-name:var(--font-aldrich)]">
+              Founder Assessment Responses
+            </CardTitle>
+            <CardDescription className="text-xs sm:text-sm text-white/50 mt-1">
               Direct questionnaire responses submitted by the founding team.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow className="border-slate-100">
-                  <TableHead className="font-semibold text-slate-700">Question</TableHead>
-                  <TableHead className="font-semibold text-slate-700">Category</TableHead>
-                  <TableHead className="font-semibold text-slate-700">Response</TableHead>
-                  <TableHead className="font-semibold text-slate-700">Application / Evidence</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.responses.map((r) => (
-                  <TableRow key={r.id} className="border-slate-100">
-                    <TableCell className="text-xs text-slate-800 max-w-md">{r.question.questionText}</TableCell>
-                    <TableCell className="text-xs text-slate-500">
-                      {r.question.category?.name || "General IP"}
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="outline"
-                        className={
-                          r.response === "YES"
-                            ? "bg-emerald-50 text-emerald-800 border-emerald-200 text-xs"
-                            : r.response === "APPLIED"
-                            ? "bg-blue-50 text-blue-800 border-blue-200 text-xs"
-                            : "bg-slate-50 text-slate-700 text-xs"
-                        }
-                      >
-                        {r.response}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-xs text-slate-600">{r.textValue || "—"}</TableCell>
+          <CardContent className="p-0 pt-5">
+            <div className="overflow-x-auto rounded-2xl border border-white/10">
+              <Table>
+                <TableHeader className="bg-white/[0.03]">
+                  <TableRow className="border-white/10 hover:bg-transparent">
+                    <TableHead className="font-semibold text-white/70 font-[family-name:var(--font-aldrich)] text-xs uppercase tracking-wider py-4">Question</TableHead>
+                    <TableHead className="font-semibold text-white/70 font-[family-name:var(--font-aldrich)] text-xs uppercase tracking-wider">Category</TableHead>
+                    <TableHead className="font-semibold text-white/70 font-[family-name:var(--font-aldrich)] text-xs uppercase tracking-wider">Response</TableHead>
+                    <TableHead className="font-semibold text-white/70 font-[family-name:var(--font-aldrich)] text-xs uppercase tracking-wider pr-6">Application / Details</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {data.responses.map((r) => (
+                    <TableRow key={r.id} className="border-white/5 hover:bg-white/[0.02]">
+                      <TableCell className="text-sm text-white max-w-md py-4 leading-relaxed font-medium">{r.question.questionText}</TableCell>
+                      <TableCell className="text-xs text-white/60 font-[family-name:var(--font-aldrich)]">
+                        {r.question.category?.name || "General IP"}
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="outline"
+                          className={
+                            r.response === "YES"
+                              ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/30 text-xs font-[family-name:var(--font-aldrich)]"
+                              : r.response === "APPLIED"
+                              ? "bg-blue-500/10 text-blue-300 border-blue-500/30 text-xs font-[family-name:var(--font-aldrich)]"
+                              : "bg-white/5 text-white/60 border-white/10 text-xs font-[family-name:var(--font-aldrich)]"
+                          }
+                        >
+                          {r.response}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-xs text-white/50 pr-6">{r.textValue || "—"}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
 
         {/* Decision & Sign-off Panel */}
-        <Card className="border-slate-200 bg-white shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-base font-bold text-slate-900">Institutional Review &amp; Decision</CardTitle>
-            <CardDescription className="text-xs text-slate-500">
+        <Card className="border-white/15 bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/80 rounded-3xl p-6 sm:p-7">
+          <CardHeader className="p-0 pb-4 border-b border-white/10">
+            <CardTitle className="text-lg font-semibold text-white tracking-wide font-[family-name:var(--font-aldrich)]">
+              Institutional Review &amp; Decision
+            </CardTitle>
+            <CardDescription className="text-xs sm:text-sm text-white/50 mt-1">
               Approving this evaluation finalizes the scores, assigns a next review date, and publishes to the CIE portfolio dashboard.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-1.5">
-              <Label className="text-xs font-semibold text-slate-700">General Review Remarks *</Label>
+          <CardContent className="p-0 pt-5 space-y-5">
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
+                General Review Remarks *
+              </Label>
               <Textarea
                 placeholder="Institutional remarks, audit observations, and feedback for the founders..."
                 value={generalRemarks}
                 onChange={(e) => setGeneralRemarks(e.target.value)}
-                className="text-xs"
+                className="text-sm bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl p-4 min-h-24"
                 rows={3}
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <Label className="text-xs font-semibold text-slate-700">Next Review Schedule (Months)</Label>
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
+                  Next Review Schedule (Months)
+                </Label>
                 <Input
                   type="number"
                   min={1}
                   max={60}
                   value={nextReviewMonths}
                   onChange={(e) => setNextReviewMonths(Number(e.target.value) || 12)}
-                  className="text-xs"
+                  className="h-12 text-base bg-white/[0.05] border-white/15 text-white rounded-xl px-4"
                 />
               </div>
-              <div className="space-y-1.5">
-                <Label className="text-xs font-semibold text-slate-700">Strategic Recommendations</Label>
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
+                  Strategic Recommendations
+                </Label>
                 <Input
                   placeholder="e.g. Expedite provisional patent before Q3 conference"
                   value={recommendations}
                   onChange={(e) => setRecommendations(e.target.value)}
-                  className="text-xs"
+                  className="h-12 text-base bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-4"
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-end space-x-3 pt-4 border-t border-slate-100">
+            <div className="flex flex-wrap items-center justify-end gap-3 pt-4 border-t border-white/10">
               <Button
                 variant="outline"
-                className="text-rose-700 border-rose-200 hover:bg-rose-50 text-xs"
+                className="text-rose-400 border-rose-500/30 hover:bg-rose-500/10 h-11 px-4 text-xs font-[family-name:var(--font-aldrich)] rounded-xl cursor-pointer"
                 disabled={acting}
                 onClick={handleReject}
               >
-                <XCircle className="h-3.5 w-3.5 mr-1" /> Reject Assessment
+                <XCircle className="h-4 w-4 mr-1.5" /> Reject Assessment
               </Button>
               <Button
                 variant="outline"
-                className="text-amber-700 border-amber-200 hover:bg-amber-50 text-xs"
+                className="text-amber-400 border-amber-500/30 hover:bg-amber-500/10 h-11 px-4 text-xs font-[family-name:var(--font-aldrich)] rounded-xl cursor-pointer"
                 disabled={acting}
                 onClick={handleRequestChanges}
               >
-                <AlertCircle className="h-3.5 w-3.5 mr-1" /> Request Changes
+                <AlertCircle className="h-4 w-4 mr-1.5" /> Request Changes
               </Button>
               <Button
-                className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-5"
+                className="bg-white text-slate-950 hover:bg-white/90 font-semibold h-11 px-6 text-xs font-[family-name:var(--font-aldrich)] rounded-xl shadow-lg shadow-white/10 cursor-pointer"
                 disabled={acting}
                 onClick={handleApprove}
               >
-                {acting ? <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" /> : <CheckCircle2 className="h-3.5 w-3.5 mr-1" />}
+                {acting ? <Loader2 className="h-4 w-4 animate-spin mr-1.5" /> : <CheckCircle2 className="h-4 w-4 mr-1.5 text-emerald-600" />}
                 Approve &amp; Finalize Score
               </Button>
             </div>

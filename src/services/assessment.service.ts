@@ -189,6 +189,34 @@ export class AssessmentService {
       scoredQuestions: number;
     }> = [];
 
+    // 1. General IP Strategy
+    const generalResponses = assessment.responses
+      .filter((r) => {
+        const q = assessment.questionnaire.questions.find((q) => q.id === r.questionId);
+        return !q?.categoryId;
+      })
+      .map((r) => r.response as string);
+
+    if (generalResponses.length > 0) {
+      const genScore = ScoringEngineService.calculateCategoryScore(generalResponses);
+      categoryScoreInputs.push({
+        category: "GENERAL_IP",
+        score: genScore.score,
+        isApplicable: true,
+      });
+
+      if (genScore.score !== null) {
+        scoreRecords.push({
+          assessmentId,
+          categoryId: null,
+          score: genScore.score,
+          applicableQuestions: genScore.applicableQuestions,
+          scoredQuestions: genScore.scoredQuestions,
+        });
+      }
+    }
+
+    // 2. Specific IP Categories
     for (const cat of categories) {
       const applicabilityRecord = assessment.applicability.find((a) => a.categoryId === cat.id);
       const isApplicable = applicabilityRecord ? applicabilityRecord.startupApplicable : true; // default applicable
@@ -220,7 +248,8 @@ export class AssessmentService {
     }
 
     const overall = ScoringEngineService.calculateOverallScore(categoryScoreInputs);
-    scoreRecords.push({
+    const finalScoreRecords = scoreRecords.filter((s) => s.categoryId !== null);
+    finalScoreRecords.push({
       assessmentId,
       categoryId: null,
       score: overall.overallScore,

@@ -230,6 +230,34 @@ export async function POST(request: Request) {
         scoredQuestions: number;
       }> = [];
 
+      // 1. General IP Strategy (questions where categoryId is null)
+      const generalResponses = responses
+        .filter((r) => {
+          const q = activeQuestionnaire.questions.find((quest) => quest.id === r.questionId);
+          return !q?.categoryId;
+        })
+        .map((r) => r.response as string);
+
+      if (generalResponses.length > 0) {
+        const genScore = ScoringEngineService.calculateCategoryScore(generalResponses);
+        categoryScoreInputs.push({
+          category: "GENERAL_IP",
+          score: genScore.score,
+          isApplicable: true,
+        });
+
+        if (genScore.score !== null) {
+          scoreRecords.push({
+            assessmentId: assessment.id,
+            categoryId: null, // Note: overall also has categoryId null, but we track category scores
+            score: genScore.score,
+            applicableQuestions: genScore.applicableQuestions,
+            scoredQuestions: genScore.scoredQuestions,
+          });
+        }
+      }
+
+      // 2. Specific IP Categories (Trademark, Patent, Copyright)
       for (const cat of categories) {
         const appDecl = applicability?.find((a) => a.categoryId === cat.id);
         const isApplicable = appDecl ? appDecl.applicable : true;
@@ -261,7 +289,9 @@ export async function POST(request: Request) {
       }
 
       const overall = ScoringEngineService.calculateOverallScore(categoryScoreInputs);
-      scoreRecords.push({
+      // Remove any previously pushed categoryId: null so overall score is the definitive overall record
+      const finalScoreRecords = scoreRecords.filter((s) => s.categoryId !== null);
+      finalScoreRecords.push({
         assessmentId: assessment.id,
         categoryId: null,
         score: overall.overallScore,
@@ -270,7 +300,7 @@ export async function POST(request: Request) {
       });
 
       await tx.ipScore.createMany({
-        data: scoreRecords.map((s) => ({
+        data: finalScoreRecords.map((s) => ({
           assessmentId: s.assessmentId,
           categoryId: s.categoryId ?? undefined,
           score: s.score,

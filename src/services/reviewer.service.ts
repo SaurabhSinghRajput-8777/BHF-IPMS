@@ -112,6 +112,31 @@ export class ReviewerService {
       scoredQuestions: number;
     }> = [];
 
+    // 1. General IP Strategy (questions without categoryId)
+    const generalResponses = assessment.responses
+      .filter((r) => !r.question.categoryId)
+      .map((r) => r.response as string);
+
+    if (generalResponses.length > 0) {
+      const genScore = ScoringEngineService.calculateCategoryScore(generalResponses);
+      categoryScoreInputs.push({
+        category: "GENERAL_IP",
+        score: genScore.score,
+        isApplicable: true,
+      });
+
+      if (genScore.score !== null) {
+        scoreRecords.push({
+          assessmentId,
+          categoryId: null,
+          score: genScore.score,
+          applicableQuestions: genScore.applicableQuestions,
+          scoredQuestions: genScore.scoredQuestions,
+        });
+      }
+    }
+
+    // 2. Specific IP Categories
     for (const cat of categories) {
       const applicabilityRecord = assessment.applicability.find((a) => a.categoryId === cat.id);
       // Reviewer decision takes precedence over startup declaration
@@ -143,7 +168,8 @@ export class ReviewerService {
     }
 
     const overall = ScoringEngineService.calculateOverallScore(categoryScoreInputs);
-    scoreRecords.push({
+    const finalScoreRecords = scoreRecords.filter((s) => s.categoryId !== null);
+    finalScoreRecords.push({
       assessmentId,
       categoryId: null,
       score: overall.overallScore,
