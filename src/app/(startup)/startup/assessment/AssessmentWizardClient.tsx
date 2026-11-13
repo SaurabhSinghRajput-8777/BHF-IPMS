@@ -222,8 +222,8 @@ export function AssessmentWizardClient() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-10 w-full">
+        <div className="w-full px-6 sm:px-10 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <Link href="/startup/dashboard" className="text-slate-500 hover:text-slate-800">
               <ArrowLeft className="h-5 w-5" />

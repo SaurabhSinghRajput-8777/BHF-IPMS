@@ -125,8 +125,8 @@ export function CieReportsClient() {
       <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[360px] bg-sky-950/20 blur-[130px] rounded-full pointer-events-none" />
 
       {/* Top Header */}
-      <header className="relative z-20 bg-slate-900/60 backdrop-blur-xl border-b border-white/10 sticky top-0">
-        <div className="max-w-7xl mx-auto px-6 sm:px-10 h-20 flex items-center justify-between">
+      <header className="relative z-20 bg-slate-900/60 backdrop-blur-xl border-b border-white/10 sticky top-0 w-full">
+        <div className="w-full px-6 sm:px-10 h-20 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <Link
               href="/cie/dashboard"
