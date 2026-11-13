@@ -462,7 +462,7 @@ export function PublicApplicationWizardClient() {
                     value={startupForm.industry}
                     onValueChange={(val) => setStartupForm((f) => ({ ...f, industry: val ?? "" }))}
                   >
-                    <SelectTrigger id="industry" className="h-12 text-base w-full bg-white/[0.05] border-white/15 text-white rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40">
+                    <SelectTrigger id="industry" className="!h-12 text-base w-full bg-white/[0.05] border-white/15 text-white rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40">
                       <SelectValue placeholder="Select industry" />
                     </SelectTrigger>
                     <SelectContent>
@@ -485,7 +485,7 @@ export function PublicApplicationWizardClient() {
                     value={startupForm.startupStage}
                     onValueChange={(val) => setStartupForm((f) => ({ ...f, startupStage: val ?? "" }))}
                   >
-                    <SelectTrigger id="startupStage" className="h-12 text-base w-full bg-white/[0.05] border-white/15 text-white rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40">
+                    <SelectTrigger id="startupStage" className="!h-12 text-base w-full bg-white/[0.05] border-white/15 text-white rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40">
                       <SelectValue placeholder="Select stage" />
                     </SelectTrigger>
                     <SelectContent>
