@@ -83,61 +83,40 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/20 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
-            {/* Content inside Hero Card */}
-            <div className="relative z-10 h-full flex flex-col justify-between p-10 sm:p-14 lg:p-16">
+            {/* Content inside Hero Card - Centered Layout */}
+            <div className="relative z-10 h-full flex flex-col justify-between items-center text-center p-8 sm:p-12 lg:p-16">
               
               {/* Top Subtitle */}
-              <div className="text-[13px] sm:text-sm font-normal text-white/90 tracking-wide">
-                #1 Energy provider in the world
+              <div className="text-xs sm:text-sm font-medium tracking-widest text-emerald-300 uppercase">
+                Centre for Innovation &amp; Entrepreneurship • Bennett University
               </div>
 
-              {/* Main Headline */}
-              <div className="max-w-2xl my-auto">
-                <h1 className="text-5xl sm:text-7xl lg:text-[82px] font-normal tracking-tight text-white leading-[1.04]">
-                  New Energy <br />
-                  <span className="font-light text-white/95">for the Future</span>
+              {/* Main Headline & Centered Single CTA */}
+              <div className="max-w-4xl my-auto flex flex-col items-center">
+                <h1 className="text-4xl sm:text-6xl lg:text-[76px] font-normal tracking-tight text-white leading-[1.08]">
+                  Intellectual Property <br />
+                  <span className="font-light text-white/90">Management System</span>
                 </h1>
+                
+                <p className="mt-6 text-sm sm:text-base text-slate-200/90 max-w-2xl font-light leading-relaxed">
+                  Evaluate, protect, and scale your venture&apos;s patents, trademarks, and copyrights through Bennett Hatchery&apos;s institutional evaluation framework.
+                </p>
 
-                {/* Sub-links */}
-                <div className="mt-10 flex items-center space-x-8 text-sm font-medium text-white">
+                {/* Single Center CTA Button for Startup */}
+                <div className="mt-8 flex justify-center">
                   <Link
                     href="/apply"
-                    className="inline-flex items-center space-x-1.5 hover:text-emerald-400 transition-colors border-b border-white/50 pb-0.5"
+                    className="group bg-[#10b981] hover:bg-[#059669] text-white text-sm sm:text-base font-semibold px-8 py-3.5 rounded-full shadow-lg shadow-emerald-950/30 transition-all duration-200 flex items-center space-x-2"
                   >
-                    <span>Get in touch</span>
-                    <ArrowUpRight className="h-4 w-4" />
-                  </Link>
-                  <Link
-                    href="/services"
-                    className="inline-flex items-center space-x-1.5 hover:text-emerald-400 transition-colors border-b border-white/50 pb-0.5"
-                  >
-                    <span>Our services</span>
-                    <ArrowUpRight className="h-4 w-4" />
+                    <span>Start Startup IP Assessment</span>
+                    <ArrowUpRight className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </Link>
                 </div>
               </div>
 
-              {/* Floating Frosted Glass Project Widget (Top Right) */}
-              <div className="absolute top-10 right-10 sm:top-14 sm:right-14 hidden md:flex flex-col w-[260px] rounded-3xl p-4 bg-white/20 backdrop-blur-md border border-white/30 text-white shadow-xl">
-                {/* Wind turbine thumbnail */}
-                <div
-                  className="w-full h-36 rounded-2xl bg-cover bg-center mb-4 shadow-inner"
-                  style={{
-                    backgroundImage:
-                      "url('https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?q=80&w=800&auto=format&fit=crop')",
-                  }}
-                />
-                <div className="flex items-center justify-between pt-1">
-                  <span className="text-[13px] font-medium leading-snug max-w-[170px] text-white/95">
-                    Discover Our Recent Project
-                  </span>
-                  <Link
-                    href="/services"
-                    className="h-8 w-8 rounded-full bg-white/25 flex items-center justify-center hover:bg-emerald-500 hover:text-white transition-colors"
-                  >
-                    <ArrowUpRight className="h-4 w-4 text-white" />
-                  </Link>
-                </div>
+              {/* Bottom Spacer / Sub-label */}
+              <div className="text-[11px] text-white/60 tracking-wide">
+                Direct Startup Onboarding • No Account Required
               </div>
             </div>
 
