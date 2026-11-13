@@ -789,7 +789,6 @@ export function PublicApplicationWizardClient() {
                             { label: "Applied", val: ResponseValue.APPLIED },
                             { label: "No", val: ResponseValue.NO },
                             { label: "Not Sure", val: ResponseValue.NOT_SURE },
-                            { label: "N/A", val: ResponseValue.NOT_APPLICABLE },
                           ].map((opt) => (
                             <button
                               key={opt.val}
