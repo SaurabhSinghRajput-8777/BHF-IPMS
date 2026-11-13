@@ -257,7 +257,7 @@ export function AssessmentReviewWorkspaceClient({ assessmentId }: { assessmentId
               <p className="text-xs text-white/50">{data.startup.startupCode} • Submitted {data.submittedAt ? new Date(data.submittedAt).toLocaleDateString() : ""}</p>
             </div>
           </div>
-          <Badge className="font-[family-name:var(--font-aldrich)] text-xs bg-white text-slate-950 px-3 py-1 font-semibold rounded-full shadow-md">
+          <Badge variant="outline" className="font-[family-name:var(--font-aldrich)] text-xs border-white/20 bg-white/10 text-white px-3.5 py-1 font-semibold rounded-full shadow-sm tracking-wider">
             {data.status}
           </Badge>
         </div>
