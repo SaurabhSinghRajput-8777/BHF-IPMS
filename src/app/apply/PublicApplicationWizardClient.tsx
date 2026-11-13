@@ -724,91 +724,104 @@ export function PublicApplicationWizardClient() {
                 </div>
               )}
             </CardHeader>
-            <CardContent className="space-y-6 pt-6">
-              {questions
-                .filter((q) =>
-                  currentStepObj.categoryId === null
-                    ? q.categoryId === null
-                    : q.categoryId === currentStepObj.categoryId
-                )
-                .map((q, idx) => {
-                  const currentResp = responses[q.id]?.response;
-                  const currentText = responses[q.id]?.textValue || "";
+            {currentStepObj.categoryId && applicability[currentStepObj.categoryId]?.applicable === false ? (
+              <CardContent className="pt-6">
+                <div className="p-6 rounded-2xl bg-white/[0.02] border border-dashed border-white/10 text-center space-y-2">
+                  <p className="text-sm text-white/70 font-[family-name:var(--font-aldrich)]">
+                    This section ({currentStepObj.title}) is marked as Not Applicable.
+                  </p>
+                  <p className="text-xs text-white/40">
+                    Questions in this category are skipped and will not count towards your score. You may proceed to the next step.
+                  </p>
+                </div>
+              </CardContent>
+            ) : (
+              <CardContent className="space-y-6 pt-6">
+                {questions
+                  .filter((q) =>
+                    currentStepObj.categoryId === null
+                      ? q.categoryId === null
+                      : q.categoryId === currentStepObj.categoryId
+                  )
+                  .map((q, idx) => {
+                    const currentResp = responses[q.id]?.response;
+                    const currentText = responses[q.id]?.textValue || "";
 
-                  return (
-                    <div
-                      key={q.id}
-                      id={`question-${q.id}`}
-                      className={`p-5 sm:p-6 rounded-2xl border bg-white/[0.03] space-y-4 transition-all scroll-mt-24 ${
-                        highlightedMissing[q.id]
-                          ? "border-red-500/80 ring-2 ring-red-500/30 bg-red-950/10"
-                          : "border-white/10"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <span className="text-xs font-mono text-white/40 block mb-1">Question {idx + 1}</span>
-                          <h4 className="text-base font-semibold text-white tracking-wide">{q.questionText}</h4>
-                          {q.description && <p className="text-xs text-white/60 mt-1.5 leading-relaxed">{q.description}</p>}
+                    return (
+                      <div
+                        key={q.id}
+                        id={`question-${q.id}`}
+                        className={`p-5 sm:p-6 rounded-2xl border bg-white/[0.03] space-y-4 transition-all scroll-mt-24 ${
+                          highlightedMissing[q.id]
+                            ? "border-red-500/80 ring-2 ring-red-500/30 bg-red-950/10"
+                            : "border-white/10"
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <span className="text-xs font-mono text-white/40 block mb-1">Question {idx + 1}</span>
+                            <h4 className="text-base font-semibold text-white tracking-wide">{q.questionText}</h4>
+                            {q.description && <p className="text-xs text-white/60 mt-1.5 leading-relaxed">{q.description}</p>}
+                          </div>
+                          {q.isRequired && (
+                            <Badge
+                              variant="outline"
+                              className={`text-[10px] font-[family-name:var(--font-aldrich)] uppercase tracking-wider shrink-0 transition-colors ${
+                                highlightedMissing[q.id]
+                                  ? "border-red-500/50 bg-red-500/20 text-red-300"
+                                  : "border-white/20 bg-white/10 text-white/80"
+                              }`}
+                            >
+                              Required
+                            </Badge>
+                          )}
                         </div>
-                        {q.isRequired && (
-                          <Badge
-                            variant="outline"
-                            className={`text-[10px] font-[family-name:var(--font-aldrich)] uppercase tracking-wider shrink-0 transition-colors ${
-                              highlightedMissing[q.id]
-                                ? "border-red-500/50 bg-red-500/20 text-red-300"
-                                : "border-white/20 bg-white/10 text-white/80"
-                            }`}
-                          >
-                            Required
-                          </Badge>
+
+                        {highlightedMissing[q.id] && (
+                          <p className="text-xs text-red-400 font-medium font-[family-name:var(--font-aldrich)]">
+                            * Please select an option for this required question before continuing
+                          </p>
+                        )}
+
+                        <div className="flex flex-wrap gap-2.5 pt-2">
+                          {[
+                            { label: "Yes", val: ResponseValue.YES },
+                            { label: "Applied", val: ResponseValue.APPLIED },
+                            { label: "No", val: ResponseValue.NO },
+                            { label: "Not Sure", val: ResponseValue.NOT_SURE },
+                            { label: "N/A", val: ResponseValue.NOT_APPLICABLE },
+                          ].map((opt) => (
+                            <button
+                              key={opt.val}
+                              type="button"
+                              onClick={() => handleResponseChange(q.id, opt.val)}
+                              className={`px-4 py-2 rounded-xl text-xs font-semibold tracking-wider transition-all cursor-pointer font-[family-name:var(--font-aldrich)] ${
+                                currentResp === opt.val
+                                  ? "bg-white text-slate-950 shadow-md shadow-white/10"
+                                  : "bg-white/[0.06] text-white/70 border border-white/10 hover:border-white/30 hover:text-white"
+                              }`}
+                            >
+                              {opt.label}
+                            </button>
+                          ))}
+                        </div>
+
+                        {(currentResp === ResponseValue.YES || currentResp === ResponseValue.APPLIED) && (
+                          <div className="pt-2">
+                            <Label className="text-xs text-white/70 font-[family-name:var(--font-aldrich)]">Application Number / Filing Details (Optional)</Label>
+                            <Input
+                              placeholder="Filing date, registration number, or jurisdiction..."
+                              value={currentText}
+                              onChange={(e) => handleTextChange(q.id, e.target.value)}
+                              className="h-10 text-xs mt-1.5 bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl"
+                            />
+                          </div>
                         )}
                       </div>
-
-                      {highlightedMissing[q.id] && (
-                        <p className="text-xs text-red-400 font-medium font-[family-name:var(--font-aldrich)]">
-                          * Please select an option for this required question before continuing
-                        </p>
-                      )}
-
-                      <div className="flex flex-wrap gap-2.5 pt-2">
-                        {[
-                          { label: "Yes", val: ResponseValue.YES },
-                          { label: "Applied", val: ResponseValue.APPLIED },
-                          { label: "No", val: ResponseValue.NO },
-                          { label: "Not Sure", val: ResponseValue.NOT_SURE },
-                          { label: "N/A", val: ResponseValue.NOT_APPLICABLE },
-                        ].map((opt) => (
-                          <button
-                            key={opt.val}
-                            type="button"
-                            onClick={() => handleResponseChange(q.id, opt.val)}
-                            className={`px-4 py-2 rounded-xl text-xs font-semibold tracking-wider transition-all cursor-pointer font-[family-name:var(--font-aldrich)] ${
-                              currentResp === opt.val
-                                ? "bg-white text-slate-950 shadow-md shadow-white/10"
-                                : "bg-white/[0.06] text-white/70 border border-white/10 hover:border-white/30 hover:text-white"
-                            }`}
-                          >
-                            {opt.label}
-                          </button>
-                        ))}
-                      </div>
-
-                      {(currentResp === ResponseValue.YES || currentResp === ResponseValue.APPLIED) && (
-                        <div className="pt-2">
-                          <Label className="text-xs text-white/70 font-[family-name:var(--font-aldrich)]">Application Number / Filing Details (Optional)</Label>
-                          <Input
-                            placeholder="Filing date, registration number, or jurisdiction..."
-                            value={currentText}
-                            onChange={(e) => handleTextChange(q.id, e.target.value)}
-                            className="h-10 text-xs mt-1.5 bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl"
-                          />
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-            </CardContent>
+                    );
+                  })}
+              </CardContent>
+            )}
           </Card>
         )}
 
