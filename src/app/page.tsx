@@ -71,12 +71,6 @@ export default function HomePage() {
           <span className="font-light text-white/80">Management System</span>
         </h1>
 
-        {/* Sub-description */}
-        <p className="mt-5 sm:mt-7 text-sm sm:text-base text-white/60 font-light leading-relaxed max-w-xl">
-          Evaluate, protect, and scale your venture&apos;s patents, trademarks,
-          and copyrights through Bennett Hatchery&apos;s institutional evaluation framework.
-        </p>
-
         {/* Single CTA */}
         <div className="mt-8 sm:mt-10">
           <Link
@@ -88,10 +82,6 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* No-login note */}
-        <p className="mt-4 text-[11px] text-white/40 tracking-wide">
-          Direct onboarding · No account required
-        </p>
       </main>
 
       {/* ── Stats (bottom-right, floating) ────────────────────────────── */}
