@@ -33,14 +33,11 @@ export default function HomePage() {
           <Image
             src="/logo.png"
             alt="IPMS Logo"
-            width={44}
-            height={44}
-            className="h-10 w-10 object-contain rounded-xl"
+            width={120}
+            height={120}
+            className="h-[72px] w-[72px] sm:h-[90px] sm:w-[90px] object-contain rounded-2xl"
             priority
           />
-          <span className="font-bold text-[22px] text-white tracking-tight drop-shadow">
-            IPMS
-          </span>
         </Link>
 
         {/* Nav links */}
