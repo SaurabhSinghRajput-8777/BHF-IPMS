@@ -275,6 +275,25 @@ async function main() {
     },
   });
 
+  const sidharthPasswordHash = await argon2.hash("sidharth@bhf2026", {
+    type: argon2.argon2id,
+    memoryCost: 65536,
+    timeCost: 3,
+    parallelism: 1,
+  });
+
+  await prisma.user.upsert({
+    where: { email: "sidharth.tripathy@bennett.edu.in" },
+    update: { passwordHash: sidharthPasswordHash, role: UserRole.CIE_ADMIN, name: "Sidharth Tripathy", isActive: true },
+    create: {
+      name: "Sidharth Tripathy",
+      email: "sidharth.tripathy@bennett.edu.in",
+      passwordHash: sidharthPasswordHash,
+      role: UserRole.CIE_ADMIN,
+      isActive: true,
+    },
+  });
+
   // B. Reviewer
   await prisma.user.upsert({
     where: { email: "reviewer@bennett.edu.in" },
