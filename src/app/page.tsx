@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
 export default function HomePage() {
@@ -10,12 +11,17 @@ export default function HomePage() {
         {/* Navigation Bar */}
         <header className="h-16 flex items-center justify-between mb-6">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2.5">
-            <div className="h-6 w-6 rounded-md bg-[#10b981] flex items-center justify-center text-white">
-              <span className="font-bold text-xs tracking-tighter">✦</span>
-            </div>
+          <Link href="/" className="flex items-center space-x-2.5 group">
+            <Image
+              src="/logo.png"
+              alt="IPMS Logo"
+              width={32}
+              height={32}
+              className="h-8 w-8 object-contain rounded-lg"
+              priority
+            />
             <span className="font-bold text-xl text-[#0f172a] tracking-tight">
-              Xurya
+              IPMS
             </span>
           </Link>
 
