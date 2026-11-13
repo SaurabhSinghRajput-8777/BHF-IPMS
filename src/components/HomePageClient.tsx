@@ -41,7 +41,7 @@ export function HomePageClient() {
       : "/cie/dashboard";
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-slate-900 flex flex-col justify-between">
+    <div className="relative h-screen w-full overflow-hidden bg-black flex flex-col justify-between">
       {/* ── Background Video ───────────────────────────────────────────── */}
       <video
         autoPlay
@@ -49,7 +49,6 @@ export function HomePageClient() {
         muted
         playsInline
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-        poster="https://images.unsplash.com/photo-1466611653911-95081537e5b7?q=80&w=2070&auto=format&fit=crop"
       >
         <source
           src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260613_180732_a54afbf6-b30d-470e-861f-669871f09f67.mp4"
