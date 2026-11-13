@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -69,10 +69,14 @@ export default function HomePage() {
         <div className="mt-8 sm:mt-10">
           <Link
             href="/apply"
-            className="group inline-flex items-center space-x-2 bg-[#b7410e] hover:bg-[#9e370c] active:bg-[#85300a] text-white text-sm sm:text-base font-semibold px-8 sm:px-10 py-3.5 sm:py-4 rounded-full shadow-xl shadow-orange-950/50 transition-all duration-200"
+            className="group inline-flex items-center rounded-full bg-gradient-to-r from-[#4f46e5] via-[#6366f1] to-[#7c3aed] hover:from-[#4338ca] hover:via-[#5b5bec] hover:to-[#6d28d9] shadow-xl shadow-indigo-950/40 transition-all duration-300"
           >
-            <span>Start Startup IP Assessment</span>
-            <ArrowUpRight className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            <span className="text-sm sm:text-base font-semibold text-white pl-7 sm:pl-9 pr-5 sm:pr-6 py-3.5 sm:py-4">
+              Start Startup IP Assessment
+            </span>
+            <span className="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 mr-1.5 rounded-full bg-white/20 backdrop-blur-sm transition-colors group-hover:bg-white/30">
+              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 text-white group-hover:translate-x-0.5 transition-transform" />
+            </span>
           </Link>
         </div>
 
