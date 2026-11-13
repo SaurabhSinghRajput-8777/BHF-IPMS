@@ -44,7 +44,7 @@ export default function HomePage() {
         <div className="flex items-center">
           <Link
             href="/login"
-            className="bg-white/15 hover:bg-white/25 active:bg-white/30 border border-white/30 backdrop-blur-md text-white text-[13.5px] font-semibold px-5 py-2.5 rounded-full transition-all duration-200 tracking-[0.25em] font-[family-name:var(--font-aldrich)]"
+            className="bg-white/15 hover:bg-white/25 active:bg-white/30 border border-white/30 backdrop-blur-md text-white text-[13.5px] font-semibold px-5 py-2.5 rounded-full transition-all duration-200 tracking-[0.05em] font-[family-name:var(--font-aldrich)]"
           >
             CIE Team Login
           </Link>
@@ -71,7 +71,7 @@ export default function HomePage() {
             href="/apply"
             className="group inline-flex items-center p-1.5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-xl shadow-xl shadow-indigo-950/30 transition-all duration-300 hover:bg-white/15 hover:border-white/30"
           >
-            <span className="text-base sm:text-lg font-semibold text-white px-6 sm:px-8 py-2.5 sm:py-3 tracking-[0.25em] font-[family-name:var(--font-aldrich)]">
+            <span className="text-base sm:text-lg font-semibold text-white px-6 sm:px-8 py-2.5 sm:py-3 tracking-[0.05em] font-[family-name:var(--font-aldrich)]">
               Begin Startup IP Assessment
             </span>
             <span className="self-stretch flex items-center justify-center px-4 sm:px-5 rounded-xl bg-white/15 backdrop-blur-sm transition-colors group-hover:bg-white/25">
