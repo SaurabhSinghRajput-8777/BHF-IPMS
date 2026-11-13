@@ -44,7 +44,7 @@ export default function HomePage() {
         <div className="flex items-center">
           <Link
             href="/login"
-            className="bg-white/15 hover:bg-white/25 active:bg-white/30 border border-white/30 backdrop-blur-md text-white text-[13.5px] font-semibold px-5 py-2.5 rounded-full transition-all duration-200"
+            className="bg-white/15 hover:bg-white/25 active:bg-white/30 border border-white/30 backdrop-blur-md text-white text-[13.5px] font-semibold px-5 py-2.5 rounded-full transition-all duration-200 font-[family-name:var(--font-aldrich)]"
           >
             CIE Team Login
           </Link>
@@ -71,7 +71,7 @@ export default function HomePage() {
             href="/apply"
             className="group inline-flex items-center rounded-xl bg-white/10 border border-white/20 backdrop-blur-xl shadow-xl shadow-indigo-950/30 transition-all duration-300 hover:bg-white/15 hover:border-white/30"
           >
-            <span className="text-sm sm:text-base font-semibold text-white pl-7 sm:pl-9 pr-5 sm:pr-6 py-3.5 sm:py-4">
+            <span className="text-sm sm:text-base font-semibold text-white pl-7 sm:pl-9 pr-5 sm:pr-6 py-3.5 sm:py-4 font-[family-name:var(--font-aldrich)]">
               Start Startup IP Assessment
             </span>
             <span className="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 mr-1.5 rounded-lg bg-white/15 backdrop-blur-sm transition-colors group-hover:bg-white/25">
@@ -83,7 +83,7 @@ export default function HomePage() {
       </main>
 
       {/* ── Stats (bottom-right, floating) ────────────────────────────── */}
-      <div className="absolute bottom-8 right-8 sm:bottom-10 sm:right-10 z-10 hidden sm:flex items-end space-x-10">
+      <div className="absolute bottom-8 right-8 sm:bottom-10 sm:right-10 z-10 hidden sm:flex items-end space-x-10 font-[family-name:var(--font-aldrich)]">
         <div className="text-right">
           <div className="text-3xl sm:text-[36px] font-normal text-white tracking-tight leading-none">
             50+
