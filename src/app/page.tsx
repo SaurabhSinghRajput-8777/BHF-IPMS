@@ -41,18 +41,12 @@ export default function HomePage() {
         </Link>
 
         {/* Actions */}
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center">
           <Link
             href="/login"
-            className="text-[13.5px] font-medium text-white/80 hover:text-white transition-colors"
-          >
-            Log in
-          </Link>
-          <Link
-            href="/apply"
             className="bg-[#b7410e] hover:bg-[#9e370c] active:bg-[#85300a] text-white text-[13.5px] font-semibold px-5 py-2.5 rounded-full transition-all duration-200 shadow-lg shadow-orange-950/40"
           >
-            Get in touch
+            CIE Team Login
           </Link>
         </div>
       </header>
