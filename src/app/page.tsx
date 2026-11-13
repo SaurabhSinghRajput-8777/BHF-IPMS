@@ -71,7 +71,7 @@ export default function HomePage() {
             href="/apply"
             className="group inline-flex items-center rounded-xl bg-white/10 border border-white/20 backdrop-blur-xl shadow-xl shadow-indigo-950/30 transition-all duration-300 hover:bg-white/15 hover:border-white/30"
           >
-            <span className="text-sm sm:text-base font-semibold text-white pl-7 sm:pl-9 pr-5 sm:pr-6 py-3.5 sm:py-4 font-[family-name:var(--font-aldrich)]">
+            <span className="text-base sm:text-lg font-semibold text-white pl-6 sm:pl-7 pr-4 sm:pr-5 py-2.5 sm:py-3 font-[family-name:var(--font-aldrich)]">
               Start Startup IP Assessment
             </span>
             <span className="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 mr-1.5 rounded-lg bg-white/15 backdrop-blur-sm transition-colors group-hover:bg-white/25">
