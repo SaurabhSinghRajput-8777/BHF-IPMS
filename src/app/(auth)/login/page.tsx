@@ -103,7 +103,7 @@ export default function LoginPage() {
         </Link>
       </div>
 
-      <div className="relative z-10 w-full max-w-md flex flex-col items-center -mt-8 sm:-mt-12">
+      <div className="relative z-10 w-full max-w-md flex flex-col items-center">
         <div className="mb-6 text-center max-w-md">
           <p className="text-xs sm:text-sm font-semibold tracking-[0.25em] text-white/60 uppercase font-[family-name:var(--font-aldrich)]">
             Bennett Hatchery · CIE
