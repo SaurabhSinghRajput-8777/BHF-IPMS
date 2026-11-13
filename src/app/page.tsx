@@ -54,7 +54,7 @@ export default function HomePage() {
       {/* ── Main Content (centered in viewport) ───────────────────────── */}
       <main className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6">
         {/* Eyebrow label */}
-        <p className="text-sm sm:text-base font-semibold tracking-[0.25em] text-white/80 uppercase mb-5 sm:mb-6 font-[family-name:var(--font-aldrich)]">
+        <p className="text-xs sm:text-sm font-semibold tracking-[0.25em] text-white/80 uppercase mb-5 sm:mb-6 font-[family-name:var(--font-aldrich)]">
           Centre for Innovation &amp; Entrepreneurship · Bennett University
         </p>
 
