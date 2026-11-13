@@ -316,21 +316,16 @@ export function PublicApplicationWizardClient() {
           <div className="flex items-center space-x-5">
             <Link
               href="/"
-              className="text-white/70 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-xl border border-white/10 flex items-center justify-center shrink-0"
+              className="text-white/70 hover:text-white transition-colors p-2.5 hover:bg-white/10 rounded-xl border border-white/10 flex items-center justify-center shrink-0"
               aria-label="Back to home"
             >
               <ArrowLeft className="h-5 w-5" />
             </Link>
-            <div className="flex items-center space-x-3.5">
-              <div className="h-10 w-10 rounded-xl bg-white/10 border border-white/20 text-white flex items-center justify-center font-bold text-sm shadow-sm font-[family-name:var(--font-aldrich)] shrink-0">
-                BH
-              </div>
-              <div>
-                <h1 className="font-semibold text-white text-lg sm:text-xl tracking-wide font-[family-name:var(--font-aldrich)]">
-                  Startup IP Assessment
-                </h1>
-                <p className="text-xs sm:text-sm text-white/50">Bennett Hatchery • Direct Application Portal</p>
-              </div>
+            <div>
+              <h1 className="font-semibold text-white text-lg sm:text-xl tracking-wide font-[family-name:var(--font-aldrich)]">
+                Startup IP Assessment
+              </h1>
+              <p className="text-xs sm:text-sm text-white/50">Bennett Hatchery • Direct Application Portal</p>
             </div>
           </div>
         </div>
@@ -338,7 +333,7 @@ export function PublicApplicationWizardClient() {
 
       {/* Stepper Navigation */}
       <div className="relative z-10 bg-slate-900/40 backdrop-blur-md border-b border-white/10 py-4">
-        <div className="max-w-5xl mx-auto px-6 flex items-center space-x-3 overflow-x-auto text-sm font-[family-name:var(--font-aldrich)]">
+        <div className="max-w-5xl mx-auto px-6 flex items-center justify-start md:justify-center space-x-3 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden text-sm font-[family-name:var(--font-aldrich)]">
           {steps.map((st, idx) => (
             <button
               key={idx}
