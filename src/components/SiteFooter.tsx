@@ -10,7 +10,7 @@ export function SiteFooter() {
     <footer
       className={`relative z-20 w-full px-6 sm:px-10 py-5 transition-colors overflow-hidden ${
         isHomePage
-          ? "border-t-0 bg-transparent text-white/50"
+          ? "absolute bottom-0 left-0 right-0 border-t-0 bg-transparent text-white/50"
           : "border-t border-white/10 bg-slate-900/60 backdrop-blur-xl mt-auto"
       }`}
     >
