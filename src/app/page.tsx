@@ -40,25 +40,6 @@ export default function HomePage() {
           />
         </Link>
 
-        {/* Nav links */}
-        <nav className="hidden md:flex items-center space-x-9 text-[13.5px] font-medium text-white/70">
-          <Link href="/" className="text-white font-semibold">
-            Home
-          </Link>
-          <Link href="/about" className="hover:text-white transition-colors">
-            About Us
-          </Link>
-          <Link href="/features" className="hover:text-white transition-colors">
-            Features
-          </Link>
-          <Link href="/apply" className="hover:text-white transition-colors">
-            Services
-          </Link>
-          <Link href="/contact" className="hover:text-white transition-colors">
-            Contact
-          </Link>
-        </nav>
-
         {/* Actions */}
         <div className="flex items-center space-x-6">
           <Link
