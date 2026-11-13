@@ -10,9 +10,12 @@ export function proxy(request: NextRequest) {
   // Public paths that do not require authentication
   const isPublicPath =
     pathname === "/" ||
+    pathname === "/apply" ||
     pathname === "/login" ||
     pathname === "/unauthorized" ||
     pathname.startsWith("/api/v1/auth/login") ||
+    pathname.startsWith("/api/v1/public/") ||
+    pathname.startsWith("/api/v1/questionnaires/active") ||
     pathname.startsWith("/api/v1/health") ||
     pathname.startsWith("/_next") ||
     pathname.includes(".");

@@ -24,9 +24,14 @@ export default function HomePage() {
             </div>
           </div>
           <div className="flex items-center space-x-3">
+            <Link href="/apply">
+              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm">
+                Apply &amp; Assess IP
+              </Button>
+            </Link>
             <Link href="/login">
-              <Button className="bg-blue-900 hover:bg-blue-800 text-white shadow-sm">
-                Sign In to Portal
+              <Button variant="outline" className="border-slate-300">
+                Staff Login
               </Button>
             </Link>
           </div>
@@ -48,16 +53,16 @@ export default function HomePage() {
               Trademarks, Patents, and Copyrights through structured institutional assessment and expert CIE reviews.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/login" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full bg-blue-900 hover:bg-blue-800 text-white h-12 px-6 shadow-md text-base">
-                  Access Portal <ArrowRight className="ml-2 h-4 w-4" />
+              <Link href="/apply" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white h-12 px-8 shadow-md text-base font-semibold">
+                  Start Startup IP Assessment <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <a href="#modules" className="w-full sm:w-auto">
+              <Link href="/login" className="w-full sm:w-auto">
                 <Button size="lg" variant="outline" className="w-full h-12 px-6 text-base border-slate-300">
-                  Explore Architecture
+                  CIE Reviewer / Admin Login
                 </Button>
-              </a>
+              </Link>
             </div>
           </div>
 
