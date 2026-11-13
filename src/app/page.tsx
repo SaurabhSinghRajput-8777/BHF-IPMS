@@ -11,16 +11,16 @@ export default function HomePage() {
         {/* Navigation Bar */}
         <header className="h-16 flex items-center justify-between mb-6">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2.5 group">
+          <Link href="/" className="flex items-center space-x-3 group">
             <Image
               src="/logo.png"
               alt="IPMS Logo"
-              width={32}
-              height={32}
-              className="h-8 w-8 object-contain rounded-lg"
+              width={48}
+              height={48}
+              className="h-11 w-11 object-contain rounded-xl"
               priority
             />
-            <span className="font-bold text-xl text-[#0f172a] tracking-tight">
+            <span className="font-bold text-2xl text-[#0f172a] tracking-tight">
               IPMS
             </span>
           </Link>
@@ -65,14 +65,20 @@ export default function HomePage() {
         <main className="relative">
           {/* The Hero Banner Card */}
           <div className="relative w-full h-[620px] rounded-[36px] overflow-hidden bg-slate-900 shadow-sm">
-            {/* Background Landscape Photo (Wind turbines in grassy landscape at dusk/golden hour) */}
-            <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage:
-                  "url('https://images.unsplash.com/photo-1466611653911-95081537e5b7?q=80&w=2070&auto=format&fit=crop')",
-              }}
-            />
+            {/* Background Video */}
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+              poster="https://images.unsplash.com/photo-1466611653911-95081537e5b7?q=80&w=2070&auto=format&fit=crop"
+            >
+              <source
+                src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260613_180732_a54afbf6-b30d-470e-861f-669871f09f67.mp4"
+                type="video/mp4"
+              />
+            </video>
             {/* Subtle Gradient Overlay to ensure text readability */}
             <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/20 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
