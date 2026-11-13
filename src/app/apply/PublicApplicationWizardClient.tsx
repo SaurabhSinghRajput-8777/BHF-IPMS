@@ -76,6 +76,7 @@ export function PublicApplicationWizardClient() {
 
   // Active step: 0 = Startup Details, 1 = General IP, 2..N = Categories, Last = Review & Submit
   const [currentStep, setCurrentStep] = useState(0);
+  const [highlightedMissing, setHighlightedMissing] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     async function init() {
@@ -112,6 +113,9 @@ export function PublicApplicationWizardClient() {
       ...prev,
       [questionId]: { ...prev[questionId], response: val },
     }));
+    if (highlightedMissing[questionId]) {
+      setHighlightedMissing((prev) => ({ ...prev, [questionId]: false }));
+    }
   };
 
   const handleTextChange = (questionId: string, text: string) => {
@@ -131,40 +135,99 @@ export function PublicApplicationWizardClient() {
     }));
   };
 
+  const scrollToElement = (id: string) => {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.focus?.();
+      }
+    }, 50);
+  };
+
   const validateStartupDetails = (): boolean => {
-    if (!startupForm.name.trim()) {
-      setErrorMessage("Startup Name is required.");
+    const missing: Record<string, boolean> = {};
+
+    if (!startupForm.name.trim()) missing.name = true;
+    if (!startupForm.founderName.trim()) missing.founderName = true;
+    if (!startupForm.email.trim() || !startupForm.email.includes("@")) missing.email = true;
+    if (!startupForm.contactNumber.trim() || startupForm.contactNumber.length < 8) missing.contactNumber = true;
+    if (!startupForm.industry) missing.industry = true;
+    if (!startupForm.startupStage) missing.startupStage = true;
+    if (startupForm.description.trim().length < 10) missing.description = true;
+    if (startupForm.productDescription.trim().length < 10) missing.productDescription = true;
+
+    setHighlightedMissing(missing);
+
+    const firstMissingKey = Object.keys(missing)[0];
+    if (firstMissingKey) {
+      if (firstMissingKey === "name") setErrorMessage("Startup Name is required.");
+      else if (firstMissingKey === "founderName") setErrorMessage("Primary Founder Name is required.");
+      else if (firstMissingKey === "email") setErrorMessage("Valid Founder Email Address is required.");
+      else if (firstMissingKey === "contactNumber") setErrorMessage("Valid Contact Phone Number is required.");
+      else if (firstMissingKey === "industry") setErrorMessage("Please select an Industry Sector.");
+      else if (firstMissingKey === "startupStage") setErrorMessage("Please select an Incubation Stage.");
+      else if (firstMissingKey === "description") setErrorMessage("Executive Summary is required (min 10 characters).");
+      else if (firstMissingKey === "productDescription") setErrorMessage("Proprietary Innovation description is required (min 10 characters).");
+      
+      scrollToElement(firstMissingKey);
       return false;
     }
-    if (!startupForm.founderName.trim()) {
-      setErrorMessage("Founder Name is required.");
-      return false;
-    }
-    if (!startupForm.email.trim() || !startupForm.email.includes("@")) {
-      setErrorMessage("Valid founder email address is required.");
-      return false;
-    }
-    if (!startupForm.contactNumber.trim() || startupForm.contactNumber.length < 8) {
-      setErrorMessage("Valid contact number is required.");
-      return false;
-    }
-    if (!startupForm.industry) {
-      setErrorMessage("Please select an industry sector.");
-      return false;
-    }
-    if (!startupForm.startupStage) {
-      setErrorMessage("Please select your startup incubation stage.");
-      return false;
-    }
-    if (startupForm.description.trim().length < 10) {
-      setErrorMessage("Please provide an executive summary (at least 10 characters).");
-      return false;
-    }
-    if (startupForm.productDescription.trim().length < 10) {
-      setErrorMessage("Please describe your proprietary innovation (at least 10 characters).");
-      return false;
-    }
+
     setErrorMessage("");
+    return true;
+  };
+
+  const validateCurrentStepQuestions = (stepIdx: number): boolean => {
+    const stepObj = steps[stepIdx];
+    if (!stepObj || stepObj.id === "PROFILE" || stepObj.id === "REVIEW") return true;
+
+    // If category is explicitly marked as not applicable, questions are not required
+    if (stepObj.categoryId && applicability[stepObj.categoryId]?.applicable === false) {
+      return true;
+    }
+
+    const currentQuestions = questions.filter((q) =>
+      stepObj.categoryId === null ? q.categoryId === null : q.categoryId === stepObj.categoryId
+    );
+
+    const missingQuestions: Record<string, boolean> = {};
+    for (const q of currentQuestions) {
+      if (q.isRequired && !responses[q.id]?.response) {
+        missingQuestions[q.id] = true;
+      }
+    }
+
+    setHighlightedMissing(missingQuestions);
+
+    const firstMissingQId = Object.keys(missingQuestions)[0];
+    if (firstMissingQId) {
+      setErrorMessage("Please answer all required questions before proceeding.");
+      scrollToElement(`question-${firstMissingQId}`);
+      return false;
+    }
+
+    setErrorMessage("");
+    return true;
+  };
+
+  const canNavigateToStep = (targetIdx: number): boolean => {
+    if (targetIdx <= currentStep) return true;
+
+    // Check all previous steps from 0 to targetIdx - 1
+    for (let i = 0; i < targetIdx; i++) {
+      if (i === 0) {
+        if (!validateStartupDetails()) {
+          setCurrentStep(0);
+          return false;
+        }
+      } else if (i < steps.length - 1) {
+        if (!validateCurrentStepQuestions(i)) {
+          setCurrentStep(i);
+          return false;
+        }
+      }
+    }
     return true;
   };
 
@@ -282,7 +345,7 @@ export function PublicApplicationWizardClient() {
   }
 
   // Stepper Structure
-  const steps = [
+  const steps: { title: string; id?: string; categoryId?: string | null }[] = [
     { title: "Startup Profile", id: "PROFILE" },
     { title: "General IP Strategy", categoryId: null },
     ...categories.map((c) => ({ title: c.name, categoryId: c.id })),
@@ -294,13 +357,17 @@ export function PublicApplicationWizardClient() {
   const handleNext = () => {
     if (currentStep === 0) {
       if (!validateStartupDetails()) return;
+    } else if (currentStep < steps.length - 1) {
+      if (!validateCurrentStepQuestions(currentStep)) return;
     }
     setErrorMessage("");
+    setHighlightedMissing({});
     setCurrentStep((s) => Math.min(steps.length - 1, s + 1));
   };
 
   const handlePrevious = () => {
     setErrorMessage("");
+    setHighlightedMissing({});
     setCurrentStep((s) => Math.max(0, s - 1));
   };
 
@@ -339,7 +406,9 @@ export function PublicApplicationWizardClient() {
               key={idx}
               type="button"
               onClick={() => {
-                if (currentStep === 0 && !validateStartupDetails() && idx > 0) return;
+                if (!canNavigateToStep(idx)) return;
+                setErrorMessage("");
+                setHighlightedMissing({});
                 setCurrentStep(idx);
               }}
               className={`flex items-center space-x-2.5 px-4 py-2 rounded-full transition-all shrink-0 cursor-pointer ${
@@ -388,57 +457,89 @@ export function PublicApplicationWizardClient() {
             </CardHeader>
             <CardContent className="space-y-6 pt-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="name" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
+                <div className="space-y-2" id="name">
+                  <Label htmlFor="nameInput" className={`text-sm font-semibold font-[family-name:var(--font-aldrich)] ${highlightedMissing.name ? "text-red-400" : "text-white/90"}`}>
                     Startup Name *
                   </Label>
                   <Input
-                    id="name"
+                    id="nameInput"
                     placeholder="e.g. NovaTrace AI Solutions"
                     value={startupForm.name}
-                    onChange={(e) => setStartupForm((f) => ({ ...f, name: e.target.value }))}
-                    className="h-12 text-base bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40"
+                    onChange={(e) => {
+                      setStartupForm((f) => ({ ...f, name: e.target.value }));
+                      if (highlightedMissing.name) setHighlightedMissing((prev) => ({ ...prev, name: false }));
+                    }}
+                    className={`h-12 text-base bg-white/[0.05] rounded-xl px-4 focus-visible:ring-white/30 ${
+                      highlightedMissing.name
+                        ? "border-red-500/80 ring-2 ring-red-500/30 text-white placeholder:text-red-300/50"
+                        : "border-white/15 text-white placeholder:text-white/30 focus-visible:border-white/40"
+                    }`}
                   />
+                  {highlightedMissing.name && <p className="text-xs text-red-400 font-medium">Startup name is required</p>}
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="founderName" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
+                <div className="space-y-2" id="founderName">
+                  <Label htmlFor="founderNameInput" className={`text-sm font-semibold font-[family-name:var(--font-aldrich)] ${highlightedMissing.founderName ? "text-red-400" : "text-white/90"}`}>
                     Primary Founder Name *
                   </Label>
                   <Input
-                    id="founderName"
+                    id="founderNameInput"
                     placeholder="Full legal name"
                     value={startupForm.founderName}
-                    onChange={(e) => setStartupForm((f) => ({ ...f, founderName: e.target.value }))}
-                    className="h-12 text-base bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40"
+                    onChange={(e) => {
+                      setStartupForm((f) => ({ ...f, founderName: e.target.value }));
+                      if (highlightedMissing.founderName) setHighlightedMissing((prev) => ({ ...prev, founderName: false }));
+                    }}
+                    className={`h-12 text-base bg-white/[0.05] rounded-xl px-4 focus-visible:ring-white/30 ${
+                      highlightedMissing.founderName
+                        ? "border-red-500/80 ring-2 ring-red-500/30 text-white placeholder:text-red-300/50"
+                        : "border-white/15 text-white placeholder:text-white/30 focus-visible:border-white/40"
+                    }`}
                   />
+                  {highlightedMissing.founderName && <p className="text-xs text-red-400 font-medium">Founder name is required</p>}
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
+                <div className="space-y-2" id="email">
+                  <Label htmlFor="emailInput" className={`text-sm font-semibold font-[family-name:var(--font-aldrich)] ${highlightedMissing.email ? "text-red-400" : "text-white/90"}`}>
                     Founder / Contact Email *
                   </Label>
                   <Input
-                    id="email"
+                    id="emailInput"
                     type="email"
                     placeholder="founder@yourstartup.com"
                     value={startupForm.email}
-                    onChange={(e) => setStartupForm((f) => ({ ...f, email: e.target.value }))}
-                    className="h-12 text-base bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40"
+                    onChange={(e) => {
+                      setStartupForm((f) => ({ ...f, email: e.target.value }));
+                      if (highlightedMissing.email) setHighlightedMissing((prev) => ({ ...prev, email: false }));
+                    }}
+                    className={`h-12 text-base bg-white/[0.05] rounded-xl px-4 focus-visible:ring-white/30 ${
+                      highlightedMissing.email
+                        ? "border-red-500/80 ring-2 ring-red-500/30 text-white placeholder:text-red-300/50"
+                        : "border-white/15 text-white placeholder:text-white/30 focus-visible:border-white/40"
+                    }`}
                   />
+                  {highlightedMissing.email && <p className="text-xs text-red-400 font-medium">Valid email address is required</p>}
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="contactNumber" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
+                <div className="space-y-2" id="contactNumber">
+                  <Label htmlFor="contactNumberInput" className={`text-sm font-semibold font-[family-name:var(--font-aldrich)] ${highlightedMissing.contactNumber ? "text-red-400" : "text-white/90"}`}>
                     Contact Phone Number *
                   </Label>
                   <Input
-                    id="contactNumber"
+                    id="contactNumberInput"
                     placeholder="+91 98765 43210"
                     value={startupForm.contactNumber}
-                    onChange={(e) => setStartupForm((f) => ({ ...f, contactNumber: e.target.value }))}
-                    className="h-12 text-base bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40"
+                    onChange={(e) => {
+                      setStartupForm((f) => ({ ...f, contactNumber: e.target.value }));
+                      if (highlightedMissing.contactNumber) setHighlightedMissing((prev) => ({ ...prev, contactNumber: false }));
+                    }}
+                    className={`h-12 text-base bg-white/[0.05] rounded-xl px-4 focus-visible:ring-white/30 ${
+                      highlightedMissing.contactNumber
+                        ? "border-red-500/80 ring-2 ring-red-500/30 text-white placeholder:text-red-300/50"
+                        : "border-white/15 text-white placeholder:text-white/30 focus-visible:border-white/40"
+                    }`}
                   />
+                  {highlightedMissing.contactNumber && <p className="text-xs text-red-400 font-medium">Valid phone number is required</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -454,15 +555,22 @@ export function PublicApplicationWizardClient() {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="industry" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
+                <div className="space-y-2" id="industry">
+                  <Label htmlFor="industryInput" className={`text-sm font-semibold font-[family-name:var(--font-aldrich)] ${highlightedMissing.industry ? "text-red-400" : "text-white/90"}`}>
                     Industry / Sector *
                   </Label>
                   <Select
                     value={startupForm.industry}
-                    onValueChange={(val) => setStartupForm((f) => ({ ...f, industry: val ?? "" }))}
+                    onValueChange={(val) => {
+                      setStartupForm((f) => ({ ...f, industry: val ?? "" }));
+                      if (highlightedMissing.industry) setHighlightedMissing((prev) => ({ ...prev, industry: false }));
+                    }}
                   >
-                    <SelectTrigger id="industry" className="!h-12 text-base w-full bg-white/[0.05] border-white/15 text-white rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40">
+                    <SelectTrigger id="industryInput" className={`!h-12 text-base w-full bg-white/[0.05] rounded-xl px-4 focus-visible:ring-white/30 ${
+                      highlightedMissing.industry
+                        ? "border-red-500/80 ring-2 ring-red-500/30 text-white"
+                        : "border-white/15 text-white focus-visible:border-white/40"
+                    }`}>
                       <SelectValue placeholder="Select industry" />
                     </SelectTrigger>
                     <SelectContent>
@@ -475,17 +583,25 @@ export function PublicApplicationWizardClient() {
                       <SelectItem value="Other">Other</SelectItem>
                     </SelectContent>
                   </Select>
+                  {highlightedMissing.industry && <p className="text-xs text-red-400 font-medium">Please select an industry sector</p>}
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="startupStage" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
+                <div className="space-y-2" id="startupStage">
+                  <Label htmlFor="startupStageInput" className={`text-sm font-semibold font-[family-name:var(--font-aldrich)] ${highlightedMissing.startupStage ? "text-red-400" : "text-white/90"}`}>
                     Incubation Stage *
                   </Label>
                   <Select
                     value={startupForm.startupStage}
-                    onValueChange={(val) => setStartupForm((f) => ({ ...f, startupStage: val ?? "" }))}
+                    onValueChange={(val) => {
+                      setStartupForm((f) => ({ ...f, startupStage: val ?? "" }));
+                      if (highlightedMissing.startupStage) setHighlightedMissing((prev) => ({ ...prev, startupStage: false }));
+                    }}
                   >
-                    <SelectTrigger id="startupStage" className="!h-12 text-base w-full bg-white/[0.05] border-white/15 text-white rounded-xl px-4 focus-visible:ring-white/30 focus-visible:border-white/40">
+                    <SelectTrigger id="startupStageInput" className={`!h-12 text-base w-full bg-white/[0.05] rounded-xl px-4 focus-visible:ring-white/30 ${
+                      highlightedMissing.startupStage
+                        ? "border-red-500/80 ring-2 ring-red-500/30 text-white"
+                        : "border-white/15 text-white focus-visible:border-white/40"
+                    }`}>
                       <SelectValue placeholder="Select stage" />
                     </SelectTrigger>
                     <SelectContent>
@@ -497,6 +613,7 @@ export function PublicApplicationWizardClient() {
                       <SelectItem value="Established Business">Established Business</SelectItem>
                     </SelectContent>
                   </Select>
+                  {highlightedMissing.startupStage && <p className="text-xs text-red-400 font-medium">Please select an incubation stage</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -513,32 +630,48 @@ export function PublicApplicationWizardClient() {
                 </div>
               </div>
 
-              <div className="space-y-2 pt-2">
-                <Label htmlFor="description" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
+              <div className="space-y-2 pt-2" id="description">
+                <Label htmlFor="descriptionInput" className={`text-sm font-semibold font-[family-name:var(--font-aldrich)] ${highlightedMissing.description ? "text-red-400" : "text-white/90"}`}>
                   Executive Summary *
                 </Label>
                 <Textarea
-                  id="description"
+                  id="descriptionInput"
                   placeholder="Summarize your product, target market, and value proposition..."
                   value={startupForm.description}
-                  onChange={(e) => setStartupForm((f) => ({ ...f, description: e.target.value }))}
-                  className="min-h-28 text-base bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl p-4 focus-visible:ring-white/30 focus-visible:border-white/40"
+                  onChange={(e) => {
+                    setStartupForm((f) => ({ ...f, description: e.target.value }));
+                    if (highlightedMissing.description) setHighlightedMissing((prev) => ({ ...prev, description: false }));
+                  }}
+                  className={`min-h-28 text-base bg-white/[0.05] rounded-xl p-4 focus-visible:ring-white/30 ${
+                    highlightedMissing.description
+                      ? "border-red-500/80 ring-2 ring-red-500/30 text-white placeholder:text-red-300/50"
+                      : "border-white/15 text-white placeholder:text-white/30 focus-visible:border-white/40"
+                  }`}
                   rows={3}
                 />
+                {highlightedMissing.description && <p className="text-xs text-red-400 font-medium">Executive summary is required (min 10 characters)</p>}
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="productDescription" className="text-sm font-semibold text-white/90 font-[family-name:var(--font-aldrich)]">
+              <div className="space-y-2" id="productDescription">
+                <Label htmlFor="productDescriptionInput" className={`text-sm font-semibold font-[family-name:var(--font-aldrich)] ${highlightedMissing.productDescription ? "text-red-400" : "text-white/90"}`}>
                   Proprietary Technology &amp; Innovation *
                 </Label>
                 <Textarea
-                  id="productDescription"
+                  id="productDescriptionInput"
                   placeholder="Describe your proprietary technology, algorithms, novel designs, or secret know-how..."
                   value={startupForm.productDescription}
-                  onChange={(e) => setStartupForm((f) => ({ ...f, productDescription: e.target.value }))}
-                  className="min-h-28 text-base bg-white/[0.05] border-white/15 text-white placeholder:text-white/30 rounded-xl p-4 focus-visible:ring-white/30 focus-visible:border-white/40"
+                  onChange={(e) => {
+                    setStartupForm((f) => ({ ...f, productDescription: e.target.value }));
+                    if (highlightedMissing.productDescription) setHighlightedMissing((prev) => ({ ...prev, productDescription: false }));
+                  }}
+                  className={`min-h-28 text-base bg-white/[0.05] rounded-xl p-4 focus-visible:ring-white/30 ${
+                    highlightedMissing.productDescription
+                      ? "border-red-500/80 ring-2 ring-red-500/30 text-white placeholder:text-red-300/50"
+                      : "border-white/15 text-white placeholder:text-white/30 focus-visible:border-white/40"
+                  }`}
                   rows={3}
                 />
+                {highlightedMissing.productDescription && <p className="text-xs text-red-400 font-medium">Proprietary technology description is required (min 10 characters)</p>}
               </div>
             </CardContent>
           </Card>
@@ -603,7 +736,15 @@ export function PublicApplicationWizardClient() {
                   const currentText = responses[q.id]?.textValue || "";
 
                   return (
-                    <div key={q.id} className="p-5 sm:p-6 rounded-2xl border border-white/10 bg-white/[0.03] space-y-4">
+                    <div
+                      key={q.id}
+                      id={`question-${q.id}`}
+                      className={`p-5 sm:p-6 rounded-2xl border bg-white/[0.03] space-y-4 transition-all scroll-mt-24 ${
+                        highlightedMissing[q.id]
+                          ? "border-red-500/80 ring-2 ring-red-500/30 bg-red-950/10"
+                          : "border-white/10"
+                      }`}
+                    >
                       <div className="flex items-start justify-between gap-4">
                         <div>
                           <span className="text-xs font-mono text-white/40 block mb-1">Question {idx + 1}</span>
@@ -611,11 +752,24 @@ export function PublicApplicationWizardClient() {
                           {q.description && <p className="text-xs text-white/60 mt-1.5 leading-relaxed">{q.description}</p>}
                         </div>
                         {q.isRequired && (
-                          <Badge variant="outline" className="border-white/20 bg-white/10 text-white/80 text-[10px] font-[family-name:var(--font-aldrich)] uppercase tracking-wider shrink-0">
+                          <Badge
+                            variant="outline"
+                            className={`text-[10px] font-[family-name:var(--font-aldrich)] uppercase tracking-wider shrink-0 transition-colors ${
+                              highlightedMissing[q.id]
+                                ? "border-red-500/50 bg-red-500/20 text-red-300"
+                                : "border-white/20 bg-white/10 text-white/80"
+                            }`}
+                          >
                             Required
                           </Badge>
                         )}
                       </div>
+
+                      {highlightedMissing[q.id] && (
+                        <p className="text-xs text-red-400 font-medium font-[family-name:var(--font-aldrich)]">
+                          * Please select an option for this required question before continuing
+                        </p>
+                      )}
 
                       <div className="flex flex-wrap gap-2.5 pt-2">
                         {[
@@ -668,29 +822,29 @@ export function PublicApplicationWizardClient() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6 pt-6">
-              <div className="p-5 bg-white/[0.04] rounded-2xl border border-white/10 space-y-3 text-xs">
+              <div className="p-5 bg-white/[0.04] rounded-2xl border border-white/10 space-y-3">
                 <span className="font-semibold text-white text-base block font-[family-name:var(--font-aldrich)]">Venture Details Summary</span>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-white/70">
-                  <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/5"><b className="text-white">Startup:</b> {startupForm.name || "—"}</div>
-                  <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/5"><b className="text-white">Founder:</b> {startupForm.founderName || "—"}</div>
-                  <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/5"><b className="text-white">Email:</b> {startupForm.email || "—"}</div>
-                  <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/5"><b className="text-white">Phone:</b> {startupForm.contactNumber || "—"}</div>
-                  <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/5"><b className="text-white">Sector:</b> {startupForm.industry || "—"}</div>
-                  <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/5"><b className="text-white">Stage:</b> {startupForm.startupStage || "—"}</div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-white/70">
+                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5"><b className="text-white">Startup:</b> {startupForm.name || "—"}</div>
+                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5"><b className="text-white">Founder:</b> {startupForm.founderName || "—"}</div>
+                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5"><b className="text-white">Email:</b> {startupForm.email || "—"}</div>
+                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5"><b className="text-white">Phone:</b> {startupForm.contactNumber || "—"}</div>
+                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5"><b className="text-white">Sector:</b> {startupForm.industry || "—"}</div>
+                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5"><b className="text-white">Stage:</b> {startupForm.startupStage || "—"}</div>
                 </div>
               </div>
 
-              <div className="p-5 bg-white/[0.04] border border-white/10 rounded-2xl flex items-start space-x-3.5 text-xs text-white/80">
+              <div className="p-5 bg-white/[0.04] border border-white/10 rounded-2xl flex items-start space-x-3.5 text-sm text-white/80">
                 <CheckCircle2 className="h-5 w-5 shrink-0 mt-0.5 text-emerald-400" />
                 <div>
-                  <p className="font-semibold text-white text-sm font-[family-name:var(--font-aldrich)]">Institutional Review Notification</p>
-                  <p className="mt-1 text-white/60 leading-relaxed">
+                  <p className="font-semibold text-white text-base font-[family-name:var(--font-aldrich)]">Institutional Review Notification</p>
+                  <p className="mt-1 text-white/60 leading-relaxed text-sm">
                     Upon clicking submit, a unique startup tracking code will be generated for you. Your IP maturity score will be preliminarily computed and queued for CIE Reviewer sign-off.
                   </p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4 text-center text-xs font-[family-name:var(--font-aldrich)]">
+              <div className="grid grid-cols-3 gap-4 text-center text-sm font-[family-name:var(--font-aldrich)]">
                 <div className="p-4 bg-white/[0.03] rounded-2xl border border-white/10">
                   <span className="text-white/40 block mb-1">Total Questions</span>
                   <span className="text-xl sm:text-2xl font-bold text-white">{questions.length}</span>
