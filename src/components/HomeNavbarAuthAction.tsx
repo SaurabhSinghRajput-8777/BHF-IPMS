@@ -33,7 +33,7 @@ export function HomeNavbarAuthAction() {
 
   if (loading) {
     return (
-      <div className="h-10 w-32 rounded-full bg-white/10 animate-pulse border border-white/20" />
+      <div className="h-11 w-36 rounded-2xl bg-white/10 animate-pulse border border-white/20 p-1" />
     );
   }
 
@@ -48,11 +48,14 @@ export function HomeNavbarAuthAction() {
     return (
       <Link
         href={dashboardHref}
-        className="inline-flex items-center space-x-2 bg-white text-slate-950 hover:bg-white/90 active:bg-white/80 border border-white shadow-lg shadow-white/10 text-[13.5px] font-semibold px-5 py-2.5 rounded-full transition-all duration-200 tracking-[0.05em] font-[family-name:var(--font-aldrich)] cursor-pointer"
+        className="group inline-flex items-center p-1 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-xl shadow-lg shadow-indigo-950/30 transition-all duration-300 hover:bg-white/15 hover:border-white/30 cursor-pointer"
       >
-        <LayoutDashboard className="h-4 w-4" />
-        <span>Go to Dashboard</span>
-        <ArrowRight className="h-3.5 w-3.5" />
+        <span className="text-[13px] sm:text-sm font-semibold text-white px-4 py-1.5 tracking-[0.05em] font-[family-name:var(--font-aldrich)]">
+          Go to Dashboard
+        </span>
+        <span className="self-stretch flex items-center justify-center px-2.5 rounded-xl bg-white/15 backdrop-blur-sm transition-colors group-hover:bg-white/25">
+          <ArrowRight className="h-4 w-4 text-white group-hover:translate-x-0.5 transition-transform" />
+        </span>
       </Link>
     );
   }
@@ -60,10 +63,15 @@ export function HomeNavbarAuthAction() {
   return (
     <Link
       href="/login"
-      className="inline-flex items-center space-x-2 bg-white/15 hover:bg-white/25 active:bg-white/30 border border-white/30 backdrop-blur-md text-white text-[13.5px] font-semibold px-5 py-2.5 rounded-full transition-all duration-200 tracking-[0.05em] font-[family-name:var(--font-aldrich)] cursor-pointer"
+      className="group inline-flex items-center p-1 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-xl shadow-lg shadow-indigo-950/30 transition-all duration-300 hover:bg-white/15 hover:border-white/30 cursor-pointer"
     >
-      <LogIn className="h-3.5 w-3.5" />
-      <span>CIE Team Login</span>
+      <span className="text-[13px] sm:text-sm font-semibold text-white px-4 py-1.5 tracking-[0.05em] font-[family-name:var(--font-aldrich)]">
+        CIE Team Login
+      </span>
+      <span className="self-stretch flex items-center justify-center px-2.5 rounded-xl bg-white/15 backdrop-blur-sm transition-colors group-hover:bg-white/25">
+        <ArrowRight className="h-4 w-4 text-white group-hover:translate-x-0.5 transition-transform" />
+      </span>
     </Link>
   );
 }
+
