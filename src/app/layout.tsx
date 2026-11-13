@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Bruno_Ace_SC, Aldrich } from "next/font/google";
+import { IBM_Plex_Sans, Geist_Mono, Bruno_Ace_SC, Aldrich } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const ibmPlexSans = IBM_Plex_Sans({
+  variable: "--font-sans",
+  weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
 });
 
@@ -49,7 +50,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${brunoAceSC.variable} ${aldrich.variable} h-full antialiased`}
+      className={`${ibmPlexSans.variable} ${geistMono.variable} ${brunoAceSC.variable} ${aldrich.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-slate-800 selection:text-white">
         {children}
