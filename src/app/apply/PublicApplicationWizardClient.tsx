@@ -354,6 +354,12 @@ export function PublicApplicationWizardClient() {
 
   const currentStepObj = steps[currentStep];
 
+  const scrollToTop = () => {
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   const handleNext = () => {
     if (currentStep === 0) {
       if (!validateStartupDetails()) return;
@@ -363,12 +369,14 @@ export function PublicApplicationWizardClient() {
     setErrorMessage("");
     setHighlightedMissing({});
     setCurrentStep((s) => Math.min(steps.length - 1, s + 1));
+    scrollToTop();
   };
 
   const handlePrevious = () => {
     setErrorMessage("");
     setHighlightedMissing({});
     setCurrentStep((s) => Math.max(0, s - 1));
+    scrollToTop();
   };
 
   return (
@@ -410,6 +418,7 @@ export function PublicApplicationWizardClient() {
                 setErrorMessage("");
                 setHighlightedMissing({});
                 setCurrentStep(idx);
+                scrollToTop();
               }}
               className={`flex items-center space-x-2.5 px-4 py-2 rounded-full transition-all shrink-0 cursor-pointer ${
                 currentStep === idx
