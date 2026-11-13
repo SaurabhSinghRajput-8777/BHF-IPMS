@@ -140,7 +140,7 @@ export function HomePageClient() {
       </main>
 
       {/* ── Stats (bottom-right, floating) ────────────────────────────── */}
-      <div className="absolute bottom-8 right-8 sm:bottom-10 sm:right-10 z-10 hidden sm:flex items-end space-x-10 font-[family-name:var(--font-aldrich)]">
+      <div className="absolute bottom-16 right-8 sm:bottom-20 sm:right-10 z-10 hidden sm:flex items-end space-x-10 font-[family-name:var(--font-aldrich)]">
         <div className="text-right">
           <div className="text-3xl sm:text-[36px] font-normal text-white tracking-tight leading-none">
             50+

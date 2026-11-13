@@ -1,20 +1,21 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export function SiteFooter() {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
   return (
-    <footer className="relative z-20 w-full border-t border-white/10 bg-slate-900/60 backdrop-blur-xl py-6 px-6 sm:px-10 mt-auto">
+    <footer
+      className={`relative z-20 w-full px-6 sm:px-10 py-5 mt-auto transition-colors ${
+        isHomePage
+          ? "border-t border-white/5 bg-transparent"
+          : "border-t border-white/10 bg-slate-900/60 backdrop-blur-xl"
+      }`}
+    >
       <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50 font-[family-name:var(--font-aldrich)]">
-        <div className="flex items-center space-x-3">
-          <Image
-            src="/logo.png"
-            alt="Bennett Hatchery"
-            width={24}
-            height={24}
-            className="h-6 w-6 object-contain opacity-70"
-          />
+        <div>
           <span>
             © 2026 Bennett University Hatchery · Centre for Innovation &amp; Entrepreneurship
           </span>
